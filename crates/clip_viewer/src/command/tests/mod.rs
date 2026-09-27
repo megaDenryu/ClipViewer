@@ -44,6 +44,7 @@ mod reopen_registered_stack;
 mod reopen_same_video;
 mod seek_drag_view_change;
 mod single_play;
+mod stance_notice;
 mod support;
 mod thumbnail_check;
 mod thumbnail_filter;
