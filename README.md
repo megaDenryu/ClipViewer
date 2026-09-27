@@ -2,77 +2,14 @@
 
 ClipViewer は、1本の動画から切り出した短い区間(クリップ)を順に並べ、区間ごとに繰り返しの回数・クロップ(切り出す矩形)・
 次へ進む条件(自動・Enterキー・Spaceキー・クリック)を付けて再生する Windows のデスクトップアプリである。
-Space は再生と停止に使うため、Spaceキー待ちのクリップは Enter で進む。キーの一覧は F1 で出る(`_doc/設計/画面.md` 判断14)。
+Space は再生と停止に使うため、Spaceキー待ちのクリップは Enter で進む。キーの一覧は F1 で出る(`_doc/使い方.md` 12節)。
 
 ## 使う人へ
 
-### 動作環境
+インストール・FFmpeg の入れ方・画面の見かた・キー操作・データの置き場所・アンインストールは、[使い方の説明書(_doc/使い方.md)](_doc/使い方.md)に書いてある。
 
-- Windows 10 または Windows 11 の x64(64ビット)版。インストーラーは Windows 10 より前の Windows では止まる。
-- 日本語フォント(游ゴシック・メイリオ・MS ゴシックのどれか)が入っている Windows。日本語版の Windows には最初から入っている。
-  英語版などで日本語フォントが入っていないと、画面の文字が出ない(起動のときにその旨のメッセージが出る)。そのときは Windows の設定の
-  「システム」→「オプション機能」から「日本語の補助フォント」(Japanese Supplemental Fonts)を追加する。
-- FFmpeg(下の「FFmpeg を入れる」)。
-
-### インストールする
-
-1. [Releases](https://github.com/megaDenryu/ClipViewer/releases) から最新の `ClipViewer-<版>-setup.exe` を取得して実行する。
-2. 既定では、管理者の権限なしに利用者のフォルダ(`%LOCALAPPDATA%\Programs\ClipViewer`)へ入る。全利用者向けに `Program Files` へ入れたいときは、
-   インストーラーの最初の問いで選ぶ。
-3. スタートメニューの「ClipViewer」から起動する。デスクトップのショートカットは、インストールのときに選んだ場合だけ作る。
-
-インストールすると、動画のファイル(mp4・m4v・mkv・webm・mov・avi・wmv・flv・mpg・mpeg・m2ts・mts)を右クリックしたときの
-「プログラムから開く」に ClipViewer が出る。Windows の設定の「既定のアプリ」で、ClipViewer を動画の既定のアプリに選ぶこともできる。
-インストーラーもアプリも、既定のアプリを勝手には変えない。
-
-インストーラーには電子署名を付けていないため、初めて実行するときに Windows の SmartScreen(発行元の分からないアプリを止める警告)が
-出ることがある。そのときは「詳細情報」から「実行」を選ぶ。
-
-### FFmpeg を入れる
-
-ClipViewer は動画の読み込みに FFmpeg(動画と音声を変換する無料の道具)の `ffmpeg.exe` と `ffprobe.exe` を使う。FFmpeg はインストーラーに含まれていないため、
-別に入れる。入れ方は次の2つのどちらかである。
-
-- winget で入れる(コマンドプロンプトか PowerShell で実行する): `winget install Gyan.FFmpeg`。
-  入れた後に ClipViewer を起動し直すと、PATH から自動で見つかる。見つからなければ一度サインアウトしてから起動し直す。
-- 公式の案内(https://ffmpeg.org/download.html)から Windows 用のビルドを取得し、好きなフォルダへ展開する。
-  迷ったら、案内の「Windows builds from gyan.dev」から release builds の `ffmpeg-release-essentials.zip` を選ぶ。
-  ClipViewer が使う機能(動画と音声の読み出し)は essentials の版で足りる。展開したフォルダの中の `bin` に `ffmpeg.exe` と `ffprobe.exe` がある。
-
-ClipViewer の動作を確かめた FFmpeg の版は、4.4 系(4.4.1)と 9.0 系(9.0.2。gyan.dev の essentials)である。今から入れるなら 9.0 系でよい。
-GitHub Actions の検証列は choco で 9.0.2 に固定して入れる(`.github/workflows/release.yml`)。版を上げるときは、その版で `cargo xtask verify` を通してから
-release.yml の版とこの節を一緒に直す。
-
-FFmpeg が見つからないときは、アプリの画面の上部に理由と手順が出る。`ffmpeg.exe` と `ffprobe.exe` が入ったフォルダ(展開したフォルダの中の `bin`)を
-入力して「保存して探し直す」を押すと、見つかった場合だけその場所が保存され、次の起動からも使われる。
-FFmpeg を探す順は、環境変数 `CLIPVIEWER_FFMPEG_DIR` → 画面で保存した場所 → PATH である。
-
-### データの置き場所
-
-| 置き場所 | 中身 |
-|---|---|
-| `%APPDATA%\ClipViewer\library\` | 名前を付けて保存したスタック(クリップの並び)のライブラリ。動画のパスとクリップの並びだけを保存し、動画は写さない |
-| `%APPDATA%\ClipViewer\settings.json` | アプリの設定(FFmpeg の場所と、窓の大きさ・音量・速度・左右反転・アスペクト比・表示サイズ)。形式の名前(`format`)と版(`version`)を持つ(形式は `_doc/設計/ライブラリ.md` の「settings.json の形式」) |
-| `%LOCALAPPDATA%\ClipViewer\thumbnails\` | 一覧に出すサムネイルのキャッシュ。消しても必要なときに撮り直す |
-| `%LOCALAPPDATA%\ClipViewer\logs\` | 落ちたときの記録(`crash-<日時>.log`)と、依存のライブラリが出した警告の記録(`warnings.log`。起動のたびに前回の分を `warnings.previous.log` へ移す)。不具合を知らせるときに添える |
-
-### アンインストールする
-
-Windows の設定の「アプリ」→「インストールされているアプリ」(Windows 10 では「アプリと機能」)で ClipViewer を選び、「アンインストール」を押す。
-アンインストールすると、最後に上のデータも消すかを問う。既定の答えは「いいえ」であり、入れ直したときにそのまま使える。
-消すのは、アンインストールを実行したアカウントのデータだけである。全利用者向けに入れた場合も、他の利用者のアカウントのデータは消さない。
-動画のファイルとの関連付けの登録は、答えによらず消す。
-
-### ソースからビルドする
-
-Rust(rustup)と Windows SDK を入れ、リポジトリを取得してルートで次を実行する。Windows SDK は、実行ファイルへアイコンを埋め込む rc.exe のために要る(Visual Studio の「C++ によるデスクトップ開発」のビルドツールに含まれる。無いとビルドが失敗する)。FFmpeg は上と同じく別に入れる。Rust の版はルートの `rust-toolchain.toml`(1.94.0)で固定してあり、rustup が自動で取ってくる。
-
-```
-git clone https://github.com/megaDenryu/ClipViewer
-cd ClipViewer
-cargo xtask run         # 開発のビルドで起動する
-cargo xtask installer   # インストーラーを組み立てる(Inno Setup 6 と cargo-about が要る: winget install JRSoftware.InnoSetup と cargo install cargo-about --locked --features cli)
-```
+- 動作環境: Windows 10 または Windows 11 の x64(64ビット)版。ClipViewer とは別に FFmpeg が要る(入れ方は説明書の2.3節)。
+- 入手先: [Releases](https://github.com/megaDenryu/ClipViewer/releases) の `ClipViewer-<版>-setup.exe`。
 
 ## 開発する人へ
 
@@ -83,6 +20,23 @@ cargo xtask installer   # インストーラーを組み立てる(Inno Setup 6 �
 ブラウザ版(TypeScript + SengenUI)から Rust + egui(SengenEgui)への移植の途中である。移植の動機は2つある。
 (1) ブラウザではローカルの動画ファイルの扱いが不便である。
 (2) 短い区間の繰り返しがブラウザの `<video>` のシーク性能に依存し、継ぎ目で詰まる。
+
+### ソースからビルドする
+
+Rust(rustup)と Windows SDK を入れ、リポジトリを取得してルートで次を実行する。Windows SDK は、実行ファイルへアイコンを埋め込む rc.exe のために要る(Visual Studio の「C++ によるデスクトップ開発」のビルドツールに含まれる。無いとビルドが失敗する)。FFmpeg は別に入れる(`_doc/使い方.md` 2.3節)。Rust の版はルートの `rust-toolchain.toml`(1.94.0)で固定してあり、rustup が自動で取ってくる。
+
+```
+git clone https://github.com/megaDenryu/ClipViewer
+cd ClipViewer
+cargo xtask run         # 開発のビルドで起動する
+cargo xtask installer   # インストーラーを組み立てる(Inno Setup 6 と cargo-about が要る: winget install JRSoftware.InnoSetup と cargo install cargo-about --locked --features cli)
+```
+
+### 確かめた FFmpeg の版
+
+ClipViewer の動作を確かめた FFmpeg の版は、4.4 系(4.4.1)と 9.0 系(9.0.2。gyan.dev の essentials)である。今から入れるなら 9.0 系でよい。
+GitHub Actions の検証列は choco で 9.0.2 に固定して入れる(`.github/workflows/release.yml`)。版を上げるときは、その版で `cargo xtask verify` を通してから
+release.yml の版と、この節と、`_doc/使い方.md` 2.3節の版を一緒に直す。
 
 ### 移植の段階
 
@@ -159,8 +113,7 @@ CLIPVIEWER_FFMPEG_DIR='C:\ffmpeg\bin' cargo xtask run          # Git Bash。そ�
 $env:CLIPVIEWER_FFMPEG_DIR='C:\ffmpeg\bin'; cargo xtask run    # PowerShell
 ```
 
-FFmpeg が見つからないときは、画面の上部にその理由と手順が出る。ffmpeg.exe と ffprobe.exe のあるフォルダを入力して
-「保存して探し直す」を押すと、見つかった場合だけ `%APPDATA%\ClipViewer\settings.json` に保存され、次の起動から使われる。
+FFmpeg が見つからないときに画面で置き場所を指定する手順と、FFmpeg を探す順は、`_doc/使い方.md` 2.3節に書いてある。
 
 ### インストーラーとリリース
 
@@ -207,6 +160,7 @@ SengenEgui は開発機と同じく、CI でも GitHub から Cargo.lock の rev
 | 文書 | 内容 |
 |---|---|
 | [CLAUDE.md](CLAUDE.md) | このリポジトリ固有のコーディングルール |
+| [_doc/使い方.md](_doc/使い方.md) | 利用者向けの使い方の説明書。オーナーが承認した後は、利用者から見た振る舞いの正本になる(承認までは草案。扱いの規則は CLAUDE.md の「利用者向けの説明書」) |
 | [_doc/設計/アーキテクチャ.md](_doc/設計/アーキテクチャ.md) | 層と依存の向き、主要な設計判断、この段階でやらないこと |
 | [_doc/設計/画面.md](_doc/設計/画面.md) | `crates/clip_viewer` の内側の層、映像の供給と先読みの規則、移植元との操作の対応表、正準の一仕事 |
 | [_doc/設計/ライブラリ.md](_doc/設計/ライブラリ.md) | スタックのライブラリ(保存したスタックの一覧)の層、保存の形式と置き場所、自動保存の流れ、一覧の画面 |
