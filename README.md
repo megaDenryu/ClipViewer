@@ -39,6 +39,10 @@ ClipViewer は動画の読み込みに FFmpeg(動画と音声を変換する無�
   迷ったら、案内の「Windows builds from gyan.dev」から release builds の `ffmpeg-release-essentials.zip` を選ぶ。
   ClipViewer が使う機能(動画と音声の読み出し)は essentials の版で足りる。展開したフォルダの中の `bin` に `ffmpeg.exe` と `ffprobe.exe` がある。
 
+ClipViewer の動作を確かめた FFmpeg の版は、4.4 系(4.4.1)と 9.0 系(9.0.2。gyan.dev の essentials)である。今から入れるなら 9.0 系でよい。
+GitHub Actions の検証列は choco で 9.0.2 に固定して入れる(`.github/workflows/release.yml`)。版を上げるときは、その版で `cargo xtask verify` を通してから
+release.yml の版とこの節を一緒に直す。
+
 FFmpeg が見つからないときは、アプリの画面の上部に理由と手順が出る。`ffmpeg.exe` と `ffprobe.exe` が入ったフォルダ(展開したフォルダの中の `bin`)を
 入力して「保存して探し直す」を押すと、見つかった場合だけその場所が保存され、次の起動からも使われる。
 FFmpeg を探す順は、環境変数 `CLIPVIEWER_FFMPEG_DIR` → 画面で保存した場所 → PATH である。
