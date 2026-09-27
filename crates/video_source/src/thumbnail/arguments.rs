@@ -15,7 +15,7 @@ const JPEGの品質: u8 = 8;
 /// ffmpeg が選ぶため、コマがあるときの画像は限らないときと同じになる。
 /// 注意: 限らないと、FFmpeg 9 はコマが1つも来ないとき(時刻が動画の終わりより後ろ)に符号化器を狭い範囲の YUV で開こうとして
 /// 異常終了し、「コマが無い」と区別できなくなる。4.4 はそのときも正常に終わる。
-const 全範囲のYUVに限る: &str = "format=yuvj420p|yuvj422p|yuvj444p";
+const 全範囲のYUVに限るフィルタ: &str = "format=yuvj420p|yuvj422p|yuvj444p";
 
 /// ffmpeg へ渡す引数を並べる。撮り方の時刻に映っているコマを、区間を溜めるデコードと流し読みと同じ規則(`コマを読む位置`)で選ぶ。
 /// 読む映像の流れは、動画の情報が調べた流れを番号で指定する。1コマだけ出させる。
@@ -50,7 +50,7 @@ pub(crate) fn サムネイルの引数を並べる(
     引数.extend(["-map".into(), 動画.映像の流れ().読む流れの指定().into()]);
     引数.extend(["-an", "-sn", "-dn", "-frames:v", "1", "-vf"].map(OsString::from));
     let そろえる = 読む位置.コマをそろえるフィルタ();
-    引数.push(format!("{そろえる},{切り抜き},{収める},{全範囲のYUVに限る}").into());
+    引数.push(format!("{そろえる},{切り抜き},{収める},{全範囲のYUVに限るフィルタ}").into());
     引数.extend(["-q:v".into(), JPEGの品質.to_string().into()]);
     引数.extend(["-f", "image2pipe", "-c:v", "mjpeg", "-"].map(OsString::from));
     引数
