@@ -39,6 +39,8 @@ pub fn 色を並べた動画を作る(名前: &str) -> 正規化した動画パ�
 
 /// ffprobe でキーフレームの表示時刻を並べる。ffprobe が失敗したら、試験の前提ではなく ffprobe の失敗として落とす。
 /// `pkt_pts_time` は FFmpeg 5 以降の ffprobe で出ないため、`best_effort_timestamp_time` を使う。
+/// 出力は1行に値だけを書く形(`default=nw=1:nk=1`)にする。csv の形は版で行の形が変わる(9.0 は行末にカンマを足し、
+/// 4.4 は空の行を挟む)ためである。
 fn キーフレームの時刻(パス: &正規化した動画パス) -> Vec<String> {
     let 引数 = [
         "-v",
@@ -54,7 +56,7 @@ fn キーフレームの時刻(パス: &正規化した動画パス) -> Vec<Stri
             "-show_entries",
             "frame=best_effort_timestamp_time",
             "-of",
-            "csv=p=0",
+            "default=nw=1:nk=1",
         ])
         .arg(パス.文字列())
         .output()
