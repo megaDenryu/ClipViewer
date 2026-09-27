@@ -1,4 +1,4 @@
-//! xtaskのエントリポイント。このリポジトリのツールの唯一の入口である。
+//! xtaskのエントリポイント。このリポジトリのツールは、すべてこの xtask から実行する。
 
 mod audio_device;
 mod command;

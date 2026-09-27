@@ -20,7 +20,7 @@ ClipViewer は、1本の動画から切り出した短い区間(クリップ)を
 
 - **unsafe は全クレートで全面禁止**(`[workspace.lints.rust] unsafe_code = "forbid"`)。FFmpeg はライブラリとして
   リンクせず外部プロセスとして呼ぶため、unsafe を要する境界が無い
-- **ツールの唯一の入口は `cargo xtask`**(実行場所はリポジトリのルート。引数なしで全コマンドの一覧を表示する)。アプリの起動は `cargo xtask run` である。
+- **ツールはすべて `cargo xtask` から実行する**(実行場所はリポジトリのルート。引数なしで全コマンドの一覧を表示する)。アプリの起動は `cargo xtask run` である。
   ビルド・実行・検証のツールはすべて xtask クレートへ登録する。シェルスクリプトを散らさない。登録なきツール作成禁止
 - **検証列は `cargo xtask verify`**(`cargo fmt --check` → `cargo clippy --workspace --all-targets -- -D warnings`
   → `cargo test --workspace` → FFmpeg の結合試験 → 音声出力装置の確認)。作業の区切りごとに実行し、全通過させてからコミットする。

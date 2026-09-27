@@ -1,4 +1,4 @@
-# ツールの唯一の入口 cargo xtask のエイリアス。
+# このリポジトリのツールはすべて cargo xtask から実行する。その cargo xtask のエイリアス。
 # 注意: SengenEgui の差し替え(patch)をここにもリポジトリの上のフォルダにも書かない。手元の SengenEgui で試すときは cargo xtask local-sengen を使う
 [alias]
 xtask = "run --package xtask --"
