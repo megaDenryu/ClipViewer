@@ -20,5 +20,5 @@ pub(crate) use app_settings::{
 };
 pub(crate) use export_name::設定ファイルの既定の名前;
 pub(crate) use ffmpeg_place::FFmpegの置き場所の候補;
-pub(crate) use stack_file::{ファイルの窓口, 設定ファイルのパス};
+pub(crate) use stack_file::{ファイル入出力係, 設定ファイルのパス};
 pub(crate) use thumbnail_place::サムネイルのキャッシュを決める;

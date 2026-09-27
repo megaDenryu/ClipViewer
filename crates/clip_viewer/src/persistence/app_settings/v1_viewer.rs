@@ -10,7 +10,7 @@ use super::settings::覚えた見る側の設定;
 use super::v1_notation::{
     アスペクト比の表記, 表示サイズの表記, 表記から読む, 表記にする
 };
-use super::v1_window::第1版の窓の大きさ;
+use super::v1_window::第1版のウインドウの大きさ;
 use crate::viewer_settings::{
     つまみの範囲へ収めた速度, 左右の向き, 見る側の設定
 };
@@ -20,7 +20,7 @@ use crate::viewer_settings::{
 #[serde(rename_all = "camelCase")]
 pub(super) struct 第1版の見る側の設定 {
     #[serde(default, skip_serializing_if = "Option::is_none")]
-    window_size: Option<第1版の窓の大きさ>,
+    window_size: Option<第1版のウインドウの大きさ>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     window_maximized: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
@@ -52,10 +52,11 @@ impl 第1版の見る側の設定 {
         } = self;
         let 既定 = 見る側の設定::既定;
         覚えた見る側の設定::覚えている(見る側の設定 {
-            窓: 第1版の窓の大きさ::窓の記憶へ変換する(
-                window_size,
-                window_maximized,
-            ),
+            ウインドウ:
+                第1版のウインドウの大きさ::ウインドウの記憶へ変換する(
+                    window_size,
+                    window_maximized,
+                ),
             音量: volume.map_or(既定.音量, 音量::範囲へ収めて作る),
             速度: playback_speed
                 .and_then(つまみの範囲へ収めた速度)
@@ -82,7 +83,9 @@ impl 第1版の見る側の設定 {
             覚えた見る側の設定::覚えている(設定) => 設定,
         };
         let (window_size, window_maximized) =
-            第1版の窓の大きさ::窓の記憶から作る(設定.窓);
+            第1版のウインドウの大きさ::ウインドウの記憶から作る(
+                設定.ウインドウ,
+            );
         Self {
             window_size: Some(window_size),
             window_maximized: Some(window_maximized),

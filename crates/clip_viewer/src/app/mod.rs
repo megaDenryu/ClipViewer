@@ -27,12 +27,12 @@ mod settings_watch_tests;
 #[cfg(test)]
 mod viewer_settings_save_tests;
 
-pub(crate) use close::窓への指示;
+pub(crate) use close::ウインドウへの指示;
 pub(crate) use environment::起動時の環境;
 pub(crate) use launch_plan::起動の手順;
 pub(crate) use launch_preparation::起動の決着;
 pub(crate) use launch_requests::起動の頼みの届き方;
-pub(crate) use window::窓の題名;
+pub(crate) use window::ウインドウの題名;
 
 use std::time::Instant;
 
@@ -73,7 +73,7 @@ impl クリップビューアー {
     }
 
     /// 描画の間に集めた応答を、描画の後で順に状態へ適用する。その後、主ボタンを押していないのに残った区間の帯とクロップ枠のドラッグを捨て、
-    /// 起動の受け口に届いた頼みを適用する。頼みが届いたかを返し、起動の部分はそれを窓への指示へ渡す。
+    /// 起動の受け口に届いた頼みを適用する。頼みが届いたかを返し、起動の部分はそれをウインドウへの指示へ渡す。
     pub(crate) fn 応答を適用する(
         &mut self,
         応答一覧: Vec<応答>,

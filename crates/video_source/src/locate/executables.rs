@@ -6,9 +6,9 @@ use std::process::{Command, Stdio};
 use super::error::{FFmpegが見つからないエラー, FFmpegの道具, 探した場所};
 use super::place::{FFmpegの置き場所の設定, 実行ファイルの検索パス};
 
-/// Windows でコンソールの窓を開かずに子プロセスを起動する指定(CREATE_NO_WINDOW)。
+/// Windows でコンソールのウインドウを開かずに子プロセスを起動する指定(CREATE_NO_WINDOW)。
 #[cfg(windows)]
-const 窓を開かない指定: u32 = 0x0800_0000;
+const ウインドウを開かない指定: u32 = 0x0800_0000;
 
 /// FFmpegの実行ファイルとは、見つけた ffmpeg と ffprobe の実行ファイルのパスの組のことである。
 #[derive(Debug, Clone, PartialEq, Eq)]
@@ -63,24 +63,24 @@ impl FFmpegの実行ファイル {
         &self.調査のパス
     }
 
-    /// ffmpeg を起動する命令を作る。標準入力は閉じ、Windows では窓を開かない。
+    /// ffmpeg を起動する命令を作る。標準入力は閉じ、Windows ではウインドウを開かない。
     pub(crate) fn 変換の命令(&self) -> Command {
-        窓を開かない命令(&self.変換のパス)
+        ウインドウを開かない命令(&self.変換のパス)
     }
 
-    /// ffprobe を起動する命令を作る。標準入力は閉じ、Windows では窓を開かない。
+    /// ffprobe を起動する命令を作る。標準入力は閉じ、Windows ではウインドウを開かない。
     pub(crate) fn 調査の命令(&self) -> Command {
-        窓を開かない命令(&self.調査のパス)
+        ウインドウを開かない命令(&self.調査のパス)
     }
 }
 
-fn 窓を開かない命令(実行ファイル: &Path) -> Command {
+fn ウインドウを開かない命令(実行ファイル: &Path) -> Command {
     let mut 命令 = Command::new(実行ファイル);
     命令.stdin(Stdio::null());
     #[cfg(windows)]
     {
         use std::os::windows::process::CommandExt;
-        命令.creation_flags(窓を開かない指定);
+        命令.creation_flags(ウインドウを開かない指定);
     }
     命令
 }

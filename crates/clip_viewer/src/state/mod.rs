@@ -59,7 +59,7 @@ pub(crate) use band_vocabulary::{
 pub(crate) use crop_drag::クロップ枠の掴み始め;
 pub(crate) use ffmpeg_status::{FFmpegの状況, 入力中のフォルダ};
 pub(crate) use history::{並びの出どころ, 続けて変える値, 編集の履歴};
-pub(crate) use key_list::キーの一覧の窓;
+pub(crate) use key_list::キーの一覧のダイアログ;
 pub(crate) use notice::通知;
 pub(crate) use output_settings::{出力の設定, 画面の構え};
 pub(crate) use playback::{シークの様子, 再生の状況};
@@ -68,8 +68,10 @@ pub(crate) use sound_output::音の出力の状況;
 pub(crate) use speed_steps::速度を変える向き;
 pub(crate) use video_clue::動画の手がかり;
 pub(crate) use volume::消音の様子;
-pub(crate) use window::窓の状態;
-pub(crate) use window_vocabulary::{全画面の様子, 窓の形, 窓の様子, 窓への頼み};
+pub(crate) use window::ウインドウの状態;
+pub(crate) use window_vocabulary::{
+    ウインドウの形, ウインドウの様子, ウインドウへの頼み, 全画面の様子,
+};
 
 use clip_domain::クリップスタック;
 
@@ -92,7 +94,7 @@ pub(crate) struct アプリの状態 {
     pub(crate) ffmpegの状況: FFmpegの状況,
     pub(crate) 音の出力: 音の出力の状況,
     pub(crate) ライブラリ: library::ライブラリの状態,
-    pub(crate) キーの一覧: キーの一覧の窓,
-    pub(crate) 窓: 窓の状態,
+    pub(crate) キーの一覧: キーの一覧のダイアログ,
+    pub(crate) ウインドウ: ウインドウの状態,
     pub(crate) 見る側の設定を保存するまでの時間: Option<std::time::Duration>, // 配線の保存係が毎フレーム置き、画面が描き直しの予約に使う
 }

@@ -123,7 +123,7 @@ release のビルドには `--remap-path-prefix` を渡し、実行ファイル�
 リポジトリの置き場所(`.` と `..` にする)を消す(`xtask/src/installer/release_flags.rs`)。リポジトリの1つ上のフォルダは、それが利用者のフォルダか
 `CARGO_HOME` を含むとき(リポジトリを `C:\ClipViewer` に置いたとき等)は置き換えない。置き換えると利用者の名が残るためである。
 ビルドの出力先は環境変数 `CARGO_TARGET_DIR` があればそこ、無ければ `target` である。版はワークスペースの版(ルートの `Cargo.toml`)である。
-インストーラーに入るのは `clip_viewer.exe` と `LICENSE.txt` と `THIRD-PARTY-NOTICES.html` の3つであり、FFmpeg は含めない。動画のファイルとの関連付け(「プログラムから開く」と「既定のアプリ」への登録)は `installer/file_association.iss` にあり、利用者ごとのインストールでは HKCU、全利用者向けでは HKLM に書き、アンインストールで消す。アプリのアイコン(`assets/icon/`)は、実行ファイルのリソース(`crates/clip_viewer/build.rs` が埋め込む。エクスプローラー・タスクバー・関連付けた動画のファイルの表示)と、窓の題名の帯と Alt+Tab(`main.rs` が `ClipViewer-256.png` を窓へ渡す)と、setup.exe とアプリの追加と削除の一覧に出す。
+インストーラーに入るのは `clip_viewer.exe` と `LICENSE.txt` と `THIRD-PARTY-NOTICES.html` の3つであり、FFmpeg は含めない。動画のファイルとの関連付け(「プログラムから開く」と「既定のアプリ」への登録)は `installer/file_association.iss` にあり、利用者ごとのインストールでは HKCU、全利用者向けでは HKLM に書き、アンインストールで消す。アプリのアイコン(`assets/icon/`)は、実行ファイルのリソース(`crates/clip_viewer/build.rs` が埋め込む。エクスプローラー・タスクバー・関連付けた動画のファイルの表示)と、ウインドウの題名の帯と Alt+Tab(`main.rs` が `ClipViewer-256.png` をウインドウへ渡す)と、setup.exe とアプリの追加と削除の一覧に出す。
 
 インストーラーの版の情報は、版の文字列(`AppVersion`)と、そこから先行版の印(`-beta.1` 等)を除いた数字だけの版(`NumericVersion`。
 実行ファイルの版の情報 `VersionInfoVersion` は数字とピリオドだけを受けるため)の2つを渡す。
@@ -133,7 +133,7 @@ cargo-about(`cargo install cargo-about --locked --features cli`)が、`crates/cl
 ライセンスを集め、`installer/notices/about.hbs` の雛形で書く。受け入れるライセンスは `installer/notices/about.toml` に並べてある。
 ライセンスを決められないクレートがあれば失敗する(`xtask/src/installer/notices.rs`)。installer は、長い release のビルドの前に cargo-about があるかを確かめる。
 
-release のビルドはコンソールの窓を出さない(`windows_subsystem = "windows"`)。起動の途中の失敗(窓を作れない・日本語フォントを読めない)は、
+release のビルドはコンソールのウインドウを出さない(`windows_subsystem = "windows"`)。起動の途中の失敗(ウインドウを作れない・日本語フォントを読めない)は、
 標準エラーの代わりに OS のメッセージボックスで見せる。どのスレッドの panic も `%LOCALAPPDATA%\ClipViewer\logs\crash-<日時>.log` へ書き、
 メッセージボックスで知らせる。依存のライブラリが `log` へ出す警告は同じフォルダの `warnings.log` へ書く。開発のビルド(`cargo xtask run`)はコンソールを出す。
 
@@ -172,7 +172,7 @@ SengenEgui は開発機と同じく、CI でも GitHub から Cargo.lock の rev
 | serde | clip_domain, video_source, clip_viewer | 設定ファイル(JSON)の型との対応を derive で書くため。Rust の直列化の事実上の標準である | 小さい。clip_domain で使う場所は `settings/v4.rs` の型だけであり、video_source で使う場所は ffprobe の出力の形(`probe/json_shape.rs`)だけであり、clip_viewer で使う場所はアプリの設定の読み書き(`persistence/app_settings/`。版ごとの形は `v0.rs`・`v1.rs`)と、起動の受け口の受け渡しの形(`launch/guide.rs`・`launch/wire.rs`)だけである |
 | serde_json | clip_domain, video_source, clip_viewer | ブラウザ版と同じ JSON 形式を読み書きするため。video_source では ffprobe の JSON 出力(`-of json`)を読むため。2文字字下げの出力がブラウザ版の `JSON.stringify(値, null, 2)` と揃う | 小さい。使う場所は clip_domain の `settings/` と video_source の `probe/json.rs` と clip_viewer の `persistence/app_settings/`・`launch/` だけであり、どれも公開の型(エラーを含む)に serde_json の型を出さない |
 | thiserror | clip_domain, video_source, clip_library, thumbnail_cache, clip_viewer | 型付きエラーの `Display` と `Error` の実装を derive で書くため。公開APIの型に現れない | 小さい。手書きの実装へ置き換えられる |
-| eframe | clip_viewer | 窓を作って egui を毎フレーム描く土台。SengenEgui の egui と同じマイナー版(0.32)に揃える(`cargo tree -i egui` で1つの版であることを確かめる) | 中くらい。使う場所は起動の部分(`main.rs`・`screen_shell.rs`)と、テクスチャの登録に egui の本体を渡す箇所だけである |
+| eframe | clip_viewer | ウインドウを作って egui を毎フレーム描く土台。SengenEgui の egui と同じマイナー版(0.32)に揃える(`cargo tree -i egui` で1つの版であることを確かめる) | 中くらい。使う場所は起動の部分(`main.rs`・`screen_shell.rs`)と、テクスチャの登録に egui の本体を渡す箇所だけである |
 | sengen_egui | clip_viewer | 画面を宣言的に組む。操作を応答として集めて描画の後に適用する形が、状態と画面を分ける設計(`_doc/設計/画面.md` 判断1)と一致する。git 依存を rev で固定する | 大きい。画面のコード(`view/`)の全体が依存する |
 | chrono | clip_viewer | ライブラリの一覧に更新日時をこの計算機の時間帯で出すため。標準ライブラリだけでは時間帯の差を得られない。`default-features = false` で `clock` だけを使う | 小さい。使う場所は一覧の日時の表示(`view/library/`)と、壊れた settings.json の移し先の名前(`settings.json.broken-<日時>-<プロセスの番号>`)を作るところ(`persistence/app_settings/broken_move.rs`)の2つである。ライブラリの保存の形式は協定世界時のミリ秒の整数で chrono を知らない |
 | image | clip_viewer | ライブラリの一覧のサムネイル(JPEG)を画素へ戻してテクスチャにするため。`default-features = false` で `jpeg` だけを使う。ffmpeg で1枚ずつ RGBA へ変換する方法より数百件で10倍以上速く(1枚ごとのプロセスの起動が無い)、同じ版を eframe が既に依存の木に入れているため、足す重さは jpeg の復号器だけである(`ライブラリ.md` 判断10) | 小さい。使う場所は `thumbnail_feed/pixels.rs` だけである |
