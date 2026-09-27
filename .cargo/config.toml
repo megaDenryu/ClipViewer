@@ -1,0 +1,4 @@
+# ツールの唯一の入口 cargo xtask のエイリアス。
+# 参照: SengenEgui の差し替え(patch)はリポジトリの外 C:\devs\.cargo\config.toml に置いてあり、ここには書かない
+[alias]
+xtask = "run --package xtask --"

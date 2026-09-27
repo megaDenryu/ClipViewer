@@ -1,0 +1,15 @@
+{
+  "format": "ClipViewer.settings",
+  "version": 1,
+  "ffmpegFolder": "C:\\ツール\\ffmpeg 7.1\\bin",
+  "windowSize": {
+    "width": 1440.0,
+    "height": 810.0
+  },
+  "windowMaximized": true,
+  "volume": 0.25,
+  "playbackSpeed": 0.75,
+  "mirrorHorizontally": true,
+  "aspectRatio": "crop",
+  "displaySize": "noMargin"
+}

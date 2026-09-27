@@ -1,0 +1,3 @@
+# 見本のファイルはバイト列を比べる試験に使うため、改行の変換をしない。
+settings_v1.json -text
+settings_v1_viewer.json -text

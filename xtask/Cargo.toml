@@ -1,0 +1,14 @@
+[package]
+name = "xtask"
+edition.workspace = true
+version.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+# xtask自体は標準ライブラリだけで書く。ツールの起動が重くなることを避けるため
+# 外部クレートへ依存しない(参照: rustスキル第7節)。ワークスペースの video_source にも依存しない。
+# video_source がビルドできないときにも、検証列の入口から fmt と clippy を走らせるためである。
+
+[lints]
+workspace = true

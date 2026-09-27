@@ -1,0 +1,15 @@
+[package]
+name = "audio_pcm"
+edition.workspace = true
+version.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+# 音の値の型と、音を作る側(video_source)と鳴らす側(audio_output)が受け渡す入れ物の層。
+# 処理(FFmpeg の呼び出し・出力装置)を持たず、clip_domain の時刻の型だけに依存する。参照: _doc/設計/アーキテクチャ.md 判断8
+[dependencies]
+clip_domain.workspace = true
+
+[lints]
+workspace = true

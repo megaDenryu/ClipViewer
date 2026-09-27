@@ -1,0 +1,47 @@
+[workspace]
+resolver = "3"
+members = [
+    "crates/clip_domain",
+    "crates/clip_library",
+    "crates/thumbnail_cache",
+    "crates/audio_pcm",
+    "crates/video_source",
+    "crates/audio_output",
+    "crates/clip_viewer",
+    "xtask",
+]
+
+[workspace.package]
+edition = "2024"
+version = "0.1.0"
+license = "MIT"
+# 必要な最小の Rust の版。clip_library の錠が使う File::try_lock と TryLockError が 1.89.0 で安定した(std の #[stable] 属性で確かめた)。
+# 標準ライブラリの口は clippy の incompatible_msrv が検証列で確かめる。言語の機能はこの版の処理系で組んで確かめていない
+rust-version = "1.89"
+
+# 参照: CLAUDE.md「基底規約との差分」。緩和する変更は禁止
+[workspace.lints.rust]
+unsafe_code = "forbid"
+
+[workspace.lints.clippy]
+unwrap_used = "deny"
+expect_used = "deny"
+as_conversions = "deny"
+
+# 依存はワークスペースで一元管理する。採用理由はREADMEの利用ライブラリ表へ
+[workspace.dependencies]
+clip_domain = { path = "crates/clip_domain" }
+clip_library = { path = "crates/clip_library" }
+thumbnail_cache = { path = "crates/thumbnail_cache" }
+video_source = { path = "crates/video_source" }
+audio_pcm = { path = "crates/audio_pcm" }
+audio_output = { path = "crates/audio_output" }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+thiserror = "2"
+
+# 開発ビルドでも依存クレートだけは最適化する。clip_viewer はコマが変わるたびに1コマ(1280x720 で約3.7MB)を
+# epaint の画像へ変換して GPU へ送り、最適化しない epaint ではこの変換が1フレームの時間を超えるためである。
+# ワークスペースのクレート自身は最適化しないので、デバッグのしやすさと再ビルドの速さは保たれる。
+[profile.dev.package."*"]
+opt-level = 2

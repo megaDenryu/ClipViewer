@@ -1,0 +1,37 @@
+<!--
+ClipViewer の第三者のライセンス表示の雛形(cargo-about の handlebars の雛形)。cargo xtask notices がこの雛形から
+THIRD-PARTY-NOTICES.html を作り、cargo xtask installer がインストール先へ同梱する。
+-->
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<title>ClipViewer 第三者のライセンス表示</title>
+<style>
+body { font-family: sans-serif; max-width: 860px; margin: 0 auto; padding: 16px; line-height: 1.6; }
+@media (prefers-color-scheme: dark) { body { background: #222; color: #eee; } a { color: #8cf; } }
+pre { white-space: pre-wrap; background: rgba(128, 128, 128, 0.12); padding: 8px; }
+</style>
+</head>
+<body>
+<h1>ClipViewer 第三者のライセンス表示</h1>
+<p>ClipViewer の実行ファイルには、次のオープンソースのライブラリが組み込まれている。各ライブラリの著作権表示とライセンスの本文を以下に示す。
+ClipViewer 自身のライセンスは MIT License である(<a href="https://github.com/megaDenryu/ClipViewer">https://github.com/megaDenryu/ClipViewer</a>)。</p>
+<p>実行ファイルには Rust の標準ライブラリも組み込まれている。Rust の標準ライブラリは MIT License と Apache License 2.0 の選択式で配布されている
+(<a href="https://github.com/rust-lang/rust">https://github.com/rust-lang/rust</a>)。両方の本文は下の一覧にある。</p>
+<p>FFmpeg は ClipViewer に含まれていない。利用者が別に入れた ffmpeg.exe と ffprobe.exe を外部のプロセスとして起動する。</p>
+
+<h2>ライセンスの一覧</h2>
+<ul>
+{{#each overview}}<li><a href="#{{id}}">{{name}}</a>({{count}} 個のライブラリ)</li>
+{{/each}}</ul>
+
+<h2>ライセンスの本文</h2>
+{{#each licenses}}{{#if first_of_kind}}<h3 id="{{id}}">{{name}}</h3>
+{{/if}}<p>使っているライブラリ:
+{{#each used_by}}<a href="{{#if crate.repository}}{{crate.repository}}{{else}}https://crates.io/crates/{{crate.name}}{{/if}}">{{crate.name}} {{crate.version}}</a>
+{{/each}}</p>
+<pre>{{text}}</pre>
+{{/each}}
+</body>
+</html>

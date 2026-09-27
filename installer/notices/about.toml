@@ -1,0 +1,22 @@
+# cargo-about の設定。cargo xtask notices が crates/clip_viewer の依存を対象に読む。
+# 受け入れるライセンスは、依存の木に実際に現れたものだけを並べる。新しいライセンスが現れたら、配ってよいかを確かめてから足す。
+accepted = [
+    "MIT",
+    "Apache-2.0",
+    "Apache-2.0 WITH LLVM-exception",
+    "BSD-2-Clause",
+    "BSD-3-Clause",
+    "ISC",
+    "Zlib",
+    "Unicode-3.0",
+    "BSL-1.0",
+    "OFL-1.1",
+    "Ubuntu-font-1.0",
+]
+# 配る形は Windows の x64 だけである。他の OS でだけ使う依存(wayland 等)を表示に入れない。
+targets = ["x86_64-pc-windows-msvc"]
+# ビルドのときにだけ動くもの(build.rs の依存)と試験の依存は実行ファイルに入らない。
+ignore-build-dependencies = true
+ignore-dev-dependencies = true
+# このワークスペースのクレート(publish = false)は ClipViewer 自身であり、第三者ではない。
+private = { ignore = true }

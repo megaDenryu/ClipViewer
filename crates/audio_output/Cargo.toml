@@ -1,0 +1,19 @@
+[package]
+name = "audio_output"
+edition.workspace = true
+version.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+# 音声出力装置(cpal)を開く境界と、装置が求めるたびに次の標本を作る音の再生器の層。
+# cpal への依存はこのクレートだけに閉じる。video_source(FFmpeg)を知らず、audio_pcm の型だけで音を受け取る。
+# 参照: _doc/設計/アーキテクチャ.md 判断8
+[dependencies]
+clip_domain.workspace = true
+audio_pcm.workspace = true
+cpal = "0.18"
+thiserror.workspace = true
+
+[lints]
+workspace = true

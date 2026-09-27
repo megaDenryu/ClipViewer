@@ -1,0 +1,16 @@
+[package]
+name = "thumbnail_cache"
+edition.workspace = true
+version.workspace = true
+rust-version.workspace = true
+license.workspace = true
+publish = false
+
+# ライブラリの一覧に出すサムネイルのキャッシュの読み書き。clip_domain だけを知り、画面(egui / SengenEgui)も FFmpeg も
+# スタックのライブラリ(clip_library)も知らない。参照: _doc/設計/ライブラリ.md 判断10
+[dependencies]
+clip_domain.workspace = true
+thiserror.workspace = true
+
+[lints]
+workspace = true

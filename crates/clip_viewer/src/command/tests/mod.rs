@@ -1,0 +1,60 @@
+//! 操作コマンドを状態へ適用する規則の試験。動画を開かずに、状態だけで決まる操作を確かめる。
+#![allow(clippy::expect_used)]
+
+mod band;
+mod band_grab_order;
+mod band_grab_release;
+mod band_identity;
+mod band_outside;
+mod band_position;
+mod band_rounding;
+mod clip;
+mod clip_arrange;
+mod clip_span;
+mod crop;
+mod edit_boundary_and_delete;
+mod edit_undo;
+mod file_drop;
+mod fullscreen;
+mod key_support;
+mod keys;
+mod keys_focus;
+mod keys_playback;
+mod keys_window;
+mod library_autosave;
+mod library_check;
+mod library_close;
+mod library_discard;
+mod library_edit;
+mod library_failure;
+mod library_open;
+mod library_read_only;
+mod library_retry;
+mod library_support;
+mod library_thumbnail;
+mod library_thumbnail_list;
+mod library_thumbnail_texture;
+mod library_visible_rows;
+mod playback;
+mod playback_keys_apply;
+mod previous_clip;
+mod reopen_registered_stack;
+mod reopen_same_video;
+mod seek_drag_view_change;
+mod single_play;
+mod support;
+mod thumbnail_check;
+mod thumbnail_filter;
+mod thumbnail_place;
+mod unsaved_check;
+mod with_ffmpeg_edit;
+mod with_ffmpeg_library;
+mod with_ffmpeg_open_note;
+mod with_ffmpeg_thumbnail;
+mod with_ffmpeg_thumbnail_time;
+mod with_ffmpeg_unsaved;
+mod with_ffmpeg_video;
+
+use support::{
+    クリップを並べた状態, クリップを作る, 区間, 編集する, 識別子, 選択中の名前
+};

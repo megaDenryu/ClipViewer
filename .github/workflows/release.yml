@@ -1,0 +1,105 @@
+# Windows で検証列を流し、インストーラーを組み立てる。入口は2つある。
+# (1) v で始まるタグ(例: v0.1.0)の push: 検証列 → インストーラー → GitHub Releases に置く。タグの版はワークスペースの版と一致しなければ止める。
+# (2) 手動の実行(workflow_dispatch): 検証列 → インストーラーまで流し、setup.exe を実行の成果物(artifact)として残す。タグを選んでも Releases には置かない。
+# SengenEgui は git 依存(rev 固定)であり、CI では開発機の C:\devs\.cargo\config.toml の差し替えが効かないため GitHub から取る。
+# Cargo.lock はリポジトリのものをそのまま使う(cargo fetch --locked で、書き換えが要るなら止める)。検証した依存と配る依存を一致させるためである。
+# FFmpeg は choco で入れて結合試験まで流す。音声出力装置は CI の環境に無いため、検証列はその工程を「実行しなかった」と表示して残りを通す。
+# 注意: 外部のアクションはコミットの SHA で固定する。タグは付け替えられるためである。上げるときは SHA とコメントの版を一緒に直す。
+name: release
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+
+permissions: {}
+
+jobs:
+  build:
+    runs-on: windows-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      # 手動の実行でタグを選んだときも照らし合わせる。この工程は読むだけで何も置き換えないためである。
+      - name: タグの版とワークスペースの版を照らし合わせる
+        if: startsWith(github.ref, 'refs/tags/v')
+        shell: pwsh
+        env:
+          TAG_NAME: ${{ github.ref_name }}
+        run: |
+          $match = Select-String -Path Cargo.toml -Pattern '^version = "(.+)"$' | Select-Object -First 1
+          if (-not $match) { throw "Cargo.toml に version の行が無い" }
+          $workspaceVersion = $match.Matches[0].Groups[1].Value
+          if ("v$workspaceVersion" -ne $env:TAG_NAME) {
+            throw "タグ $env:TAG_NAME がワークスペースの版 v$workspaceVersion と一致しない"
+          }
+
+      - uses: dtolnay/rust-toolchain@6bed0761d98439e5a578e2877258200ad565ba87 # stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+
+      - uses: Swatinem/rust-cache@6323deb102c322ba6fcbdcafc7e3dddab59af2b6 # v2.9.2
+
+      - name: Cargo.lock のとおりに依存を取る
+        run: cargo fetch --locked
+
+      - name: FFmpeg を入れる
+        shell: pwsh
+        run: |
+          choco install ffmpeg -y --no-progress
+          $folder = "$env:ProgramData\chocolatey\lib\ffmpeg\tools\ffmpeg\bin"
+          foreach ($name in "ffmpeg.exe", "ffprobe.exe") {
+            if (-not (Test-Path "$folder\$name")) { throw "$folder に $name が無い" }
+          }
+          "CLIPVIEWER_FFMPEG_DIR=$folder" >> $env:GITHUB_ENV
+
+      - name: 検証列
+        run: cargo xtask verify
+
+      - name: Inno Setup 6 を用意する
+        shell: pwsh
+        run: |
+          if (-not (Test-Path "${env:ProgramFiles(x86)}\Inno Setup 6\ISCC.exe")) {
+            choco install innosetup -y --no-progress
+          }
+
+      - uses: taiki-e/install-action@4cef1412cce204788f482e778a0b9187f9626a29 # v2.87.21
+        with:
+          tool: cargo-about@0.9.2
+
+      - name: インストーラーを組み立てる
+        run: cargo xtask installer
+
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: installer
+          path: |
+            target/installer/ClipViewer-*-setup.exe
+            target/installer/THIRD-PARTY-NOTICES.html
+          if-no-files-found: error
+
+  release:
+    needs: build
+    # 手動の実行でタグを選んでも Releases に置かない。公開済みの Releases の setup.exe を置き換えないためである。
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: installer
+          path: installer
+
+      - name: Releases に置く
+        uses: softprops/action-gh-release@efb35369e0ad2afab669f228072c1b0d510eae64 # v3.0.3
+        with:
+          files: installer/ClipViewer-*-setup.exe
+          fail_on_unmatched_files: true
+          generate_release_notes: true

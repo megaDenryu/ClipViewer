@@ -1,0 +1,39 @@
+{
+  "application": "ModifierVideoStack",
+  "version": "4.0",
+  "exportDate": "2026-09-01T12:34:56.789Z",
+  "expectedVideoName": "sample.mp4",
+  "expectedVideoPath": "C:\\videos\\sample.mp4",
+  "modifiers": [
+    {
+      "id": "mod-1725000000000-1234",
+      "name": "Clip Mod 1",
+      "active": true,
+      "start": 1.5,
+      "end": 3,
+      "repeat": 3,
+      "crop": {
+        "x": 12.5,
+        "y": 0,
+        "w": 50,
+        "h": 75.25
+      },
+      "triggerEvent": "Enter"
+    },
+    {
+      "id": "mod-1725000000001-99",
+      "name": "Clip Mod 2",
+      "active": false,
+      "start": 0,
+      "end": 5,
+      "repeat": "infinite",
+      "crop": {
+        "x": 0,
+        "y": 0,
+        "w": 100,
+        "h": 100
+      },
+      "triggerEvent": "Click"
+    }
+  ]
+}
