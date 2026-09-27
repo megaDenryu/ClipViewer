@@ -15,6 +15,8 @@ mod card_measure;
 mod card_width_tests;
 #[cfg(test)]
 mod header_row_tests;
+#[cfg(test)]
+mod sidebar_width_tests;
 
 use clip_domain::{クリップ, クリップ識別子};
 use sengen_egui::{
