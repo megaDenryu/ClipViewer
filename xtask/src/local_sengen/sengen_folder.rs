@@ -30,7 +30,7 @@ impl 手元のSengenEguiのフォルダ {
             .map_err(|原因| format!("{} を絶対パスにできない: {原因}", 候補.display()))?;
         if !フォルダ.join("Cargo.toml").is_file() {
             return Err(format!(
-                "手元の SengenEgui が見つからない({} に Cargo.toml が無い)。SengenEgui をリポジトリの1つ上へ置くか、環境変数 {フォルダを指す環境変数} にフォルダを渡す。push 済みの SengenEgui を使うなら、この入口を使わず crates/clip_viewer/Cargo.toml の rev を上げる",
+                "手元の SengenEgui が見つからない({} に Cargo.toml が無い)。SengenEgui をリポジトリの1つ上へ置くか、環境変数 {フォルダを指す環境変数} にフォルダを渡す。push 済みの SengenEgui を使うなら、このコマンドを使わず crates/clip_viewer/Cargo.toml の rev を上げる",
                 フォルダ.display()
             ));
         }

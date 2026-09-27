@@ -1,5 +1,5 @@
-//! `local-sengen` コマンド: push する前の手元の SengenEgui で ClipViewer を試すときだけ使う入口である。
-//! 普段は SengenEgui を push してから crates/clip_viewer/Cargo.toml の sengen_egui の rev を上げ、この入口を使わない。
+//! `local-sengen` コマンド: push する前の手元の SengenEgui で ClipViewer を試すときだけ使うコマンドである。
+//! 普段は SengenEgui を push してから crates/clip_viewer/Cargo.toml の sengen_egui の rev を上げ、このコマンドを使わない。
 //! cargo の `--config` で、その実行の間だけ SengenEgui の git 依存を手元のフォルダへ差し替える。差し替えた cargo は
 //! Cargo.lock の sengen_egui から source の行を消すため、見張り役が実行の前の中身を覚え、終わったら書き戻す(`guard.rs`)。
 

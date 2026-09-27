@@ -33,8 +33,8 @@ impl 依存の固定ファイルの見張り {
         let mut 見張り役 = 命令
             .spawn()
             .map_err(|原因| format!("Cargo.lock の見張り役を起こせない: {原因}"))?;
-        let 口 = (見張り役.stdin.take(), 見張り役.stdout.take());
-        let (Some(合図の口), Some(知らせの口)) = 口 else {
+        let 見張り役の標準入出力 = (見張り役.stdin.take(), 見張り役.stdout.take());
+        let (Some(合図の口), Some(知らせの口)) = 見張り役の標準入出力 else {
             return Err("見張り役の標準入出力をつなげない".to_string());
         };
         let mut 知らせ = String::new();
