@@ -10,6 +10,8 @@ mod size;
 mod theater_controls;
 
 #[cfg(test)]
+mod placeholder_tests;
+#[cfg(test)]
 mod screen_tests;
 #[cfg(test)]
 mod size_tests;
