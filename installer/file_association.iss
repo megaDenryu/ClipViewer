@@ -7,6 +7,7 @@
 
 #define ProgId "ClipViewer.Video"
 #define OpenCommand '""{app}\clip_viewer.exe"" ""%1""'
+; 注意: この一覧は crates/clip_viewer/src/persistence/video_extension.rs の一覧(「動画を開く」のファイルダイアログが出す種類)と同じに保つ。試験が食い違いを見つける。
 ; .ts は MPEG-2 の転送用の形式でもあるが、TypeScript のソースの拡張子と重なるため登録しない。
 #dim VideoExtensions[12] {".mp4", ".m4v", ".mkv", ".webm", ".mov", ".avi", ".wmv", ".flv", ".mpg", ".mpeg", ".m2ts", ".mts"}
 

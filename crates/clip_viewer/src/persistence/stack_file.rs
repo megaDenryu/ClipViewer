@@ -10,6 +10,7 @@ use clip_domain::{
 };
 
 use super::export_name::設定ファイルの既定の名前;
+use super::video_extension::動画として開ける拡張子;
 
 /// 設定ファイルのパスとは、利用者がダイアログで選んだ設定ファイル(JSON)のパスのことである。
 #[derive(Debug, Clone)]
@@ -28,9 +29,6 @@ impl 設定ファイルのパス {
             .map_or_else(String::new, |幹| 幹.to_string_lossy().into_owned())
     }
 }
-
-/// 動画として選べるファイルの拡張子。FFmpeg が読める主な形式である。
-const 動画の拡張子: [&str; 8] = ["mp4", "mov", "mkv", "webm", "avi", "m4v", "wmv", "flv"];
 
 /// ファイルの窓口とは、ファイルダイアログとファイルの読み書きの境界であり、最後にダイアログで使ったフォルダを覚える。
 #[derive(Debug, Default)]
@@ -64,7 +62,7 @@ impl ファイルの窓口 {
     pub(crate) fn 動画を選ぶ(&mut self) -> Option<入力された動画パス> {
         let パス = self
             .ダイアログを作る("動画を開く")
-            .add_filter("動画", &動画の拡張子)
+            .add_filter("動画", &動画として開ける拡張子)
             .pick_file()?;
         self.フォルダを覚える(&パス);
         Some(入力された動画パス::作成する(

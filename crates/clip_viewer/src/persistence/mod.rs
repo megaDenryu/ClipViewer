@@ -8,9 +8,12 @@ mod launch_place;
 mod library_place;
 mod stack_file;
 mod thumbnail_place;
+mod video_extension;
 
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod video_extension_tests;
 
 pub(crate) use app_settings::{
     アプリの設定の保存の結果, アプリの設定の保管場所
