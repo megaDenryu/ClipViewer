@@ -16,7 +16,7 @@ video_source.workspace = true
 audio_pcm.workspace = true
 audio_output.workspace = true
 eframe = "0.32"
-sengen_egui = { git = "https://github.com/megaDenryu/SengenEgui", rev = "6b067b2" }
+sengen_egui = { git = "https://github.com/megaDenryu/SengenEgui", rev = "009ef7c" }
 rfd = "0.15"
 chrono = { version = "0.4", default-features = false, features = ["clock"] }
 log = "0.4"
