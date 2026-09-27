@@ -7,7 +7,7 @@ use clip_domain::入力された動画パス;
 use super::library_check::終えるまで待って当てる;
 use super::library_support::試験のライブラリ;
 
-use crate::command::{ファイルの操作, 応答, 落としたファイル};
+use crate::command::{ファイルの操作, 一度に落としたファイル, 応答};
 use crate::state::library::{
     ライブラリのダイアログ, 並びを捨てる理由, 最後に読んだ一覧, 開いたときの添え書き,
     関係を終える操作,
@@ -25,10 +25,10 @@ const 設定ファイルの本文: &str = r#"{"application":"ModifierVideoStack"
 fn 設定ファイルを置く(
     試験: &試験のライブラリ,
     ファイル名: &str,
-) -> 落としたファイル {
+) -> 一度に落としたファイル {
     let パス = 試験.一時フォルダ.join(ファイル名);
     std::fs::write(&パス, 設定ファイルの本文).expect("置ける");
-    落としたファイル::作成する(パス)
+    一度に落としたファイル::作成する(vec![パス])
 }
 
 #[test]
