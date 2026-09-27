@@ -11,6 +11,7 @@ mod band_rounding;
 mod clip;
 mod clip_arrange;
 mod clip_span;
+mod clip_span_shrink;
 mod crop;
 mod edit_boundary_and_delete;
 mod edit_undo;
