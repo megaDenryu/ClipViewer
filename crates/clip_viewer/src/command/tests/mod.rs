@@ -50,6 +50,7 @@ mod unsaved_check;
 mod with_ffmpeg_edit;
 mod with_ffmpeg_library;
 mod with_ffmpeg_open_note;
+mod with_ffmpeg_playback;
 mod with_ffmpeg_thumbnail;
 mod with_ffmpeg_thumbnail_time;
 mod with_ffmpeg_unsaved;

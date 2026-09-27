@@ -24,7 +24,7 @@ ClipViewer は、1本の動画から切り出した短い区間(クリップ)を
   ビルド・実行・検証のツールはすべて xtask クレートへ登録する。シェルスクリプトを散らさない。登録なきツール作成禁止
 - **検証列は `cargo xtask verify`**(`cargo fmt --check` → `cargo clippy --workspace --all-targets -- -D warnings`
   → `cargo test --workspace` → FFmpeg の結合試験 → 音声出力装置の確認)。作業の区切りごとに実行し、全通過させてからコミットする。
-  FFmpeg の結合試験(`crates/video_source/tests/with_ffmpeg/` と `crates/clip_viewer` の `video_feed/with_ffmpeg_tests.rs` と `state/with_ffmpeg_sound_tests.rs` と `state/with_ffmpeg_band_tests.rs` と `command/tests/with_ffmpeg_library.rs` と `command/tests/with_ffmpeg_thumbnail.rs` と `command/tests/with_ffmpeg_thumbnail_time.rs` と `command/tests/with_ffmpeg_edit.rs` と `command/tests/with_ffmpeg_unsaved.rs` と `command/tests/with_ffmpeg_open_note.rs`)は `#[ignore]` にしてあり、verify が環境変数
+  FFmpeg の結合試験(`crates/video_source/tests/with_ffmpeg/` と `crates/clip_viewer` の `video_feed/with_ffmpeg_tests.rs` と `state/with_ffmpeg_sound_tests.rs` と `state/with_ffmpeg_band_tests.rs` と `command/tests/with_ffmpeg_library.rs` と `command/tests/with_ffmpeg_thumbnail.rs` と `command/tests/with_ffmpeg_thumbnail_time.rs` と `command/tests/with_ffmpeg_edit.rs` と `command/tests/with_ffmpeg_unsaved.rs` と `command/tests/with_ffmpeg_open_note.rs` と `command/tests/with_ffmpeg_playback.rs`)は `#[ignore]` にしてあり、verify が環境変数
   `CLIPVIEWER_FFMPEG_DIR` → PATH の順に ffmpeg と ffprobe を探して、見つかったときだけ `--ignored` で流す。見つからなければ
   「実行しなかった」と表示して残りを続け、最終行が「検証列は FFmpeg の結合試験(FFmpeg が見つからない)を除いて通過した」になる。音声出力装置が無いときも同じく「音声出力装置の確認(音声出力装置が無い)を除いて」と並ぶ。除いた工程は未検証である(FFmpeg が PATH に無い開発機では、
   `CLIPVIEWER_FFMPEG_DIR` に ffmpeg.exe と ffprobe.exe のあるフォルダを渡す。例: `CLIPVIEWER_FFMPEG_DIR=C:\ffmpeg\bin`)
