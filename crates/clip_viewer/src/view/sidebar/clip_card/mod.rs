@@ -9,6 +9,9 @@ mod band_response;
 mod repeat;
 mod span;
 
+#[cfg(test)]
+mod span_tests;
+
 use clip_domain::{クリップ, クリップ識別子};
 use sengen_egui::{
     チェックボックス, ノード, ボタン, 一行テキスト入力, 付け足せる, 子, 横並び, 画素, 縦積み,
