@@ -40,8 +40,10 @@ ClipViewer は、1本の動画から切り出した短い区間(クリップ)を
 - **`thumbnail_cache`(一覧のサムネイルのキャッシュの読み書き)が依存してよいのは `clip_domain` と thiserror だけである。** egui / SengenEgui / FFmpeg / `clip_library` を知らない。
   試験は一時フォルダを置き場所として渡し、`%LOCALAPPDATA%` の本物のフォルダを使わない(`_doc/設計/ライブラリ.md` 判断10)
 - **音声のスレッド(cpal が呼ぶ関数)で、メモリの確保・ファイル・FFmpeg の起動をしない。** `Arc` の最後の参照もそこで捨てない(`_doc/設計/アーキテクチャ.md` 判断8-4)
-- SengenEgui は `C:\devs\SengenEgui` にあり、差し替え(patch)は親ディレクトリの `C:\devs\.cargo\config.toml` に書いてある。
-  リポジトリ内の `.cargo/config.toml` に SengenEgui の patch を書かない。SengenEgui に口が足りないときは SengenEgui へ足し、
+- SengenEgui は GitHub の git 依存として決まった rev で取り込む(`crates/clip_viewer/Cargo.toml`)。SengenEgui を直したときは、SengenEgui を push してから
+  rev を上げる。push の前の手元の SengenEgui(リポジトリの1つ上の `SengenEgui`)で試すときだけ `cargo xtask local-sengen <cargo の引数>` を使う。
+  このコマンドは cargo の `--config` でその実行の間だけ差し替え、終わったら Cargo.lock を実行の前の中身に戻す。リポジトリ内やその上のフォルダの
+  `.cargo/config.toml` に SengenEgui の差し替え(patch)を書かない(Cargo.lock が source の行の無い形に書き換わり、CI の `cargo fetch --locked` が止まる)。SengenEgui に口が足りないときは SengenEgui へ足し、
   利用側に素の egui 呼び出しを書いて回避しない
 - 依存クレートの追加時は README の利用ライブラリ表へ採用理由を追記する
 - lint は `unwrap_used` / `expect_used` / `as_conversions` を deny にしている。試験ファイルに限り、ファイル先頭で

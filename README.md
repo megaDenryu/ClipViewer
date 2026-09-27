@@ -104,8 +104,30 @@ cargo xtask verify   # fmt --check → clippy -D warnings → test → FFmpeg �
 cargo xtask run      # アプリを開発のビルドで起動する
 cargo xtask installer  # アプリを release でビルドし、第三者のライセンス表示を作り、Windows のインストーラーを組み立てる
 cargo xtask notices    # 第三者のライセンス表示(THIRD-PARTY-NOTICES.html)だけを作る
-cargo xtask lock-without-patch  # SengenEgui の差し替えを外して Cargo.lock を作り直す(リリースの前に使う)
+cargo xtask local-sengen <cargo の引数>  # push する前の手元の SengenEgui で試すときだけ使う(下の「SengenEgui を直したとき」)
 ```
+
+### SengenEgui を直したとき
+
+`crates/clip_viewer` は SengenEgui を GitHub の git 依存として、決まった rev で取り込む(`crates/clip_viewer/Cargo.toml`)。
+Cargo.lock はその rev を指す形のままコミットする。SengenEgui を直したときの普段の流れは、SengenEgui を push してから
+`crates/clip_viewer/Cargo.toml` の `rev` を上げ、`cargo xtask verify` を通して、Cargo.toml と Cargo.lock を一緒にコミットすることである。
+
+**push の前の手元の SengenEgui で試すときだけ** `cargo xtask local-sengen <cargo の引数>` を使う(実行場所はリポジトリのルート)。
+普段は使わず、rev を上げる。このコマンドは cargo の `--config` で、その実行の間だけ `sengen_egui` を手元のフォルダへ差し替えて cargo を実行する。
+手元のフォルダの既定はリポジトリの1つ上の `SengenEgui` であり、環境変数 `CLIPVIEWER_SENGEN_EGUI_DIR` で変えられる。フォルダが無ければ理由を示して止まる。
+
+```
+cargo xtask local-sengen run --package clip_viewer    # 手元の SengenEgui でアプリを起動する
+cargo xtask local-sengen test --workspace             # 手元の SengenEgui で試験を流す
+cargo xtask local-sengen clippy --workspace --all-targets -- -D warnings
+```
+
+差し替えた cargo は Cargo.lock の `sengen_egui` から source の行を消すため、このコマンドは実行の前の Cargo.lock の中身を別のプロセス(見張り役)に覚えさせ、
+cargo が終わったら書き戻す。失敗して終わったときと、Ctrl+C で止めたときも書き戻す(`xtask/src/local_sengen/guard.rs`)。
+`cargo xtask verify` のような xtask のコマンドは中で別の cargo を起こし、そこへ差し替えが届かないため、`local-sengen` の引数には渡せない(渡すと理由を示して止まる)。
+リポジトリの中の `.cargo/config.toml` や、リポジトリの上のフォルダの `.cargo/config.toml` に SengenEgui の差し替え(patch)を書かない。
+書くと、その下で動かしたすべての cargo が Cargo.lock を書き換え、CI の `cargo fetch --locked` が止まる形の Cargo.lock をコミットしうるためである。
 
 `crates/video_source` の結合試験(`tests/with_ffmpeg/`)は FFmpeg を実際に起動するため、`#[ignore]` にしてあり
 `cargo test --workspace` では流れない。`cargo xtask verify` は最後の工程で、環境変数 `CLIPVIEWER_FFMPEG_DIR` → PATH の順に
@@ -164,28 +186,19 @@ release のビルドはコンソールの窓を出さない(`windows_subsystem =
 
 リリースは次の順に行う(実行場所はリポジトリのルート)。
 
-1. ワークスペースの版(ルートの `Cargo.toml`)を上げてコミットする。
-2. `cargo xtask verify` を通す。
-3. 作業ツリーが綺麗な状態(`git status` に何も出ない状態)で `cargo xtask lock-without-patch` を流し、Cargo.lock を作り直す。
-   コミットしていない変更があると、このコマンドは理由を示して止まる(複製して確かめたものと、コミットするものを一致させるため)。開発機では SengenEgui を `C:\devs\.cargo\config.toml` の
-   差し替え(patch)でローカルのフォルダへ向けており、その状態で cargo を動かすと Cargo.lock の `sengen_egui` が source の行の無い形になる。
-   CI は git の rev から依存を解くため、そのままでは検証した依存と配る依存が一致しない。このコマンドはリポジトリを `%TEMP%` へ複製し、
-   差し替えの効かない場所で `cargo fetch` を動かして `sengen_egui` を git から解き直し、`cargo check --workspace --all-targets --locked` で
-   ピン留めした rev で組めることを確かめ、source の行を除けば元と行の並びがまったく同じであることを確かめてから取り込む。
-4. すぐに `git diff Cargo.lock` で `sengen_egui` の `source = "git+https://github.com/megaDenryu/SengenEgui?rev=...` の行が増えていることを確かめ、
-   `git add Cargo.lock` で Cargo.lock だけを足してコミットする。取り込んでからコミットするまでの間に、開発機で cargo を動かしてはならない。
-   Cargo.lock はまた差し替えの形へ戻る。VS Code の rust-analyzer も裏で cargo を動かすため、開いていると同じように戻しうる。
-   戻っていたら 3 からやり直す。
-5. `v<版>` のタグ(例: `v0.1.0`)を push する。`.github/workflows/release.yml` が Windows で `cargo fetch --locked`(Cargo.lock の書き換えが要るなら止める)→
+1. ワークスペースの版(ルートの `Cargo.toml`)を上げ、`cargo xtask verify` を通す。版を上げると Cargo.lock のワークスペースのクレートの版も変わるため、
+   Cargo.toml と Cargo.lock を一緒にコミットする。
+2. `git status` に何も出ないことを確かめる。Cargo.lock はリポジトリのものがそのまま CI で使われ、書き換えが要る形なら CI が止まる。
+3. `v<版>` のタグ(例: `v0.1.0`)を push する。`.github/workflows/release.yml` が Windows で `cargo fetch --locked`(Cargo.lock の書き換えが要るなら止める)→
    FFmpeg を choco で入れる → `cargo xtask verify` → `cargo xtask installer` を流し、setup.exe を GitHub Releases に置く。タグと版が一致しなければ止まる。
 
 リリースの前に CI で検証とインストーラーの組み立てだけを確かめたいときは、GitHub の Actions の画面から release のワークフローを手動で実行する
 (workflow_dispatch)。setup.exe は実行の成果物(artifact)として残り、タグを選んで実行しても Releases には置かない。
 CI には音声出力装置が無いと見込んでおり、検証列は音声出力装置の確認を除いて通る(装置が無いと例 `device_check` は終了コード3で終わり、verify は実行しなかったと表示する)。
-SengenEgui は CI では GitHub から取る(開発機の差し替えは、リポジトリの外に置いてあるため CI では効かない)。
+SengenEgui は開発機と同じく、CI でも GitHub から Cargo.lock の rev のとおりに取る。
 
-**配る setup.exe は CI で作ったものだけにする。** 開発機で `cargo xtask installer` を実行して作った setup.exe は、差し替えたローカルの SengenEgui で
-ビルドしており、Cargo.lock と一致する保証が無いため、配らない(動作の確かめにだけ使う)。
+**配る setup.exe は CI で作ったものだけにする。** 開発機で `cargo xtask installer` を実行して作った setup.exe は、動作の確かめにだけ使い、配らない。
+配るものを、タグの付いたコミットと GitHub の上の同じ手順で作ったものに限るためである。
 
 ### 文書
 

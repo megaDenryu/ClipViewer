@@ -1,7 +1,7 @@
 # Windows で検証列を流し、インストーラーを組み立てる。入口は2つある。
 # (1) v で始まるタグ(例: v0.1.0)の push: 検証列 → インストーラー → GitHub Releases に置く。タグの版はワークスペースの版と一致しなければ止める。
 # (2) 手動の実行(workflow_dispatch): 検証列 → インストーラーまで流し、setup.exe を実行の成果物(artifact)として残す。タグを選んでも Releases には置かない。
-# SengenEgui は git 依存(rev 固定)であり、CI では開発機の C:\devs\.cargo\config.toml の差し替えが効かないため GitHub から取る。
+# SengenEgui は git 依存(rev 固定)であり、開発機と同じく GitHub から取る。
 # Cargo.lock はリポジトリのものをそのまま使う(cargo fetch --locked で、書き換えが要るなら止める)。検証した依存と配る依存を一致させるためである。
 # FFmpeg は choco で版を固定して入れ、結合試験まで流す。版が勝手に上がって検証列が落ちないためである。上げるときは、その版で
 # cargo xtask verify を通してから、ここの版と README の「FFmpeg を入れる」の節を一緒に直す。音声出力装置は CI の環境に無いため、検証列はその工程を「実行しなかった」と表示して残りを通す。

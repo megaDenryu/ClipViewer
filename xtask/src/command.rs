@@ -2,13 +2,16 @@
 //! 語彙と一覧表示を同じファイルに置くのは、コマンドを足すときに片方だけ更新する事故を避けるためである。
 
 /// コマンドとは、`cargo xtask` が実行できる操作の区別のことである。
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub enum コマンド {
     検証,
     起動,
     インストーラー作成,
     ライセンス表示作成,
-    差し替えなしの依存の固定ファイル作成,
+    /// 手元の SengenEgui へ差し替えた cargo の実行。持つのは cargo へ渡す引数である。
+    手元のSengenEguiでcargoを実行(Vec<String>),
+    /// local-sengen が内部で起こす Cargo.lock の見張り役。人が直接使うものではない。
+    依存の固定ファイルの見張り役,
 }
 
 /// 引数の解釈結果とは、コマンド行引数を解釈した結果の区別のことである。
@@ -29,8 +32,11 @@ impl 引数の解釈結果 {
             "run" => Self::実行する(コマンド::起動),
             "installer" => Self::実行する(コマンド::インストーラー作成),
             "notices" => Self::実行する(コマンド::ライセンス表示作成),
-            "lock-without-patch" => {
-                Self::実行する(コマンド::差し替えなしの依存の固定ファイル作成)
+            "local-sengen" => Self::実行する(コマンド::手元のSengenEguiでcargoを実行(
+                引数一覧[1..].to_vec(),
+            )),
+            crate::local_sengen::見張り役のコマンド名 => {
+                Self::実行する(コマンド::依存の固定ファイルの見張り役)
             }
             _ => Self::不明な引数(名前.clone()),
         }
@@ -43,11 +49,11 @@ pub fn 使い方を表示する() {
     println!();
     println!("コマンド一覧:");
     for (名前, 説明) in コマンド説明一覧() {
-        println!("  {名前:<18} {説明}");
+        println!("  {名前:<26} {説明}");
     }
 }
 
-fn コマンド説明一覧() -> [(&'static str, &'static str); 5] {
+fn コマンド説明一覧() -> [(&'static str, &'static str); 6] {
     [
         (
             "verify",
@@ -66,8 +72,12 @@ fn コマンド説明一覧() -> [(&'static str, &'static str); 5] {
             "cargo-about で第三者のライセンス表示(THIRD-PARTY-NOTICES.html)をビルドの出力先の installer フォルダへ作る。ライセンスを決められないクレートがあれば失敗する。cargo-about が要る: cargo install cargo-about --locked --features cli",
         ),
         (
-            "lock-without-patch",
-            "リポジトリを一時フォルダへ複製し、SengenEgui の差し替えが効かない場所で Cargo.lock の sengen_egui を git から解き直して取り込む。リリースの前に使い、取り込んだらすぐにコミットする",
+            "local-sengen <cargo の引数>",
+            "push する前の手元の SengenEgui で試すときだけ使う。普段は SengenEgui を push して crates/clip_viewer/Cargo.toml の rev を上げる。cargo の --config でその実行の間だけ sengen_egui をリポジトリの1つ上の SengenEgui(環境変数 CLIPVIEWER_SENGEN_EGUI_DIR で変えられる)へ差し替えて cargo を実行し、終わったら(失敗・Ctrl+C でも)Cargo.lock を実行の前の中身に戻す。例: cargo xtask local-sengen run --package clip_viewer",
+        ),
+        (
+            "local-sengen-guard",
+            "local-sengen が内部で起こす Cargo.lock の見張り役。直接使わない",
         ),
     ]
 }

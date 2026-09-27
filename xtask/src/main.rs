@@ -4,7 +4,7 @@ mod audio_device;
 mod command;
 mod ffmpeg_tests;
 mod installer;
-mod lock_rebuild;
+mod local_sengen;
 mod run;
 mod verify;
 
@@ -40,8 +40,13 @@ fn コマンドを実行する(コマンド名: コマンド) -> Result<(), Stri
         コマンド::起動 => run::アプリを起動する(),
         コマンド::インストーラー作成 => installer::インストーラーを作る(),
         コマンド::ライセンス表示作成 => installer::ライセンス表示を作る(),
-        コマンド::差し替えなしの依存の固定ファイル作成 => {
-            lock_rebuild::差し替えなしで依存の固定ファイルを作り直す()
+        コマンド::手元のSengenEguiでcargoを実行(cargoの引数) => {
+            local_sengen::手元のsengen_eguiへ差し替えてcargoを実行する(&cargoの引数)
+        }
+        コマンド::依存の固定ファイルの見張り役 => {
+            local_sengen::見張り役として待って書き戻す(
+                &verify::リポジトリルートを求める(),
+            )
         }
     }
 }
