@@ -16,7 +16,7 @@ pub(super) const 内余白の左右: f32 = 24.0;
 /// 名前の欄の枠の内側の余白の左右の合計(SengenEgui の入力欄の枠の内側の余白)。
 pub(super) const 名前の欄の余白の左右: f32 = 8.0;
 
-/// 描いたカードとは、カードを描いた幅と、見出しの行の押せる部品の矩形(左から順)と、名前の欄の矩形の組のことである。
+/// 描いたカードとは、カードを描いた幅と、見出しの行の押せる部品の矩形(egui が記録した順。Tab キーでフォーカスが移る順と同じ)と、名前の欄の矩形の組のことである。
 pub(super) struct 描いたカード {
     pub(super) 幅: f32,
     pub(super) 見出しの行の部品: Vec<egui::Rect>,
@@ -62,7 +62,7 @@ pub(super) fn カードを描いて測る(
     }
 }
 
-/// egui が前の回に記録した部品の矩形から、見出しの行の押せる部品の矩形(左から順)と、名前の欄の矩形を読み取る。
+/// egui が前の回に記録した部品の矩形から、見出しの行の押せる部品の矩形(egui が記録した順。Tab キーでフォーカスが移る順と同じ)と、名前の欄の矩形を読み取る。
 fn 見出しの行を読み取る(eguiの本体: &egui::Context) -> (Vec<egui::Rect>, egui::Rect) {
     let 押せる部品: Vec<egui::WidgetRect> = eguiの本体.viewport(|ビューポート| {
         ビューポート
@@ -78,13 +78,12 @@ fn 見出しの行を読み取る(eguiの本体: &egui::Context) -> (Vec<egui::R
         .map(|部品| 部品.rect)
         .min_by(|甲, 乙| 甲.top().total_cmp(&乙.top()))
         .unwrap_or_else(|| panic!("名前の欄が見つからない"));
-    let mut 見出しの行の部品: Vec<egui::Rect> = 押せる部品
+    let 見出しの行の部品: Vec<egui::Rect> = 押せる部品
         .iter()
         .filter(|部品| 部品.sense.senses_click() || 部品.sense.senses_drag())
         .map(|部品| 部品.rect)
         .filter(|矩形| 矩形.height() <= 名前の欄.height() * 1.5)
         .filter(|矩形| 名前の欄.y_range().contains(矩形.center().y))
         .collect();
-    見出しの行の部品.sort_by(|甲, 乙| 甲.left().total_cmp(&乙.left()));
     (見出しの行の部品, 名前の欄)
 }
