@@ -28,6 +28,8 @@ mod tests;
 #[cfg(test)]
 mod text_tests;
 #[cfg(test)]
+mod viewer_aspect_tests;
+#[cfg(test)]
 mod viewer_tests;
 
 use std::path::PathBuf;
