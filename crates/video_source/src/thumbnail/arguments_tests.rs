@@ -53,7 +53,7 @@ fn 時刻へシークしてクロップを掛けて大きさへ収めた画像�
     assert!(位置("-ss") < 位置("-i"), "-ss は -i の前に置く");
     assert_eq!(
         引数[位置("-vf").expect("ある") + 1],
-        r"setpts=PTS+0.000000/TB,fps=30/1:round=down:start_time=0,crop=w=iw*0.5:h=ih*0.25:x=min(iw*0.1\,iw-ow):y=min(ih*0.2\,ih-oh),scale=w=192:h=108:force_original_aspect_ratio=decrease"
+        r"setpts=PTS+0.000000/TB,fps=30/1:round=down:start_time=0,crop=w=iw*0.5:h=ih*0.25:x=min(iw*0.1\,iw-ow):y=min(ih*0.2\,ih-oh),scale=w=192:h=108:force_original_aspect_ratio=decrease,format=yuvj420p|yuvj422p|yuvj444p"
     );
     assert_eq!(引数[位置("-frames:v").expect("ある") + 1], "1");
     assert_eq!(
