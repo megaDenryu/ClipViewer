@@ -26,6 +26,7 @@ pub use error::{
 };
 pub use file_text::ライブラリのファイルの本文;
 pub use item::ライブラリのスタック;
+pub(crate) use name::複製の印;
 pub use name::{スタックの名前, 空のスタックの名前エラー};
 pub use stack_id::{スタックの識別子, スタックの識別子の不備};
 pub use thumbnail::{サムネイルの撮り方, サムネイルの画像};
