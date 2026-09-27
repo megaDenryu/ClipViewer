@@ -61,7 +61,7 @@ Windows の設定の「アプリ」→「インストールされているアプ
 
 ### ソースからビルドする
 
-Rust(1.89 以上)と Windows SDK を入れ、リポジトリを取得してルートで次を実行する。Windows SDK は、実行ファイルへアイコンを埋め込む rc.exe のために要る(Visual Studio の「C++ によるデスクトップ開発」のビルドツールに含まれる。無いとビルドが失敗する)。FFmpeg は上と同じく別に入れる。
+Rust(rustup)と Windows SDK を入れ、リポジトリを取得してルートで次を実行する。Windows SDK は、実行ファイルへアイコンを埋め込む rc.exe のために要る(Visual Studio の「C++ によるデスクトップ開発」のビルドツールに含まれる。無いとビルドが失敗する)。FFmpeg は上と同じく別に入れる。Rust の版はルートの `rust-toolchain.toml`(1.94.0)で固定してあり、rustup が自動で取ってくる。
 
 ```
 git clone https://github.com/megaDenryu/ClipViewer

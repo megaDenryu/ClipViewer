@@ -1,0 +1,5 @@
+# ビルドと検証に使う Rust の版を固定する。手元の検証と CI(.github/workflows/release.yml)で同じ版を使い、
+# 新しい版の clippy の警告でリリースが止まらないようにするため。版を上げるときは、ここと release.yml を一緒に直す。
+[toolchain]
+channel = "1.94.0"
+components = ["rustfmt", "clippy"]
