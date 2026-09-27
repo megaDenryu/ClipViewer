@@ -17,6 +17,7 @@ mod library_request;
 mod library_save;
 mod library_thumbnail;
 mod notice;
+mod open_dialog;
 mod output_settings;
 mod playback;
 mod relation_check;

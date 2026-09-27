@@ -17,6 +17,7 @@ mod edit_boundary_and_delete;
 mod edit_undo;
 mod file_drop;
 mod file_drop_dialog;
+mod file_drop_support;
 mod fullscreen;
 mod key_support;
 mod keys;
