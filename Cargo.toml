@@ -13,7 +13,7 @@ members = [
 
 [workspace.package]
 edition = "2024"
-version = "0.1.0"
+version = "0.2.0"
 license = "MIT"
 # 必要な最小の Rust の版。clip_library の錠が使う File::try_lock と TryLockError が 1.89.0 で安定した(std の #[stable] 属性で確かめた)。
 # 標準ライブラリの口は clippy の incompatible_msrv が検証列で確かめる。言語の機能はこの版の処理系で組んで確かめていない
