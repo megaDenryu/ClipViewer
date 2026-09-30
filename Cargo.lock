@@ -463,7 +463,7 @@ dependencies = [
 
 [[package]]
 name = "audio_output"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "audio_pcm",
  "clip_domain",
@@ -473,7 +473,7 @@ dependencies = [
 
 [[package]]
 name = "audio_pcm"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "clip_domain",
 ]
@@ -686,7 +686,7 @@ dependencies = [
 
 [[package]]
 name = "clip_domain"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "serde",
  "serde_json",
@@ -695,7 +695,7 @@ dependencies = [
 
 [[package]]
 name = "clip_library"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "clip_domain",
  "thiserror 2.0.21",
@@ -703,7 +703,7 @@ dependencies = [
 
 [[package]]
 name = "clip_viewer"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "audio_output",
  "audio_pcm",
@@ -3194,7 +3194,7 @@ dependencies = [
 
 [[package]]
 name = "thumbnail_cache"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "clip_domain",
  "thiserror 2.0.21",
@@ -3429,7 +3429,7 @@ checksum = "0b928f33d975fc6ad9f86c8f283853ad26bdd5b10b7f1542aa2fa15e2289105a"
 
 [[package]]
 name = "video_source"
-version = "0.2.0"
+version = "0.3.0"
 dependencies = [
  "audio_pcm",
  "clip_domain",
@@ -4444,7 +4444,7 @@ checksum = "e450f9b2ed1dff33c94c12589a87338689467b9c4f5d8a5710bd09a847d2c8a7"
 
 [[package]]
 name = "xtask"
-version = "0.2.0"
+version = "0.3.0"
 
 [[package]]
 name = "yoke"
