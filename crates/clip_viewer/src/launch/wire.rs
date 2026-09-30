@@ -37,6 +37,7 @@ pub(super) struct 受け渡す本文 {
 }
 
 impl 受け渡す本文 {
+    #[cfg(test)]
     pub(super) fn 作成する(合言葉: 合言葉, 頼み: &起動の頼み) -> Self {
         let 頼み = match 頼み {
             起動の頼み::前に出る => 受け渡す頼み::前に出る,

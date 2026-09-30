@@ -4,6 +4,7 @@
 
 use std::hash::{BuildHasher, Hasher, RandomState};
 use std::io;
+#[cfg(test)]
 use std::net::{Ipv4Addr, SocketAddr};
 use std::path::PathBuf;
 
@@ -31,6 +32,7 @@ pub(super) struct 受け口の案内 {
     pub(super) 合言葉: 合言葉,
 }
 
+#[cfg(test)]
 impl 受け口の案内 {
     /// 受け口の番地(この計算機の中だけの番地とポート)。
     pub(super) fn 番地(&self) -> SocketAddr {
@@ -58,6 +60,7 @@ impl 受け口の案内ファイル {
     }
 
     /// 案内を読む。ファイルが無い・書きかけで形が不正なら、読めない理由を返す。
+    #[cfg(test)]
     pub(super) fn 読む(&self) -> io::Result<受け口の案内> {
         let 本文 = std::fs::read_to_string(&self.0)?;
         serde_json::from_str(&本文).map_err(|原因| io::Error::new(io::ErrorKind::InvalidData, 原因))

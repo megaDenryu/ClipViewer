@@ -10,6 +10,7 @@ Space は再生と停止に使うため、Spaceキー待ちのクリップは En
 
 - 動作環境: Windows 10 または Windows 11 の x64(64ビット)版。ClipViewer とは別に FFmpeg が要る(入れ方は説明書の2.3節)。
 - 入手先: [Releases](https://github.com/megaDenryu/ClipViewer/releases) の `ClipViewer-<版>-setup.exe`。
+- 利用者はアプリを複数起動し、別々のウインドウで動画を見られる。同じライブラリへ書けるのは最初のアプリだけであり、後のアプリでも動画の再生・編集・JSON保存を使える。
 
 ## 開発する人へ
 

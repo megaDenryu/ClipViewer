@@ -30,7 +30,6 @@ mod viewer_settings_save_tests;
 pub(crate) use close::ウインドウへの指示;
 pub(crate) use environment::起動時の環境;
 pub(crate) use launch_plan::起動の手順;
-pub(crate) use launch_preparation::起動の決着;
 pub(crate) use launch_requests::起動の頼みの届き方;
 pub(crate) use window::ウインドウの題名;
 
