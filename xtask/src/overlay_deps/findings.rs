@@ -3,8 +3,8 @@
 use std::fmt;
 use std::path::PathBuf;
 
-use super::module_path::禁じた参照;
-use super::tokens::解析できない理由;
+use super::forbidden_reference::禁じた参照;
+use super::reason::解析できない理由;
 
 /// 見つけたこととは、検査が報告する、禁じた参照か、調べられなかったファイルのことである。
 pub enum 見つけたこと {
@@ -23,10 +23,10 @@ impl fmt::Display for 見つけたこと {
         match self {
             Self::禁じた参照(ファイル, 参照) => write!(
                 書き込み先,
-                "{}:{}: スタックの作業場の {} を使っている",
+                "{}:{}: {}",
                 ファイル.display(),
                 参照.行,
-                参照.crateルートからのパス
+                参照.説明()
             ),
             Self::解析できない(ファイル, 理由) => write!(
                 書き込み先,

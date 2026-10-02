@@ -1,20 +1,27 @@
-//! `check-overlay-deps` コマンド: 重ね合わせの作業場の層(`crates/clip_viewer/src/overlay/` の下)が、スタックの作業場の
-//! `crate::state`・`crate::command`・`crate::view` を使っていないことを検査する。1つのクレートの中のモジュールの向きは Cargo では強制できないためである。
-//! `use` の木と式や型に書いたパスを、`crate`・`super`・`self` から crate ルートのパスへ直して調べる。コメントと文字列の中は調べない。
-//! 調べないもの: マクロが組み立てるパス(`$crate` を除く)、`#[path]` の属性と `include!` で読むファイル。
-//! 読めないファイル・UTF-8 でないファイル・字句やパスを解析できないファイルは、黙って外さずに見つけたこととして報告する。
+//! `check-overlay-deps` コマンド: 重ね合わせの作業場の層(`crates/clip_viewer/src/overlay/`)が、スタックの作業場の `crate::state`・
+//! `crate::command`・`crate::view` を使えないことを検査する。調べないもの: マクロが組み立てるパス、`#[path]` と `include!` で読むファイル。
 //! 参照: _doc/設計/同時再生.md 3-2「依存の向きの検査」
 
 mod findings;
+mod forbidden_reference;
 mod module_path;
 mod paths;
+mod read_use_tree;
 mod reader;
+mod reason;
+mod skipping;
 mod source_root;
+mod token;
 mod tokens;
 mod use_tree;
+mod written_path;
 
 #[cfg(test)]
 mod folder_tests;
+#[cfg(test)]
+mod path_glob_alias_tests;
+#[cfg(test)]
+mod path_test_support;
 #[cfg(test)]
 mod path_tests;
 

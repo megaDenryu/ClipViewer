@@ -6,7 +6,8 @@ use std::path::{Path, PathBuf};
 use super::findings::{検査の結果, 見つけたこと};
 use super::module_path::モジュールパス;
 use super::paths::禁じた参照を探す;
-use super::tokens::{字句に分ける, 解析できない理由};
+use super::reason::解析できない理由;
+use super::tokens::字句に分ける;
 
 /// ソースルートとは、`clip_viewer` のクレートの `src` フォルダのことである。モジュールパスはここから数える。
 pub struct ソースルート(PathBuf);

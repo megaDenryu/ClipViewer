@@ -2,24 +2,9 @@
 //! 禁じた参照を見つけ、コメントと文字列の中は見ず、解析できない入力を黙って外さずに理由を返すことを確かめる。
 #![allow(clippy::expect_used, clippy::unwrap_used)]
 
-use super::module_path::モジュールパス;
-use super::paths::禁じた参照を探す;
-use super::tokens::字句に分ける;
-
-/// `src` から見たファイルの位置(`/` 区切り)のファイルに本文を書いたときの、禁じた参照のcrateルートからのパスの並び。解析できなければその説明。
-fn 本文の禁じた参照を調べる(位置: &str, 本文: &str) -> Result<Vec<String>, String> {
-    let 位置の並び: Vec<String> = 位置.split('/').map(str::to_string).collect();
-    let 今のモジュールパス = モジュールパス::ファイルの位置から作る(&位置の並び);
-    字句に分ける(本文)
-        .and_then(|並び| 禁じた参照を探す(&並び, &今のモジュールパス))
-        .map(|参照の並び| {
-            参照の並び
-                .into_iter()
-                .map(|参照| 参照.crateルートからのパス)
-                .collect()
-        })
-        .map_err(|理由| 理由.説明)
-}
+use super::path_test_support::{
+    本文の禁じた参照を調べる, 解析できる本文の禁じた参照を調べる
+};
 
 #[test]
 fn crateから書いたuseと式のパスを見つける() {
@@ -111,8 +96,4 @@ fn 解析できない入力は黙って外さずに理由を返す() {
     assert!(本文の禁じた参照を調べる("overlay/mod.rs", "use crate::{state, view;").is_err());
     assert!(本文の禁じた参照を調べる("overlay/mod.rs", "use super::super::state;").is_err());
     assert!(本文の禁じた参照を調べる("overlay/mod.rs", "fn 甲() {} }").is_err());
-}
-
-fn 解析できる本文の禁じた参照を調べる(位置: &str, 本文: &str) -> Vec<String> {
-    本文の禁じた参照を調べる(位置, 本文).expect("解析できる")
 }
