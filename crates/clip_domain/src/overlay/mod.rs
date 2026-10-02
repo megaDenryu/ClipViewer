@@ -16,7 +16,9 @@ mod video_table;
 mod volume;
 
 pub use aggregate::重ね合わせ;
-pub use arrange::{スタックから並べた結果, スタックから並べるエラー};
+pub use arrange::{
+    スタックから並べた結果, スタックから並べるエラー, 置かなかったクリップ, 置かなかった理由,
+};
 pub use aspect::{重ねる画面の縦横比, 重ねる画面の縦横比エラー};
 pub use basis::{重ねる画面に対する, 重ね合わせ上, 重ね合わせ上の秒};
 pub use error::重ね合わせの操作エラー;
