@@ -8,9 +8,12 @@ mod operation;
 mod operation_keys;
 mod operation_text;
 mod overlap;
+mod saved_changes;
 
 #[cfg(test)]
 mod assignment_tests;
+#[cfg(test)]
+mod saved_changes_tests;
 
 pub(crate) use assignment::キーの割り当て;
 pub(crate) use operation::キーで行う操作;
