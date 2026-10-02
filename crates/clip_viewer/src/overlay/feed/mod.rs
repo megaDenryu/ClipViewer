@@ -29,6 +29,6 @@ mod with_ffmpeg_support;
 mod with_ffmpeg_tests;
 
 pub(crate) use show_condition::映すものを求める条件;
-pub(crate) use status::重ね合わせの映像の様子;
+pub(crate) use status::重ね合わせの映像の供給を作れたか;
 #[cfg(test)]
 pub(crate) use supply_failure::映像の供給を作れない理由;
