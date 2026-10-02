@@ -13,6 +13,7 @@ mod audio_feed;
 mod command;
 mod crash_record;
 mod launch;
+mod overlay;
 mod persistence;
 mod screen_shell;
 mod startup_notice;

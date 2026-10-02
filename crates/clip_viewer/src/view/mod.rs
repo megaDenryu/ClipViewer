@@ -35,6 +35,8 @@ use sengen_egui::{
 use crate::command::応答;
 use crate::state::{アプリの状態, 画面の構え};
 
+pub(crate) use invisible::描き直すまでの時間;
+
 pub(crate) fn 画面(状態: &アプリの状態) -> ノード<応答> {
     let 構え = 状態.出力.構え;
     let 区画 = match 構え {

@@ -7,6 +7,7 @@ use video_source::{FFmpegが見つからないエラー, 実行ファイルの�
 
 use super::sound_sender::音の送り手;
 use super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
+use super::workspace::作業場の切り替え;
 use super::クリップビューアー;
 use crate::command::操作の適用係;
 use crate::persistence::アプリの設定の保管場所;
@@ -42,6 +43,7 @@ pub(super) fn 試験のビューアー() -> クリップビューアー {
             設定の書き方::書かない,
             見る側の設定::既定,
         ),
+        作業場: 作業場の切り替え::起動時(),
     }
 }
 
