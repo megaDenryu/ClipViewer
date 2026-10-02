@@ -14,11 +14,12 @@ use crate::view;
 
 /// 画面を1フレーム描き、発した応答を返す。
 fn 画面を描いて集める(
-    eguiの本体: &egui::Context, 状態: &アプリの状態
+    画面描画の共有状態: &egui::Context,
+    状態: &アプリの状態,
 ) -> Vec<応答> {
     let mut 集まり = Vec::new();
-    let _ = eguiの本体.run(egui::RawInput::default(), |eguiの本体| {
-        egui::CentralPanel::default().show(eguiの本体, |ui| {
+    let _ = 画面描画の共有状態.run(egui::RawInput::default(), |画面描画の共有状態| {
+        egui::CentralPanel::default().show(画面描画の共有状態, |ui| {
             集まり = view::画面(状態).描画して集める(ui);
         });
     });
@@ -47,10 +48,10 @@ fn 画面が発した見えている行を適用で状態へ置き_サムネイ�
     状態.一覧を読み直す();
     終えるまで待って当てる(&mut 状態);
     状態.出力.構え = 画面の構え::ライブラリ;
-    let eguiの本体 = egui::Context::default();
+    let 画面描画の共有状態 = egui::Context::default();
     let mut 知らせ = Vec::new();
     for _ in 0..3 {
-        let 集まり = 画面を描いて集める(&eguiの本体, &状態);
+        let 集まり = 画面を描いて集める(&画面描画の共有状態, &状態);
         知らせ = 見えている行の知らせ(&集まり);
         assert!(知らせ.len() <= 1, "1フレームに1回までしか知らせない");
         for 応答 in 集まり {

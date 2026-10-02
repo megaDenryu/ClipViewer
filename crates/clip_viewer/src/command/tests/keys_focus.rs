@@ -12,33 +12,33 @@ const 無し: egui::Modifiers = egui::Modifiers::NONE;
 
 /// Tab でフォーカスを部品へ移した egui の本体。移った先があることを確かめて返す。
 fn フォーカスを移した本体(状態: &アプリの状態) -> egui::Context {
-    let eguiの本体 = egui::Context::default();
-    let _ = 事象を渡して描く(&eguiの本体, 状態, Vec::new(), 無し);
+    let 画面描画の共有状態 = egui::Context::default();
+    let _ = 事象を渡して描く(&画面描画の共有状態, 状態, Vec::new(), 無し);
     let _ = 事象を渡して描く(
-        &eguiの本体,
+        &画面描画の共有状態,
         状態,
         vec![キーの押下(egui::Key::Tab, 無し)],
         無し,
     );
     assert!(
-        eguiの本体.memory(|記憶| 記憶.focused()).is_some(),
+        画面描画の共有状態.memory(|記憶| 記憶.focused()).is_some(),
         "Tab でフォーカスが移らなかった"
     );
-    eguiの本体
+    画面描画の共有状態
 }
 
 #[test]
 fn フォーカスを持つボタンは空白キーで押されず_空白キーは再生と停止だけを発する() {
     let 状態 = クリップを並べた状態(Vec::new());
-    let eguiの本体 = フォーカスを移した本体(&状態);
+    let 画面描画の共有状態 = フォーカスを移した本体(&状態);
     let mut 集めた = 事象を渡して描く(
-        &eguiの本体,
+        &画面描画の共有状態,
         &状態,
         vec![キーの押下(egui::Key::Space, 無し)],
         無し,
     );
     集めた.extend(事象を渡して描く(
-        &eguiの本体,
+        &画面描画の共有状態,
         &状態,
         Vec::new(),
         無し,

@@ -49,7 +49,7 @@ impl 第1版のキーの割り当て {
 pub(super) fn 名前にする(操作: キーで行う操作) -> &'static str {
     match 操作 {
         キーで行う操作::再生と停止を切り替える => "togglePlayback",
-        キーで行う操作::次のクリップへ進めるか知らせる => "nextClipOrNotify",
+        キーで行う操作::シーケンス再生のときだけ次のクリップへ進める => "nextClipOrNotify",
         キーで行う操作::前のクリップへ戻る => "previousClip",
         キーで行う操作::次のクリップへ進める => "nextClip",
         キーで行う操作::一コマ戻す => "stepFrameBackward",
@@ -60,7 +60,7 @@ pub(super) fn 名前にする(操作: キーで行う操作) -> &'static str {
         キーで行う操作::速度を一段上げる => "speedUp",
         キーで行う操作::消音を切り替える => "toggleMute",
         キーで行う操作::シアターと編集を切り替える => "toggleTheater",
-        キーで行う操作::全画面かシアターを抜ける => "leaveFullscreenOrTheater",
+        キーで行う操作::全画面を抜けるか全画面でなければシアターを抜ける => "leaveFullscreenOrTheater",
         キーで行う操作::全画面を切り替える => "toggleFullscreen",
         キーで行う操作::ライブラリへ保存する => "saveToLibrary",
         キーで行う操作::キーの一覧を開け閉めする => "toggleKeyList",

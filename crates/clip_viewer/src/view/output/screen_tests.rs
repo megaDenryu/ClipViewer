@@ -14,14 +14,14 @@ use crate::state::{左右の向き, 画面の構え, 表示サイズ};
 
 /// 左端0.25・右端0.5の描く部分で、構えと左右の向きの材料を組んで1フレーム描き、映像の uv を返す。
 fn 描いた映像のuv(構え: 画面の構え, 左右: 左右の向き) -> egui::Rect {
-    let eguiの本体 = egui::Context::default();
+    let 画面描画の共有状態 = egui::Context::default();
     let 画素 = 画素の並び::赤緑青と不透明度のバイト列から作る(
         画素数の寸法::生成する(2, 1),
         &[0; 8],
     )
     .unwrap_or_else(|不正| panic!("画素の並びが不正: {不正}"));
     let テクスチャ = 差し替えられるテクスチャ::登録して作る(
-        &eguiの本体,
+        &画面描画の共有状態,
         "試験",
         画素,
         拡大縮小の仕方::隣の画素と混ぜる,
@@ -45,8 +45,8 @@ fn 描いた映像のuv(構え: 画面の構え, 左右: 左右の向き) -> egu
         構え,
         操作の出し入れ: 操作の欄の出し方(),
     };
-    let 出力 = eguiの本体.run(egui::RawInput::default(), |eguiの本体| {
-        egui::CentralPanel::default().show(eguiの本体, |ui| {
+    let 出力 = 画面描画の共有状態.run(egui::RawInput::default(), |画面描画の共有状態| {
+        egui::CentralPanel::default().show(画面描画の共有状態, |ui| {
             let _ = 材料.組む(画素の組(800.0, 600.0)).描画して集める(ui);
         });
     });

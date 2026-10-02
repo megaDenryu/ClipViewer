@@ -23,7 +23,7 @@ fn 再生のキーと応答() -> Vec<(egui::Key, egui::Modifiers, 応答)> {
         (
             egui::Key::Enter,
             無し,
-            出力(出力の操作::Enterキーで次へ進める),
+            出力(出力の操作::エンターキーの押下で次へ進める),
         ),
         (
             egui::Key::PageUp,
@@ -33,7 +33,9 @@ fn 再生のキーと応答() -> Vec<(egui::Key, egui::Modifiers, 応答)> {
         (
             egui::Key::PageDown,
             無し,
-            出力(出力の操作::次へ進める(進める操作::次へボタン)),
+            出力(出力の操作::次へ進める(
+                進める操作::トリガーを待たずに進める,
+            )),
         ),
         (
             egui::Key::ArrowLeft,

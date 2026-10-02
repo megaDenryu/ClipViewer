@@ -21,11 +21,12 @@ impl クリップビューアー {
     pub(super) fn 起動の受け口で受け取り始めて頼みを当てる(
         &mut self,
         受け口: Option<起動の受け口>,
-        eguiの本体: egui::Context,
+        画面描画の共有状態: egui::Context,
         頼み: 起動の頼み,
         mut 知らせ: Vec<String>,
     ) {
-        self.起動の受け口 = match 受け口.map(|受け口| 受け口.受け取り始める(eguiの本体))
+        self.起動の受け口 = match 受け口
+            .map(|受け口| 受け口.受け取り始める(画面描画の共有状態))
         {
             Some(Ok(受け取っている)) => Some(受け取っている),
             Some(Err(原因)) => {

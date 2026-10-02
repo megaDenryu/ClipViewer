@@ -11,9 +11,9 @@ fn 描いた文字() -> Vec<String> {
         .unwrap_or_else(|不正| panic!("識別子が不正: {不正}"));
     let クリップ =
         クリップ::既定値で作成する(識別子, クリップ名::作成する("甲".to_string()));
-    let eguiの本体 = egui::Context::default();
-    let 出力 = eguiの本体.run(egui::RawInput::default(), |eguiの本体| {
-        egui::CentralPanel::default().show(eguiの本体, |ui| {
+    let 画面描画の共有状態 = egui::Context::default();
+    let 出力 = 画面描画の共有状態.run(egui::RawInput::default(), |画面描画の共有状態| {
+        egui::CentralPanel::default().show(画面描画の共有状態, |ui| {
             let _ = 見出しの行(&クリップ, false).描画して集める(ui);
         });
     });

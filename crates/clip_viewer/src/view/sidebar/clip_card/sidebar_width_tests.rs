@@ -17,13 +17,13 @@ use crate::view::{styles, 左サイドバーのパネル};
 
 /// 日本語フォントとテーマを当てた egui の本体。フォントは次の回から効くため、何も描かない回を1回進めておく。
 fn 本体を作る() -> egui::Context {
-    let eguiの本体 = egui::Context::default();
+    let 画面描画の共有状態 = egui::Context::default();
     日本語フォントの候補::標準で入っている候補()
-        .最初に読めたものを設定する(&eguiの本体)
+        .最初に読めたものを設定する(&画面描画の共有状態)
         .unwrap_or_else(|失敗| panic!("日本語フォントを読めないため、幅を測れない: {失敗}"));
-    styles::画面のテーマ.適用する(&eguiの本体);
-    let _ = eguiの本体.run(egui::RawInput::default(), |_| {});
-    eguiの本体
+    styles::画面のテーマ.適用する(&画面描画の共有状態);
+    let _ = 画面描画の共有状態.run(egui::RawInput::default(), |_| {});
+    画面描画の共有状態
 }
 
 fn カード(番号: usize, 単独で再生しているか: bool) -> ノード<応答> {
@@ -54,12 +54,12 @@ fn カード(番号: usize, 単独で再生しているか: bool) -> ノード<�
 
 /// カードを数だけ並べたサイドバーを1回描き、パネルが覚えた幅を返す。単独再生の番号のカードだけ「単独再生を止める」にする。
 fn 描いてパネルの幅を測る(
-    eguiの本体: &egui::Context,
+    画面描画の共有状態: &egui::Context,
     数: usize,
     単独再生の番号: Option<usize>,
 ) -> f32 {
-    let _ = eguiの本体.run(egui::RawInput::default(), |eguiの本体| {
-        egui::CentralPanel::default().show(eguiの本体, |ui| {
+    let _ = 画面描画の共有状態.run(egui::RawInput::default(), |画面描画の共有状態| {
+        egui::CentralPanel::default().show(画面描画の共有状態, |ui| {
             let カード一覧 = (0..数)
                 .map(|番号| カード(番号, Some(番号) == 単独再生の番号))
                 .collect();
@@ -67,7 +67,7 @@ fn 描いてパネルの幅を測る(
                 .描画して集める(ui);
         });
     });
-    egui::containers::panel::PanelState::load(eguiの本体, egui::Id::new("左サイドバー"))
+    egui::containers::panel::PanelState::load(画面描画の共有状態, egui::Id::new("左サイドバー"))
         .unwrap_or_else(|| panic!("パネルの幅が記録されていない"))
         .rect
         .width()
@@ -75,13 +75,13 @@ fn 描いてパネルの幅を測る(
 
 #[test]
 fn 最初の回もカードを足した回も1枚だけ単独再生にした回もサイドバーの幅は変わらない() {
-    let eguiの本体 = 本体を作る();
-    let 最初の回 = 描いてパネルの幅を測る(&eguiの本体, 1, None);
+    let 画面描画の共有状態 = 本体を作る();
+    let 最初の回 = 描いてパネルの幅を測る(&画面描画の共有状態, 1, None);
     assert_eq!(最初の回, 480.0, "最初の回");
-    let 足した回 = 描いてパネルの幅を測る(&eguiの本体, 3, None);
+    let 足した回 = 描いてパネルの幅を測る(&画面描画の共有状態, 3, None);
     assert_eq!(足した回, 480.0, "カードを足した回");
-    let 単独再生の回 = 描いてパネルの幅を測る(&eguiの本体, 3, Some(1));
+    let 単独再生の回 = 描いてパネルの幅を測る(&画面描画の共有状態, 3, Some(1));
     assert_eq!(単独再生の回, 480.0, "1枚だけ単独再生にした回");
-    let 戻した回 = 描いてパネルの幅を測る(&eguiの本体, 3, None);
+    let 戻した回 = 描いてパネルの幅を測る(&画面描画の共有状態, 3, None);
     assert_eq!(戻した回, 480.0, "単独再生を止めた回");
 }

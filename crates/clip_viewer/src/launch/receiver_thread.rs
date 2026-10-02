@@ -24,7 +24,7 @@ pub(super) struct 受け口のスレッド {
     pub(super) 合言葉: 合言葉,
     pub(super) 送り口: Sender<起動の頼み>,
     pub(super) 止めるか: Arc<AtomicBool>,
-    pub(super) eguiの本体: egui::Context,
+    pub(super) 画面描画の共有状態: egui::Context,
 }
 
 impl 受け口のスレッド {
@@ -61,7 +61,7 @@ impl 受け口のスレッド {
             ));
         };
         self.送り口.send(頼み).map_err(io::Error::other)?;
-        self.eguiの本体.request_repaint();
+        self.画面描画の共有状態.request_repaint();
         writeln!(&接続, "{受け取った返事}")
     }
 }

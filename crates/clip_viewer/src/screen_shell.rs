@@ -22,20 +22,21 @@ impl 画面の殻 {
 }
 
 impl eframe::App for 画面の殻 {
-    fn update(&mut self, eguiの本体: &egui::Context, _枠: &mut eframe::Frame) {
-        let 閉じる要求への答え = eguiの本体
+    fn update(&mut self, 画面描画の共有状態: &egui::Context, _枠: &mut eframe::Frame) {
+        let 閉じる要求への答え = 画面描画の共有状態
             .input(|入力| 入力.viewport().close_requested())
             .then(|| self.ビューアー.閉じる要求を確かめる());
         self.ビューアー
-            .ウインドウの様子を知らせる(ウインドウの様子を読む(eguiの本体));
+            .ウインドウの様子を知らせる(ウインドウの様子を読む(画面描画の共有状態));
         self.ビューアー.フレームを進める(Instant::now());
         let mut 応答一覧 = Vec::new();
         egui::CentralPanel::default()
             .frame(egui::Frame::NONE)
-            .show(eguiの本体, |ui| {
+            .show(画面描画の共有状態, |ui| {
                 応答一覧 = self.ビューアー.画面().描画して集める(ui)
             });
-        let 主ボタン = if eguiの本体.input(|入力| 入力.pointer.primary_down()) {
+        let 主ボタン = if 画面描画の共有状態.input(|入力| 入力.pointer.primary_down())
+        {
             command::主ボタンの様子::押している
         } else {
             command::主ボタンの様子::押していない
@@ -45,16 +46,16 @@ impl eframe::App for 画面の殻 {
             .ビューアー
             .ウインドウへの指示の並び(閉じる要求への答え, 届き方)
         {
-            指示を送る(eguiの本体, 指示);
+            指示を送る(画面描画の共有状態, 指示);
         }
     }
 }
 
 /// egui が知らせたウインドウの様子を読む。egui がまだ知らせていない項目は、全画面でない・最大化していない・大きさが分からないとみなす。
 fn ウインドウの様子を読む(
-    eguiの本体: &egui::Context,
+    画面描画の共有状態: &egui::Context,
 ) -> state::ウインドウの様子 {
-    eguiの本体.input(|入力| {
+    画面描画の共有状態.input(|入力| {
         let ウインドウ = 入力.viewport();
         let 全画面か = match ウインドウ.fullscreen {
             Some(true) => state::全画面の様子::全画面,
@@ -82,8 +83,10 @@ fn ウインドウの様子を読む(
 }
 
 /// 配線が決めたウインドウへの指示を、egui のウインドウの命令へ写して送る。
-fn 指示を送る(eguiの本体: &egui::Context, 指示: app::ウインドウへの指示) {
-    let 送る = |命令| eguiの本体.send_viewport_cmd(命令);
+fn 指示を送る(
+    画面描画の共有状態: &egui::Context, 指示: app::ウインドウへの指示
+) {
+    let 送る = |命令| 画面描画の共有状態.send_viewport_cmd(命令);
     match 指示 {
         app::ウインドウへの指示::閉じるのを取り消す => {
             送る(egui::ViewportCommand::CancelClose)

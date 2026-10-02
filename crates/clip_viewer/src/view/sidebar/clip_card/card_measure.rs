@@ -29,13 +29,13 @@ pub(super) fn カードを描いて測る(
     サイドバーの幅: f32,
     様子: &カードの様子,
 ) -> 描いたカード {
-    let eguiの本体 = egui::Context::default();
+    let 画面描画の共有状態 = egui::Context::default();
     日本語フォントの候補::標準で入っている候補()
-        .最初に読めたものを設定する(&eguiの本体)
+        .最初に読めたものを設定する(&画面描画の共有状態)
         .unwrap_or_else(|失敗| {
             panic!("日本語フォントを読めないため、カードの幅を測れない: {失敗}")
         });
-    styles::画面のテーマ.適用する(&eguiの本体);
+    styles::画面のテーマ.適用する(&画面描画の共有状態);
     let 識別子 = クリップ識別子::文字列から作成する("甲".to_string())
         .unwrap_or_else(|不正| panic!("識別子が不正: {不正}"));
     let クリップ = クリップ::既定値で作成する(
@@ -44,8 +44,8 @@ pub(super) fn カードを描いて測る(
     );
     let mut 幅 = 0.0;
     for _ in 0..2 {
-        let _ = eguiの本体.run(egui::RawInput::default(), |eguiの本体| {
-            egui::CentralPanel::default().show(eguiの本体, |ui| {
+        let _ = 画面描画の共有状態.run(egui::RawInput::default(), |画面描画の共有状態| {
+            egui::CentralPanel::default().show(画面描画の共有状態, |ui| {
                 let 大きさ = egui::vec2(サイドバーの幅 - 内余白の左右, 10_000.0);
                 ui.allocate_ui(大きさ, |ui| {
                     let 始め = ui.cursor().min.x;
@@ -55,7 +55,7 @@ pub(super) fn カードを描いて測る(
             });
         });
     }
-    let (見出しの行の部品, 名前の欄) = 見出しの行を読み取る(&eguiの本体);
+    let (見出しの行の部品, 名前の欄) = 見出しの行を読み取る(&画面描画の共有状態);
     描いたカード {
         幅,
         見出しの行の部品,
@@ -64,8 +64,10 @@ pub(super) fn カードを描いて測る(
 }
 
 /// egui が前の回に記録した部品の矩形から、見出しの行の押せる部品の矩形(egui が記録した順。Tab キーでフォーカスが移る順と同じ)と、名前の欄の矩形を読み取る。
-fn 見出しの行を読み取る(eguiの本体: &egui::Context) -> (Vec<egui::Rect>, egui::Rect) {
-    let 押せる部品: Vec<egui::WidgetRect> = eguiの本体.viewport(|ビューポート| {
+fn 見出しの行を読み取る(
+    画面描画の共有状態: &egui::Context,
+) -> (Vec<egui::Rect>, egui::Rect) {
+    let 押せる部品: Vec<egui::WidgetRect> = 画面描画の共有状態.viewport(|ビューポート| {
         ビューポート
             .prev_pass
             .widgets

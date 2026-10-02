@@ -34,9 +34,9 @@ fn 動画の無い状態(構え: 画面の構え) -> アプリの状態 {
 
 /// 木を1フレーム描き、描いた文字を全部集める。
 fn 描いた文字(木: &dyn Fn() -> ノード<応答>) -> Vec<String> {
-    let eguiの本体 = egui::Context::default();
-    let 出力 = eguiの本体.run(egui::RawInput::default(), |eguiの本体| {
-        egui::CentralPanel::default().show(eguiの本体, |ui| {
+    let 画面描画の共有状態 = egui::Context::default();
+    let 出力 = 画面描画の共有状態.run(egui::RawInput::default(), |画面描画の共有状態| {
+        egui::CentralPanel::default().show(画面描画の共有状態, |ui| {
             let _ = 木().描画して集める(ui);
         });
     });

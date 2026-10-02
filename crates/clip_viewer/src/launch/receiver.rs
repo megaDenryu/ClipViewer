@@ -43,7 +43,7 @@ impl 起動の受け口 {
     /// 裏のスレッドで受け取り始める。頼みを受け取るたびに egui へ描き直しを頼み、画面のスレッドの次のフレームで取り出させる。
     pub(crate) fn 受け取り始める(
         self,
-        eguiの本体: egui::Context,
+        画面描画の共有状態: egui::Context,
     ) -> io::Result<受け取っている受け口> {
         let 番地 = self.聞き手.local_addr()?;
         let 止めるか = Arc::new(AtomicBool::new(false));
@@ -53,7 +53,7 @@ impl 起動の受け口 {
             合言葉: self.合言葉,
             送り口,
             止めるか: Arc::clone(&止めるか),
-            eguiの本体,
+            画面描画の共有状態,
         }
         .起こす()?;
         Ok(受け取っている受け口 {

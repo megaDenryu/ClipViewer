@@ -30,7 +30,7 @@ pub(super) fn 動画の無い状態(構え: 画面の構え) -> アプリの状�
 
 /// 画面の大きさ(論理画素)を決めた入力に事象を足して1フレーム描き、発した応答と出力を返す。
 pub(super) fn 大きさを決めて描く(
-    eguiの本体: &egui::Context,
+    画面描画の共有状態: &egui::Context,
     画面の大きさ: egui::Vec2,
     事象: Vec<egui::Event>,
     木: &dyn Fn() -> ノード<応答>,
@@ -41,8 +41,8 @@ pub(super) fn 大きさを決めて描く(
         ..Default::default()
     };
     let mut 集まり = Vec::new();
-    let 出力 = eguiの本体.run(入力, |eguiの本体| {
-        egui::CentralPanel::default().show(eguiの本体, |ui| {
+    let 出力 = 画面描画の共有状態.run(入力, |画面描画の共有状態| {
+        egui::CentralPanel::default().show(画面描画の共有状態, |ui| {
             集まり = 木().描画して集める(ui);
         });
     });
@@ -65,7 +65,7 @@ pub(super) fn 描いた文字の範囲(出力: &egui::FullOutput, 文字: &str) 
 
 /// 位置へポインタを動かして押して放し、その間に発した応答を返す。
 pub(super) fn 押して集める(
-    eguiの本体: &egui::Context,
+    画面描画の共有状態: &egui::Context,
     画面の大きさ: egui::Vec2,
     位置: egui::Pos2,
     木: &dyn Fn() -> ノード<応答>,
@@ -77,7 +77,7 @@ pub(super) fn 押して集める(
         modifiers: egui::Modifiers::NONE,
     };
     let 押す = vec![egui::Event::PointerMoved(位置), ボタン(true)];
-    let mut 集まり = 大きさを決めて描く(eguiの本体, 画面の大きさ, 押す, 木).0;
-    集まり.extend(大きさを決めて描く(eguiの本体, 画面の大きさ, vec![ボタン(false)], 木).0);
+    let mut 集まり = 大きさを決めて描く(画面描画の共有状態, 画面の大きさ, 押す, 木).0;
+    集まり.extend(大きさを決めて描く(画面描画の共有状態, 画面の大きさ, vec![ボタン(false)], 木).0);
     集まり
 }

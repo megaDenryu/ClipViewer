@@ -9,7 +9,7 @@ use crate::view;
 
 /// 渡した事象を入力にして画面を1フレーム描き、発した応答を返す。同じ egui の本体で続けて描くと、フォーカスがフレームをまたいで残る。
 pub(super) fn 事象を渡して描く(
-    eguiの本体: &egui::Context,
+    画面描画の共有状態: &egui::Context,
     状態: &アプリの状態,
     事象: Vec<egui::Event>,
     修飾キー: egui::Modifiers,
@@ -20,8 +20,8 @@ pub(super) fn 事象を渡して描く(
         ..Default::default()
     };
     let mut 集まり = Vec::new();
-    let _ = eguiの本体.run(入力, |eguiの本体| {
-        egui::CentralPanel::default().show(eguiの本体, |ui| {
+    let _ = 画面描画の共有状態.run(入力, |画面描画の共有状態| {
+        egui::CentralPanel::default().show(画面描画の共有状態, |ui| {
             集まり = view::画面(状態).描画して集める(ui);
         });
     });
@@ -46,10 +46,10 @@ pub(super) fn キーを押して集める(
     キー: egui::Key,
     修飾キー: egui::Modifiers,
 ) -> Vec<応答> {
-    let eguiの本体 = egui::Context::default();
-    let _ = 事象を渡して描く(&eguiの本体, 状態, Vec::new(), egui::Modifiers::NONE);
+    let 画面描画の共有状態 = egui::Context::default();
+    let _ = 事象を渡して描く(&画面描画の共有状態, 状態, Vec::new(), egui::Modifiers::NONE);
     事象を渡して描く(
-        &eguiの本体,
+        &画面描画の共有状態,
         状態,
         vec![キーの押下(キー, 修飾キー)],
         修飾キー,
