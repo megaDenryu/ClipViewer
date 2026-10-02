@@ -2,20 +2,25 @@
 
 use std::fmt;
 
-use crate::clip_id::{発行時刻, 空の識別子エラー, 識別子の乱数};
+use crate::clip_id::{発行時刻, 識別子の乱数};
 
 /// 置いたクリップの識別子とは、重ね合わせの中で置いたクリップを一意に指す、空でない文字列のことである。
 /// 新しく発行するときの表記は「placed-<ミリ秒>-<乱数>」である。クリップ識別子とは別の型であり、取り違えても型が通らない。
 #[derive(Debug, Clone, PartialEq, Eq, Hash)]
 pub struct 置いたクリップの識別子(String);
 
+/// 空の置いたクリップの識別子エラーとは、置いたクリップの識別子の文字列が空であることである。
+#[derive(Debug, Clone, Copy, PartialEq, Eq, thiserror::Error)]
+#[error("置いたクリップの識別子が空である")]
+pub struct 空の置いたクリップの識別子エラー;
+
 impl 置いたクリップの識別子 {
     /// ファイル等にある既存の識別子の文字列から作成する。空文字列を拒む。
     pub fn 文字列から作成する(
-        文字列: String
-    ) -> Result<Self, 空の識別子エラー> {
+        文字列: String,
+    ) -> Result<Self, 空の置いたクリップの識別子エラー> {
         if 文字列.is_empty() {
-            Err(空の識別子エラー)
+            Err(空の置いたクリップの識別子エラー)
         } else {
             Ok(Self(文字列))
         }
