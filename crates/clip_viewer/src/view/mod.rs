@@ -21,6 +21,10 @@ mod aspect_fit_tests;
 #[cfg(test)]
 mod conversion_tests;
 #[cfg(test)]
+mod header_tests;
+#[cfg(test)]
+mod test_support;
+#[cfg(test)]
 mod text_tests;
 
 use sengen_egui::{
