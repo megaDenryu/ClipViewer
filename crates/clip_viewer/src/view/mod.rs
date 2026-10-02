@@ -20,6 +20,8 @@ mod text;
 mod aspect_fit_tests;
 #[cfg(test)]
 mod conversion_tests;
+#[cfg(test)]
+mod text_tests;
 
 use sengen_egui::{
     ノード, パネル, パネルの位置, 一定時間で消える通知の並び, 子, 条件付き表示, 画素, 積み型,
