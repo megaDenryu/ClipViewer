@@ -19,7 +19,7 @@ mod volume;
 
 pub use aggregate::{同時に重ねられる行の数, 重ね合わせ};
 pub use aspect::{重ねる画面の縦横比, 重ねる画面の縦横比エラー};
-pub use basis::{重ね合わせ上, 重ね合わせ上の秒};
+pub use basis::{重ねる画面に対する, 重ね合わせ上, 重ね合わせ上の秒};
 pub use error::重ね合わせの操作エラー;
 pub use inherited::クリップから受け継いだ値;
 pub use placed::置いたクリップ;

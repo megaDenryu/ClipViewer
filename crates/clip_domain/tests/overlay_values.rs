@@ -7,7 +7,7 @@ use clip_domain::*;
 use support::overlay::受け継いだ値;
 use support::{クリップを作る, 長さ};
 
-fn 百(値: f64) -> 百分率 {
+fn 百(値: f64) -> 百分率<重ねる画面に対する> {
     百分率::範囲へ収める(値)
 }
 
