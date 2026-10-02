@@ -6,6 +6,8 @@ mod source;
 
 #[cfg(test)]
 mod preview_tests;
+#[cfg(test)]
+mod stack_heading_width_tests;
 
 use sengen_egui::{
     ノード, ボタン, 付け足せる, 余白, 区切り線, 子, 文字表示, 横並び, 画素, 縦スクロール, 縦積み,
