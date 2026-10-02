@@ -5,6 +5,7 @@ mod command;
 mod ffmpeg_tests;
 mod installer;
 mod local_sengen;
+mod overlay_deps;
 mod run;
 mod verify;
 
@@ -37,6 +38,9 @@ fn main() -> std::process::ExitCode {
 fn コマンドを実行する(コマンド名: コマンド) -> Result<(), String> {
     match コマンド名 {
         コマンド::検証 => verify::検証列を実行する(),
+        コマンド::重ね合わせの層の依存の向きの検査 => {
+            overlay_deps::依存の向きを検査する(&verify::リポジトリルートを求める())
+        }
         コマンド::起動 => run::アプリを起動する(),
         コマンド::インストーラー作成 => installer::インストーラーを作る(),
         コマンド::ライセンス表示作成 => installer::ライセンス表示を作る(),

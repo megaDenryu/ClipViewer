@@ -1,4 +1,4 @@
-//! `verify` コマンド: 書式検査 → lint → テスト → FFmpeg の結合試験 → 音声出力装置の確認の検証列を順に実行する。
+//! `verify` コマンド: 書式検査 → 重ね合わせの作業場の層の依存の向きの検査 → lint → テスト → FFmpeg の結合試験 → 音声出力装置の確認の検証列を順に実行する。
 
 use std::ffi::OsString;
 use std::path::{Path, PathBuf};
@@ -6,12 +6,14 @@ use std::process::Command;
 
 use crate::audio_device::{self, 装置の確認の結果};
 use crate::ffmpeg_tests::{self, 結合試験の結果};
+use crate::overlay_deps;
 
 /// 検証列を実行する。途中の工程が失敗したら、そこで止めて失敗を返す。
 pub fn 検証列を実行する() -> Result<(), String> {
     let リポジトリルート = リポジトリルートを求める();
-    let 工程一覧: [&[&str]; 3] = [
-        &["fmt", "--check"],
+    工程を実行する(&["fmt", "--check"], &リポジトリルート, None)?;
+    overlay_deps::依存の向きを検査する(&リポジトリルート)?;
+    let 工程一覧: [&[&str]; 2] = [
         &[
             "clippy",
             "--workspace",

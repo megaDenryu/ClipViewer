@@ -5,6 +5,7 @@
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum コマンド {
     検証,
+    重ね合わせの層の依存の向きの検査,
     起動,
     インストーラー作成,
     ライセンス表示作成,
@@ -29,6 +30,7 @@ impl 引数の解釈結果 {
         };
         match 名前.as_str() {
             "verify" => Self::実行する(コマンド::検証),
+            "check-overlay-deps" => Self::実行する(コマンド::重ね合わせの層の依存の向きの検査),
             "run" => Self::実行する(コマンド::起動),
             "installer" => Self::実行する(コマンド::インストーラー作成),
             "notices" => Self::実行する(コマンド::ライセンス表示作成),
@@ -53,11 +55,15 @@ pub fn 使い方を表示する() {
     }
 }
 
-fn コマンド説明一覧() -> [(&'static str, &'static str); 6] {
+fn コマンド説明一覧() -> [(&'static str, &'static str); 7] {
     [
         (
             "verify",
-            "cargo fmt --check → cargo clippy --workspace --all-targets -- -D warnings → cargo test --workspace → FFmpeg の結合試験(video_source と clip_viewer。FFmpeg が見つかったときだけ) → 音声出力装置の確認(audio_output の例 device_check。装置が無ければ実行しなかったと表示する) を順に実行し、落ちたら止める",
+            "cargo fmt --check → check-overlay-deps → cargo clippy --workspace --all-targets -- -D warnings → cargo test --workspace → FFmpeg の結合試験(video_source と clip_viewer。FFmpeg が見つかったときだけ) → 音声出力装置の確認(audio_output の例 device_check。装置が無ければ実行しなかったと表示する) を順に実行し、落ちたら止める",
+        ),
+        (
+            "check-overlay-deps",
+            "重ね合わせの作業場の層(crates/clip_viewer/src/overlay の下)が、スタックの作業場の crate::state・crate::command・crate::view を使っていないことを検査し、調べたファイルの数を出す。読めない・解析できないファイルも見つけたこととして報告する。マクロが組み立てるパスと #[path]・include! で読むファイルは調べない",
         ),
         (
             "run",

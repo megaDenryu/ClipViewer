@@ -22,12 +22,13 @@ ClipViewer は、1本の動画から切り出した短い区間(クリップ)を
   リンクせず外部プロセスとして呼ぶため、unsafe を要する境界が無い
 - **ツールはすべて `cargo xtask` から実行する**(実行場所はリポジトリのルート。引数なしで全コマンドの一覧を表示する)。アプリの起動は `cargo xtask run` である。
   ビルド・実行・検証のツールはすべて xtask クレートへ登録する。シェルスクリプトを散らさない。登録なきツール作成禁止
-- **検証列は `cargo xtask verify`**(`cargo fmt --check` → `cargo clippy --workspace --all-targets -- -D warnings`
+- **検証列は `cargo xtask verify`**(`cargo fmt --check` → 重ね合わせの作業場の層の依存の向きの検査(`cargo xtask check-overlay-deps`) → `cargo clippy --workspace --all-targets -- -D warnings`
   → `cargo test --workspace` → FFmpeg の結合試験 → 音声出力装置の確認)。作業の区切りごとに実行し、全通過させてからコミットする。
   FFmpeg の結合試験(`crates/video_source/tests/with_ffmpeg/` と `crates/clip_viewer` の `video_feed/with_ffmpeg_tests.rs` と `state/with_ffmpeg_sound_tests.rs` と `state/with_ffmpeg_band_tests.rs` と `command/tests/with_ffmpeg_library.rs` と `command/tests/with_ffmpeg_thumbnail.rs` と `command/tests/with_ffmpeg_thumbnail_time.rs` と `command/tests/with_ffmpeg_edit.rs` と `command/tests/with_ffmpeg_unsaved.rs` と `command/tests/with_ffmpeg_open_note.rs` と `command/tests/with_ffmpeg_playback.rs` と `command/tests/with_ffmpeg_span_limit.rs` と `command/tests/with_ffmpeg_new_stack.rs` と `command/tests/with_ffmpeg_new_stack_library.rs` と `command/tests/with_ffmpeg_new_stack_clue.rs`)は `#[ignore]` にしてあり、verify が環境変数
   `CLIPVIEWER_FFMPEG_DIR` → PATH の順に ffmpeg と ffprobe を探して、見つかったときだけ `--ignored` で流す。見つからなければ
   「実行しなかった」と表示して残りを続け、最終行が「検証列は FFmpeg の結合試験(FFmpeg が見つからない)を除いて通過した」になる。音声出力装置が無いときも同じく「音声出力装置の確認(音声出力装置が無い)を除いて」と並ぶ。除いた工程は未検証である(FFmpeg が PATH に無い開発機では、
   `CLIPVIEWER_FFMPEG_DIR` に ffmpeg.exe と ffprobe.exe のあるフォルダを渡す。例: `CLIPVIEWER_FFMPEG_DIR=C:\ffmpeg\bin`)
+- **`crates/clip_viewer/src/overlay/`(重ね合わせの作業場の層)は、スタックの作業場の `crate::state`・`crate::command`・`crate::view` を使わない。** スタックの作業場から読むものは配線(`app/workspace.rs`)が値として渡す。1つのクレートの中なので Cargo では強制できず、`cargo xtask check-overlay-deps`(verify の工程)が検査する(`_doc/設計/同時再生.md` 3-2)
 - **egui / SengenEgui への依存は `crates/clip_viewer` だけに閉じる。** `clip_domain` と `video_source` に書かない
 - **FFmpeg への依存(外部プロセスの呼び出し)は `crates/video_source` だけに閉じる。** `clip_domain` に書かない
 - **`clip_domain` は egui にも FFmpeg にも依存しない。** 依存してよいのは serde / serde_json / thiserror だけである
