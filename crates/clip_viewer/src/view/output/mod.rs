@@ -12,7 +12,11 @@ mod theater_controls;
 #[cfg(test)]
 mod placeholder_tests;
 #[cfg(test)]
+mod screen_test_support;
+#[cfg(test)]
 mod screen_tests;
+#[cfg(test)]
+mod screen_trigger_tests;
 #[cfg(test)]
 mod size_tests;
 #[cfg(test)]
