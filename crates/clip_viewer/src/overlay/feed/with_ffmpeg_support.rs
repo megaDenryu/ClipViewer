@@ -9,12 +9,12 @@ use clip_domain::{
 use eframe::egui;
 use video_source::{メモリの上限, 動画の読み手};
 
-use super::row::行の映像の供給;
 use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の供給を作れたか;
 use super::supply::重ね合わせの映像の供給;
 use crate::overlay::test_support::{置き方, 置き方を並べた重ね合わせ};
 use crate::video_feed::with_ffmpeg_support::{実行ファイルを探す, 試験動画を作る};
+use crate::video_feed::コマの載せ先;
 
 /// 奥の行に 0.5〜1.5秒を0秒から、手前の行に 2.0〜3.5秒を0秒から置く置き方(重ね合わせの長さ1.5秒)。
 pub(super) const 二つの行の置き方: &[&[置き方]] = &[
@@ -80,9 +80,9 @@ impl 試験の重ね合わせ {
         }
     }
 
-    pub(super) fn 行(&self, 番号: usize) -> &行の映像の供給 {
+    pub(super) fn 行(&self, 番号: usize) -> &コマの載せ先 {
         self.供給()
-            .行(行の番号::番号から作成する(番号))
+            .行のコマの載せ先(行の番号::番号から作成する(番号))
             .expect("行の数の上限の内")
     }
 
@@ -90,7 +90,7 @@ impl 試験の重ね合わせ {
     pub(super) fn 載せた番号(&self, 番号: usize) -> Option<u32> {
         self.行(番号)
             .テクスチャ()
-            .載せたコマの番号と寸法()
+            .載せたコマ()
             .map(|載せたコマ| 載せたコマ.番号.値())
     }
 }
