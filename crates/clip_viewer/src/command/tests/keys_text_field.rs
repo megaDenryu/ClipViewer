@@ -1,0 +1,82 @@
+//! 入力欄に文字を打っている間のキーの試験。Space を入力欄に任せることと、入力欄の編集を Escape でやめた回の Escape も入力欄に任せることを確かめる。
+//! 入力欄へフォーカスを移す道具は、ほかのキーの試験(T キー等)も使う。
+
+use eframe::egui;
+
+use super::key_support::{キーの押下, 事象を渡して描く};
+use super::クリップを並べた状態;
+use crate::command::{再生の操作, 出力の操作, 応答};
+use crate::state::アプリの状態;
+
+const 無し: egui::Modifiers = egui::Modifiers::NONE;
+
+/// 文字を打つ部品(テキスト編集)にフォーカスが移るまで Tab を押し続けた egui の本体。移らなければ試験を失敗させる。
+pub(super) fn 入力欄へフォーカスを移した本体(
+    状態: &アプリの状態
+) -> egui::Context {
+    let eguiの本体 = egui::Context::default();
+    let _ = 事象を渡して描く(&eguiの本体, 状態, Vec::new(), 無し);
+    let 入力欄か = |本体: &egui::Context| {
+        本体
+            .memory(|記憶| 記憶.focused())
+            .is_some_and(|識別子| egui::text_edit::TextEditState::load(本体, 識別子).is_some())
+    };
+    for _ in 0..100 {
+        if 入力欄か(&eguiの本体) {
+            return eguiの本体;
+        }
+        let _ = 事象を渡して描く(
+            &eguiの本体,
+            状態,
+            vec![キーの押下(egui::Key::Tab, 無し)],
+            無し,
+        );
+    }
+    panic!("Tab で入力欄へフォーカスが移らなかった");
+}
+
+#[test]
+fn 入力欄に文字を打っている間は空白キーを入力欄に任せる() {
+    let 状態 = クリップを並べた状態(Vec::new());
+    let eguiの本体 = 入力欄へフォーカスを移した本体(&状態);
+    let mut 集めた = 事象を渡して描く(
+        &eguiの本体,
+        &状態,
+        vec![キーの押下(egui::Key::Space, 無し)],
+        無し,
+    );
+    集めた.extend(事象を渡して描く(
+        &eguiの本体,
+        &状態,
+        Vec::new(),
+        無し,
+    ));
+    assert!(
+        !集めた.contains(&応答::再生(再生の操作::再生を切り替える)),
+        "{集めた:?}"
+    );
+}
+
+#[test]
+fn 入力欄の編集をエスケープでやめた回は全画面もシアターも抜けない() {
+    let 状態 = クリップを並べた状態(Vec::new());
+    let eguiの本体 = 入力欄へフォーカスを移した本体(&状態);
+    let 集めた = 事象を渡して描く(
+        &eguiの本体,
+        &状態,
+        vec![キーの押下(egui::Key::Escape, 無し)],
+        無し,
+    );
+    assert!(
+        !集めた.contains(&応答::出力(出力の操作::全画面かシアターを抜ける)),
+        "{集めた:?}"
+    );
+    let _ = 事象を渡して描く(&eguiの本体, &状態, Vec::new(), 無し);
+    let 次の回 = 事象を渡して描く(
+        &eguiの本体,
+        &状態,
+        vec![キーの押下(egui::Key::Escape, 無し)],
+        無し,
+    );
+    assert_eq!(次の回, [応答::出力(出力の操作::全画面かシアターを抜ける)]);
+}

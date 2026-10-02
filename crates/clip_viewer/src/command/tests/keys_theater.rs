@@ -4,7 +4,7 @@
 use eframe::egui;
 
 use super::key_support::{キーの押下, キーを押して集める, 事象を渡して描く};
-use super::keys_focus::入力欄へフォーカスを移した本体;
+use super::keys_text_field::入力欄へフォーカスを移した本体;
 use super::クリップを並べた状態;
 use crate::command::{出力の操作, 応答};
 use crate::state::{アプリの状態, 画面の構え};
