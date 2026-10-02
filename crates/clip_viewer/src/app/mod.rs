@@ -35,9 +35,13 @@ mod workspace_front_tests;
 #[cfg(test)]
 mod workspace_keys_tests;
 #[cfg(test)]
+mod workspace_keys_with_ffmpeg_tests;
+#[cfg(test)]
 mod workspace_redraw_tests;
 #[cfg(test)]
 mod workspace_test_frames;
+#[cfg(test)]
+mod workspace_test_keys;
 #[cfg(test)]
 mod workspace_test_snapshot;
 #[cfg(test)]
