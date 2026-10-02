@@ -5,9 +5,9 @@
 
 use video_source::{バイト数, メモリの上限};
 
-use super::row_showing::載せているコマの出どころ;
 use super::with_ffmpeg_support::{二つの行の置き方, 試験の重ね合わせ};
 use crate::video_feed::with_ffmpeg_support::成り立つまで待つ;
+use crate::video_feed::載せているコマの出どころ;
 
 /// 1コマも収まらないメモリの上限。倉庫はどの区間も上限の全体を超えるとして受け付けない。
 fn 溜められない上限() -> メモリの上限 {

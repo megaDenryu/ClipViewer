@@ -11,12 +11,11 @@ use clip_domain::{
 use eframe::egui;
 use video_source::{メモリの上限, 動画の読み手};
 
-use super::row_showing::載せているコマの出どころ;
 use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の供給を作れたか;
 use crate::overlay::test_support::{置き方, 置き方を並べた重ね合わせ};
 use crate::video_feed::with_ffmpeg_support::実行ファイルを探す;
-use crate::video_feed::動画を開けない理由;
+use crate::video_feed::{動画を開けない理由, 載せているコマの出どころ};
 
 #[test]
 #[ignore = "FFmpeg が要る。cargo xtask verify が FFmpeg を見つけたときだけ流す"]

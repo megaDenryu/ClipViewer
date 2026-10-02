@@ -9,12 +9,12 @@ use clip_domain::{
 use eframe::egui;
 use video_source::{メモリの上限, 動画の読み手};
 
-use super::row::コマの載せ先;
 use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の供給を作れたか;
 use super::supply::重ね合わせの映像の供給;
 use crate::overlay::test_support::{置き方, 置き方を並べた重ね合わせ};
 use crate::video_feed::with_ffmpeg_support::{実行ファイルを探す, 試験動画を作る};
+use crate::video_feed::コマの載せ先;
 
 /// 奥の行に 0.5〜1.5秒を0秒から、手前の行に 2.0〜3.5秒を0秒から置く置き方(重ね合わせの長さ1.5秒)。
 pub(super) const 二つの行の置き方: &[&[置き方]] = &[

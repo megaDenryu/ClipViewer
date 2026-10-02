@@ -7,12 +7,11 @@
 use clip_domain::{動画の番号, 動画上の区間, 時刻};
 use video_source::{メモリの上限, 受付の札};
 
-use super::row_showing::載せているコマの出どころ;
 use super::video_status::重ね合わせの動画を開けたか;
 use super::with_ffmpeg_support::{二つの行の置き方, 試験の重ね合わせ};
 use crate::overlay::test_support::置き方;
 use crate::video_feed::with_ffmpeg_support::成り立つまで待つ;
-use crate::video_feed::依頼の台帳;
+use crate::video_feed::{依頼の台帳, 載せているコマの出どころ};
 
 fn 区間(開始: f64, 終了: f64) -> 動画上の区間 {
     let 秒 = |値| 時刻::作成する(値).expect("時刻");
