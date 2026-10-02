@@ -4,18 +4,13 @@
 //! 参照: _doc/設計/同時再生.md
 
 mod aggregate;
-mod aggregate_place;
 mod aspect;
 mod basis;
 mod error;
 mod inherited;
-mod placed;
 mod placed_id;
 mod rect;
-mod row;
 mod rows;
-mod rows_edit;
-mod rows_place;
 mod video_table;
 mod volume;
 
@@ -24,12 +19,12 @@ pub use aspect::{重ねる画面の縦横比, 重ねる画面の縦横比エラ�
 pub use basis::{重ねる画面に対する, 重ね合わせ上, 重ね合わせ上の秒};
 pub use error::重ね合わせの操作エラー;
 pub use inherited::クリップから受け継いだ値;
-pub use placed::置いたクリップ;
 pub use placed_id::{
     空の置いたクリップの識別子エラー, 置いたクリップの識別子, 置いたクリップの識別子の発行元,
 };
 pub use rect::{映す矩形, 映す矩形エラー};
-pub use row::{タイムラインの行, 行の番号};
-pub use rows::{タイムラインの行の並び, 同時に重ねられる行の数};
+pub use rows::{
+    タイムラインの行, タイムラインの行の並び, 同時に重ねられる行の数, 置いたクリップ, 行の番号,
+};
 pub use video_table::{使う動画の表, 動画の番号};
 pub use volume::置いたクリップの音の設定;

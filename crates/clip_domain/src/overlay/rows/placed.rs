@@ -1,16 +1,16 @@
 //! 置いたクリップ。重ね合わせの中のタイムラインの行に置かれた、映す場所と音の設定と始まりの時刻を持つ、スタックのクリップとは別の型。
 
-use super::basis::重ね合わせ上の秒;
-use super::inherited::クリップから受け継いだ値;
-use super::placed_id::置いたクリップの識別子;
-use super::rect::映す矩形;
-use super::video_table::動画の番号;
-use super::volume::置いたクリップの音の設定;
 use crate::duration::時間の長さ;
+use crate::overlay::basis::重ね合わせ上の秒;
+use crate::overlay::inherited::クリップから受け継いだ値;
+use crate::overlay::placed_id::置いたクリップの識別子;
+use crate::overlay::rect::映す矩形;
+use crate::overlay::video_table::動画の番号;
+use crate::overlay::volume::置いたクリップの音の設定;
 
 /// 置いたクリップとは、1本の動画の区間に、リピート回数・クロップ範囲・動画の番号・重ね合わせ上の始まりの時刻・
 /// 映す矩形・置いたクリップの音の設定を付けたもののことである。スタックのクリップ(`クリップ`)とは別の型である。
-/// 識別子・動画の番号・始まりの時刻は重ね合わせの不変条件にかかわるため、重ね合わせの操作だけが変える。
+/// 置いたあとの値を変える口はタイムラインの行の並びのモジュールの中にだけ開き、始まりの時刻は行から取り出してから変える。
 #[derive(Debug, Clone, PartialEq)]
 pub struct 置いたクリップ {
     識別子: 置いたクリップの識別子,
@@ -23,7 +23,7 @@ pub struct 置いたクリップ {
 
 impl 置いたクリップ {
     /// 映す矩形を重ねる画面の全体、音の設定を最初の値にして作る。動画の番号が表にあることは呼び出し側(重ね合わせ)が確かめる。
-    pub(super) fn 既定値で作成する(
+    pub(in crate::overlay) fn 既定値で作成する(
         識別子: 置いたクリップの識別子,
         受け継いだ値: クリップから受け継いだ値,
         動画: 動画の番号,

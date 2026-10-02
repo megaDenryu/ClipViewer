@@ -1,16 +1,16 @@
-//! 重ね合わせへ置く操作と、置く前に重ね合わせが受け持つ確かめ(動画の番号・区間と動画の長さ・区間の長さ・識別子の重なり)。
+//! 重ね合わせへ置く操作と、置く前に重ね合わせが受け持つ確かめ(動画の番号・区間と動画の長さ・区間の長さ)。
 //! 確かめを全部済ませてからタイムラインの行の並びへ置く。拒んだときは重ね合わせを操作の前のまま残す。
 
-use super::aggregate::重ね合わせ;
-use super::basis::重ね合わせ上の秒;
-use super::error::重ね合わせの操作エラー;
-use super::inherited::クリップから受け継いだ値;
-use super::placed::置いたクリップ;
-use super::placed_id::{
+use super::重ね合わせ;
+use crate::duration::時間の長さ;
+use crate::overlay::basis::重ね合わせ上の秒;
+use crate::overlay::error::重ね合わせの操作エラー;
+use crate::overlay::inherited::クリップから受け継いだ値;
+use crate::overlay::placed_id::{
     置いたクリップの識別子, 置いたクリップの識別子の発行元
 };
-use super::video_table::動画の番号;
-use crate::duration::時間の長さ;
+use crate::overlay::rows::置いたクリップ;
+use crate::overlay::video_table::動画の番号;
 use crate::time::時刻;
 
 impl 重ね合わせ {
@@ -38,9 +38,6 @@ impl 重ね合わせ {
             return Err(重ね合わせの操作エラー::区間の長さが0);
         }
         let 識別子 = 発行元.新しい識別子を発行する();
-        if self.識別子で探す(&識別子).is_some() {
-            return Err(重ね合わせの操作エラー::識別子が重複している(識別子));
-        }
         let 置いた = 置いたクリップ::既定値で作成する(
             識別子.clone(),
             受け継いだ値,
@@ -55,12 +52,12 @@ impl 重ね合わせ {
         &self,
         動画: 動画の番号,
     ) -> Result<(), 重ね合わせの操作エラー> {
-        if self.動画の表.持っているか(動画) {
+        if self.動画の表().持っているか(動画) {
             return Ok(());
         }
         Err(重ね合わせの操作エラー::動画の番号が表に無い {
             番号: 動画,
-            動画の数: self.動画の表.動画の数(),
+            動画の数: self.動画の表().動画の数(),
         })
     }
 }

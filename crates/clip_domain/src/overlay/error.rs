@@ -2,8 +2,8 @@
 
 use super::basis::重ね合わせ上の秒;
 use super::placed_id::置いたクリップの識別子;
-use super::row::行の番号;
 use super::rows::同時に重ねられる行の数;
+use super::rows::行の番号;
 use super::video_table::動画の番号;
 use crate::duration::時間の長さ;
 use crate::time::動画上の秒;
