@@ -11,7 +11,7 @@ use clip_domain::{
 use eframe::egui;
 use video_source::{メモリの上限, 動画の読み手};
 
-use super::row_showing::行に載せているコマの出どころ;
+use super::row_showing::載せているコマの出どころ;
 use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の供給を作れたか;
 use crate::overlay::test_support::{置き方, 置き方を並べた重ね合わせ};
@@ -66,6 +66,6 @@ fn 開けない動画は_その理由を持ち_その動画の行は何も載せ
         .expect("行の数の上限の内");
     assert_eq!(
         行.載せているコマの出どころ(),
-        行に載せているコマの出どころ::載せていない
+        載せているコマの出どころ::載せていない
     );
 }

@@ -9,7 +9,7 @@ use clip_domain::{
 use eframe::egui;
 use video_source::{メモリの上限, 動画の読み手};
 
-use super::row::行の映像の供給;
+use super::row::コマの載せ先;
 use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の供給を作れたか;
 use super::supply::重ね合わせの映像の供給;
@@ -80,7 +80,7 @@ impl 試験の重ね合わせ {
         }
     }
 
-    pub(super) fn 行(&self, 番号: usize) -> &行の映像の供給 {
+    pub(super) fn 行(&self, 番号: usize) -> &コマの載せ先 {
         self.供給()
             .行(行の番号::番号から作成する(番号))
             .expect("行の数の上限の内")
@@ -90,7 +90,7 @@ impl 試験の重ね合わせ {
     pub(super) fn 載せた番号(&self, 番号: usize) -> Option<u32> {
         self.行(番号)
             .テクスチャ()
-            .載せたコマの番号と寸法()
+            .載せたコマ()
             .map(|載せたコマ| 載せたコマ.番号.値())
     }
 }
