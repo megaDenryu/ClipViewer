@@ -5,6 +5,9 @@ mod callback;
 mod error;
 mod shared;
 
+#[cfg(test)]
+mod golden_tests;
+
 pub use error::音声出力のエラー;
 
 use std::sync::Arc;
