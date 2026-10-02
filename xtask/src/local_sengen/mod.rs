@@ -1,14 +1,16 @@
 //! `local-sengen` コマンド: push する前の手元の SengenEgui で ClipViewer を試すときだけ使うコマンドである。
 //! 普段は SengenEgui を push してから crates/clip_viewer/Cargo.toml の sengen_egui の rev を上げ、このコマンドを使わない。
-//! cargo の `--config` で、その実行の間だけ SengenEgui の git 依存を手元のフォルダへ差し替える。差し替えた cargo は
+//! cargo の `--config`(サブコマンドの直後に挟む。arguments.rs)で、その実行の間だけ SengenEgui の git 依存を手元のフォルダへ差し替える。差し替えた cargo は
 //! Cargo.lock の sengen_egui から source の行を消すため、見張り役が実行の前の中身を覚え、終わったら書き戻す(`guard.rs`)。
 
+mod arguments;
 mod guard;
 mod sengen_folder;
 
 pub use guard::{見張り役として待って書き戻す, 見張り役のコマンド名};
 
 use crate::verify::{リポジトリルートを求める, 工程を実行する};
+use arguments::差し替えの設定を挟んだ引数;
 use guard::依存の固定ファイルの見張り;
 use sengen_folder::{フォルダを指す環境変数, 手元のSengenEguiのフォルダ};
 
@@ -40,10 +42,7 @@ pub fn 手元のsengen_eguiへ差し替えてcargoを実行する(
     );
     let 見張り = 依存の固定ファイルの見張り::起こす()?;
     let 設定 = フォルダ.差し替えの設定();
-    let 引数: Vec<&str> = ["--config", 設定.as_str()]
-        .into_iter()
-        .chain(cargoの引数.iter().map(String::as_str))
-        .collect();
+    let 引数 = 差し替えの設定を挟んだ引数(cargoの引数, &設定);
     let 実行の結果 = 工程を実行する(&引数, &リポジトリルート, None);
     let 書き戻しの結果 = 見張り.書き戻させる();
     match (実行の結果, 書き戻しの結果) {
