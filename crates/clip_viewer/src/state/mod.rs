@@ -77,6 +77,7 @@ pub(crate) use window_vocabulary::{
 use clip_domain::クリップスタック;
 
 use crate::video_feed::読み込んだ動画;
+use crate::viewer_settings::キーの割り当て;
 
 /// アプリの状態とは、画面が読むすべての値の組のことである。
 /// 不変条件: クロップ枠の掴み始めと区間の帯のドラッグは並びの中のクリップを指し、開いているスタックは並びの出どころであり、
@@ -96,6 +97,7 @@ pub(crate) struct アプリの状態 {
     pub(crate) 音の出力: 音の出力の状況,
     pub(crate) ライブラリ: library::ライブラリの状態,
     pub(crate) キーの一覧: キーの一覧のダイアログ,
+    pub(crate) キーの割り当て: キーの割り当て,
     pub(crate) ウインドウ: ウインドウの状態,
     pub(crate) 見る側の設定を保存するまでの時間: Option<std::time::Duration>, // 配線の保存係が毎フレーム置き、画面が描き直しの予約に使う
 }

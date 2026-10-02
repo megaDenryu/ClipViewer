@@ -1,5 +1,6 @@
 //! settings.json 第1版の見る側の設定の項目と、最新との両方向の変換。フィールド名はファイル形式が決めている英語の名前であり、翻訳しない。
 //! どの項目も値が無いときは書かない(`skip_serializing_if`)。第1版の見本(見る側の項目を持たない)の書き出しを変えないためである。
+//! キーの割り当て(keyBindings)は、見る側の設定を覚えていても、既定と違う操作が無ければ書かない(v1_keys.rs)。
 //! 文字列の項目(aspectRatio・displaySize)に知らない値があれば、その項目は覚えていないとみなす(新しいアプリが同じ版に値を足しても、ファイルを壊れたとみなさない)。
 //! 参照: _doc/設計/ライブラリ.md「settings.json の形式」
 
@@ -7,6 +8,7 @@ use audio_pcm::音量;
 use serde::{Deserialize, Serialize};
 
 use super::settings::覚えた見る側の設定;
+use super::v1_keys::第1版のキーの割り当て;
 use super::v1_notation::{
     アスペクト比の表記, 表示サイズの表記, 表記から読む, 表記にする
 };
@@ -33,6 +35,8 @@ pub(super) struct 第1版の見る側の設定 {
     aspect_ratio: Option<String>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     display_size: Option<String>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    key_bindings: Option<第1版のキーの割り当て>,
 }
 
 impl 第1版の見る側の設定 {
@@ -49,6 +53,7 @@ impl 第1版の見る側の設定 {
             mirror_horizontally,
             aspect_ratio,
             display_size,
+            key_bindings,
         } = self;
         let 既定 = 見る側の設定::既定;
         覚えた見る側の設定::覚えている(見る側の設定 {
@@ -71,6 +76,9 @@ impl 第1版の見る側の設定 {
             表示サイズ: display_size
                 .and_then(|表記| 表記から読む(&表示サイズの表記, &表記))
                 .unwrap_or(既定.表示サイズ),
+            キー: 第1版のキーの割り当て::キーの割り当てへ変換する(
+                key_bindings,
+            ),
         })
     }
 
@@ -94,6 +102,9 @@ impl 第1版の見る側の設定 {
             mirror_horizontally: Some(設定.左右 == 左右の向き::反転),
             aspect_ratio: Some(表記にする(&アスペクト比の表記, 設定.アスペクト比)),
             display_size: Some(表記にする(&表示サイズの表記, 設定.表示サイズ)),
+            key_bindings: 第1版のキーの割り当て::キーの割り当てから作る(
+                設定.キー,
+            ),
         }
     }
 }

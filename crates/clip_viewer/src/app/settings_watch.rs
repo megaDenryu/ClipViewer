@@ -9,6 +9,10 @@ use crate::viewer_settings::見る側の設定;
 pub(super) const 落ち着くまでの時間: Duration = Duration::from_secs(1);
 
 /// 見た結果とは、今の設定を見て、保存するか、まだしないかの区別のことである。
+#[expect(
+    clippy::large_enum_variant,
+    reason = "見る側の設定はキーの割り当てを含めて約270バイトの値であり、保存の見張りと読み書きで1フレームに数回写すだけである。箱に入れると毎フレームの比較のたびに確保が起きる"
+)]
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub(super) enum 見た結果 {
     まだ保存しない,

@@ -16,7 +16,7 @@ pub(super) const 形式の名前: &str = "ClipViewer.settings";
 
 /// 第1版が自分の項目として書く名前。第1版の設定の項目と、平らに入れた見る側の設定の項目である。
 /// 第0版から変換するときに、知らない項目からこの名前を除く(`v0.rs`)。項目を足したらここにも足す(試験が確かめる)。
-pub(super) const 第1版が書く項目の名前: [&str; 10] = [
+pub(super) const 第1版が書く項目の名前: [&str; 11] = [
     "format",
     "version",
     "ffmpegFolder",
@@ -27,6 +27,7 @@ pub(super) const 第1版が書く項目の名前: [&str; 10] = [
     "mirrorHorizontally",
     "aspectRatio",
     "displaySize",
+    "keyBindings",
 ];
 
 /// 第1版の version に入る版の番号。

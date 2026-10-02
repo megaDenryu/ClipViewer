@@ -10,6 +10,7 @@ mod rewrite;
 mod settings;
 mod v0;
 mod v1;
+mod v1_keys;
 mod v1_notation;
 mod v1_viewer;
 mod v1_window;
@@ -21,6 +22,8 @@ mod broken_move_tests;
 mod broken_tests;
 #[cfg(test)]
 mod item_name_tests;
+#[cfg(test)]
+mod keys_tests;
 #[cfg(test)]
 mod test_support;
 #[cfg(test)]

@@ -13,6 +13,7 @@ mod ffmpeg_ops;
 mod file_drop;
 mod file_ops;
 mod id_issuer;
+mod key_settings_ops;
 mod library;
 mod next_clip;
 mod output_ops;
@@ -41,12 +42,13 @@ pub(crate) use crop_ops::{クロップ枠の掴む所, クロップ枠の操作}
 pub(crate) use ffmpeg_ops::FFmpegの操作;
 pub(crate) use file_drop::一度に落としたファイル;
 pub(crate) use file_ops::ファイルの操作;
+pub(crate) use key_settings_ops::キーの設定の操作;
 pub(crate) use library::ライブラリの操作;
 pub(crate) use output_ops::出力の操作;
 pub(crate) use playback_ops::{再生の操作, 送る向き};
 pub(crate) use span_edit::{区間の端, 端のずらし方};
 
-/// 応答とは、画面が発する操作を、画面の区画ごとの操作の列挙で束ねたもののことである。
+/// 応答とは、画面が発する操作を、画面の区画ごとの操作の列挙で束ねたもののことである(キーの設定はキーの一覧のダイアログの操作)。
 /// 画面は描画の間にこの値を集めるだけで、状態へ当てるのは描画の後の `操作の適用係::適用する` である。
 #[derive(Debug, Clone, PartialEq)]
 pub(crate) enum 応答 {
@@ -58,4 +60,5 @@ pub(crate) enum 応答 {
     再生(再生の操作),
     FFmpeg(FFmpegの操作),
     ライブラリ(ライブラリの操作),
+    キーの設定(キーの設定の操作),
 }

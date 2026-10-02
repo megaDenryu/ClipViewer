@@ -1,10 +1,13 @@
-//! settings.json の試験の共有部品。試験ごとに重ならない一時フォルダの保管場所と、ファイルを置く・読む・消す部品を持つ。
+//! settings.json の試験の共有部品。試験ごとに重ならない一時フォルダの保管場所と、ファイルを置く・読む・消す部品と、見本のキーの割り当てを持つ。
 #![allow(clippy::expect_used)]
 
 use std::path::{Path, PathBuf};
 use std::time::{Duration, SystemTime};
 
+use sengen_egui::{キー, キーの組, 修飾キー};
+
 use super::アプリの設定の保管場所;
+use crate::viewer_settings::{キーで行う操作, キーの割り当て};
 
 /// 試験で保存に渡す日時(2026年9月27日ごろの決まった時刻)。
 pub(super) fn 試験の日時() -> SystemTime {
@@ -58,4 +61,24 @@ pub(super) fn 後片付け(パス: &Path) {
 
 pub(super) fn 読み直す(パス: &Path) -> serde_json::Value {
     serde_json::from_str(&std::fs::read_to_string(パス).expect("読める")).expect("JSON")
+}
+
+/// 見本の見る側の設定のキーの割り当て。再生と停止を P に、シアターと編集の切り替えを Ctrl+Shift+T に変えてある。
+pub(super) fn 見本のキーの割り当て() -> キーの割り当て {
+    let コマンドとシフト = 修飾キー {
+        shift: true,
+        ..修飾キー::COMMAND
+    };
+    キーの割り当て::既定()
+        .キーを変えた(
+            キーで行う操作::再生と停止を切り替える,
+            キーの組::単独(キー::P),
+        )
+        .and_then(|割り当て| {
+            割り当て.キーを変えた(
+                キーで行う操作::シアターと編集を切り替える,
+                キーの組::生成する(コマンドとシフト, キー::T),
+            )
+        })
+        .expect("空いたキーへは変えられる")
 }

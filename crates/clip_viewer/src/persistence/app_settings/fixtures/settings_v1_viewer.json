@@ -11,5 +11,13 @@
   "playbackSpeed": 0.75,
   "mirrorHorizontally": true,
   "aspectRatio": "crop",
-  "displaySize": "noMargin"
+  "displaySize": "noMargin",
+  "keyBindings": {
+    "togglePlayback": [
+      "P"
+    ],
+    "toggleTheater": [
+      "Ctrl+Shift+T"
+    ]
+  }
 }
