@@ -7,6 +7,7 @@ mod band_grab_release;
 mod band_identity;
 mod band_outside;
 mod band_position;
+mod band_preview_mode;
 mod band_rounding;
 mod clip;
 mod clip_arrange;
