@@ -4,6 +4,7 @@
 //! 参照: _doc/設計/同時再生.md
 
 mod aggregate;
+mod arrange;
 mod aspect;
 mod basis;
 mod error;
@@ -15,6 +16,9 @@ mod video_table;
 mod volume;
 
 pub use aggregate::重ね合わせ;
+pub use arrange::{
+    スタックから並べた結果, スタックから並べるエラー, 置かなかったクリップ, 置かなかった理由,
+};
 pub use aspect::{重ねる画面の縦横比, 重ねる画面の縦横比エラー};
 pub use basis::{重ねる画面に対する, 重ね合わせ上, 重ね合わせ上の秒};
 pub use error::重ね合わせの操作エラー;

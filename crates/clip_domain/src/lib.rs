@@ -63,7 +63,7 @@ pub use library::{
 };
 pub use overlay::*;
 pub use percent::{
-    元の動画に対する, 百分率, 百分率の差分, 百分率の差分エラー
+    元の動画に対する, 百分率, 百分率の差分, 百分率の差分エラー, 等分した区間
 };
 pub use pixel::{画素の寸法, 画素の寸法エラー, 縦横比};
 pub use play_mode::再生モード;

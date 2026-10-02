@@ -3,6 +3,7 @@
 
 use clip_domain::*;
 
+pub mod arrange;
 pub mod library_text;
 pub mod next_result;
 pub mod overlay;
