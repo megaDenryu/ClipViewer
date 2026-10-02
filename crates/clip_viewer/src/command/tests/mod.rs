@@ -16,6 +16,7 @@ mod clip_span_shrink;
 mod crop;
 mod edit_boundary_and_delete;
 mod edit_undo;
+mod ffmpeg_reader_lend;
 mod file_drop;
 mod file_drop_dialog;
 mod file_drop_support;
