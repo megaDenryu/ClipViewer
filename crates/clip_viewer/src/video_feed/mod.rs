@@ -30,6 +30,8 @@ mod prefetch_order_tests;
 #[cfg(test)]
 mod pure_tests;
 #[cfg(test)]
+mod stream_position_tests;
+#[cfg(test)]
 mod with_ffmpeg_stream_tests;
 #[cfg(test)]
 pub(crate) mod with_ffmpeg_support;
