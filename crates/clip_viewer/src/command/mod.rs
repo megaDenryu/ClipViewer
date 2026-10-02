@@ -15,6 +15,7 @@ mod file_ops;
 mod id_issuer;
 mod key_settings_ops;
 mod library;
+mod new_stack;
 mod next_clip;
 mod output_ops;
 mod playback_ops;
