@@ -10,6 +10,7 @@ mod basis;
 mod error;
 mod inherited;
 mod placed_id;
+mod playback;
 mod rect;
 mod rows;
 mod video_table;
@@ -25,6 +26,10 @@ pub use error::重ね合わせの操作エラー;
 pub use inherited::クリップから受け継いだ値;
 pub use placed_id::{
     空の置いたクリップの識別子エラー, 置いたクリップの識別子, 置いたクリップの識別子の発行元,
+};
+pub use playback::{
+    置いたクリップの再生の中身, 置いたクリップの区間の終わりの行き先, 行が映すもの, 行の映し方,
+    重ね合わせの再生位置, 重ね合わせの時計を進めた結果,
 };
 pub use rect::{映す矩形, 映す矩形エラー};
 pub use rows::{
