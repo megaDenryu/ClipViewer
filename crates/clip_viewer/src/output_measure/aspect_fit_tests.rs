@@ -1,4 +1,4 @@
-//! 縦横比を保った寸法の計算の試験。期待値は手で計算した値である。出力の寸法の試験は output/size_tests.rs、プレビューの寸法の試験は sidebar/preview_tests.rs にある。
+//! 縦横比を保った寸法の計算の試験。期待値は手で計算した値である。出力の寸法の試験は view/output/size_tests.rs、プレビューの寸法の試験は view/sidebar/preview_tests.rs にある。
 
 use clip_domain::{画素の寸法, 縦横比};
 

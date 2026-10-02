@@ -3,7 +3,6 @@
 //! シアターでは出力だけをウインドウ全体に置き、再生コントロールは出力の下端へ重ねる(view/output/theater_controls.rs)。
 //! ライブラリの構えでは、ヘッダーの下をスタックのライブラリの一覧にする。参照: _doc/設計/画面.md・_doc/設計/ライブラリ.md
 
-mod aspect_fit;
 mod control;
 mod conversion;
 mod ffmpeg_setup;
@@ -17,11 +16,11 @@ pub(crate) mod styles;
 mod text;
 
 #[cfg(test)]
-mod aspect_fit_tests;
-#[cfg(test)]
 mod conversion_tests;
 #[cfg(test)]
 mod header_tests;
+#[cfg(test)]
+mod header_width_tests;
 #[cfg(test)]
 mod test_support;
 #[cfg(test)]

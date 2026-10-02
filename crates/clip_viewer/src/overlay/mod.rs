@@ -29,5 +29,5 @@ pub(crate) use state::{
     今のスタックの値, 見たスタックの保存, 開いている動画の値
 };
 #[cfg(test)]
-pub(crate) use view::重ね合わせの作業場のキーの並び;
+pub(crate) use view::重ね合わせの作業場が受け取るキーの組;
 pub(crate) use workspace::重ね合わせの作業場;

@@ -24,7 +24,7 @@ mod screen_tests;
 mod test_support;
 
 #[cfg(test)]
-pub(crate) use keys::重ね合わせの作業場のキーの並び;
+pub(crate) use keys::重ね合わせの作業場が受け取るキーの組;
 
 use std::time::Duration;
 
@@ -76,8 +76,7 @@ fn 出力の区画(
 ) -> ノード<重ね合わせの作業場の応答> {
     let 報告 = 縦積み(
         状態
-            .置かなかったクリップの報告
-            .画面に出す文の並び()
+            .置かなかったクリップの報告の文()
             .into_iter()
             .map(|文| 文字表示(文).into())
             .collect(),

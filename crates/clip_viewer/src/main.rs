@@ -13,6 +13,7 @@ mod audio_feed;
 mod command;
 mod crash_record;
 mod launch;
+mod output_measure;
 mod overlay;
 mod persistence;
 mod redraw_interval;

@@ -6,9 +6,9 @@ use sengen_egui::ポインタが止まると隠す指定;
 
 use super::screen::出力の画面の材料;
 use super::size::出力の描き方;
+use crate::output_measure::クロップを描く部分にする;
 use crate::state::{アプリの状態, 画面の構え};
 use crate::video_feed::読み込んだ動画;
-use crate::view::conversion::クロップを描く部分にする;
 use crate::view::text;
 
 impl 出力の画面の材料 {
