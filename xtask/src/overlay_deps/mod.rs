@@ -1,0 +1,52 @@
+//! `check-overlay-deps` コマンド: 重ね合わせの作業場の層(`crates/clip_viewer/src/overlay/`)が、スタックの作業場の `crate::state`・
+//! `crate::command`・`crate::view` を使えないことを検査する。調べないもの: マクロが組み立てるパス、`#[path]` と `include!` で読むファイル、
+//! 重ね合わせの層の外のモジュールが再公開したもの(`crate::他::state` のような経由)。参照: _doc/設計/同時再生.md 3-2「依存の向きの検査」
+
+mod extern_crate;
+mod findings;
+mod forbidden_reference;
+mod module_path;
+mod paths;
+mod read_use_tree;
+mod reader;
+mod reason;
+mod skipping;
+mod source_root;
+mod token;
+mod tokens;
+mod use_tree;
+mod written_path;
+
+#[cfg(test)]
+mod folder_tests;
+#[cfg(test)]
+mod path_glob_alias_tests;
+#[cfg(test)]
+mod path_test_support;
+#[cfg(test)]
+mod path_tests;
+
+use std::path::Path;
+
+use source_root::ソースルート;
+
+/// 検査を実行して結果を表示する。見つけたことが1つでもあれば失敗を返す。
+pub fn 依存の向きを検査する(リポジトリルート: &Path) -> Result<(), String> {
+    println!("> check-overlay-deps");
+    let 結果 = ソースルート::リポジトリから決める(リポジトリルート).重ね合わせの層を検査する()?;
+    for 見つけた in &結果.見つけたことの並び {
+        println!("{見つけた}");
+    }
+    println!(
+        "重ね合わせの作業場の層の {} 個のファイルを調べ、{} 件を見つけた",
+        結果.調べたファイルの数,
+        結果.見つけたことの並び.len()
+    );
+    if 結果.調べたファイルの数 == 0 {
+        Err("重ね合わせの作業場の層に調べるファイルが無い(置き場所が変わったなら検査の置き場所を直す)".to_string())
+    } else if 結果.見つけたことの並び.is_empty() {
+        Ok(())
+    } else {
+        Err("重ね合わせの作業場の層が、スタックの作業場のモジュールを使っているか、調べられないファイルがある".to_string())
+    }
+}
