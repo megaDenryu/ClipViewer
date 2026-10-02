@@ -26,7 +26,7 @@ pub(crate) use command::重ね合わせの作業場の応答;
 #[cfg(test)]
 pub(crate) use command::{落とされたファイルの知らせ, 重ね合わせの操作};
 pub(crate) use state::{
-    今のスタックの値, 見たスタックの保存, 開いている動画の値
+    スタックの保存の観測結果, 今のスタックの値, 開いている動画の値
 };
 #[cfg(test)]
 pub(crate) use view::重ね合わせの作業場が受け取るキーの組;
