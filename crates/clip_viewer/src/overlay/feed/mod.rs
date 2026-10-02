@@ -7,11 +7,15 @@ mod prefetch;
 mod row;
 mod row_query;
 mod row_request;
+mod row_showing;
 mod row_stream;
 mod row_texture;
+mod show_condition;
 mod status;
 mod supply;
+mod supply_failure;
 mod video;
+mod video_status;
 
 #[cfg(test)]
 mod prefetch_tests;
@@ -24,4 +28,7 @@ mod with_ffmpeg_support;
 #[cfg(test)]
 mod with_ffmpeg_tests;
 
+pub(crate) use show_condition::映すものを求める条件;
 pub(crate) use status::重ね合わせの映像の様子;
+#[cfg(test)]
+pub(crate) use supply_failure::映像の供給を作れない理由;

@@ -12,6 +12,8 @@ mod workspace;
 pub(crate) mod test_support;
 #[cfg(test)]
 mod tests;
+#[cfg(test)]
+mod with_ffmpeg_feed_tests;
 
 pub(crate) use command::重ね合わせの作業場の応答;
 #[cfg(test)]

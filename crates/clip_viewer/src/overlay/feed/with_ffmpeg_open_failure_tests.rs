@@ -11,10 +11,10 @@ use clip_domain::{
 use eframe::egui;
 use video_source::{メモリの上限, 動画の読み手};
 
-use super::row::行の映し具合;
+use super::row_showing::行の映し具合;
+use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の様子;
 use crate::overlay::test_support::{置き方, 置き方を並べた重ね合わせ};
-use crate::stream_rules::流し読みの開き直し;
 use crate::video_feed::with_ffmpeg_support::実行ファイルを探す;
 use crate::video_feed::動画を開けない理由;
 
@@ -44,16 +44,15 @@ fn 開けない動画は_その理由を動画の様子に持ち_その動画の
         メモリの上限::既定,
         &egui::Context::default(),
     );
-    assert!(映像.供給できない理由().is_none(), "供給は作れる");
-    映像.供給する(
-        &重ね合わせ,
-        時刻::先頭,
-        末尾での振る舞い::止まる,
-        流し読みの開き直し::してよい,
-        Instant::now(),
-    );
+    let 知らせの文 = 映像.開けなかった知らせの文();
+    assert_eq!(知らせの文.len(), 1, "開けなかった動画の理由を1つ知らせる");
+    let 条件 = 映すものを求める条件 {
+        時刻: 時刻::先頭,
+        全体の末尾: 末尾での振る舞い::止まる,
+    };
+    映像.供給する(&重ね合わせ, 条件, Instant::now());
     let 重ね合わせの映像の様子::供給している(供給) = &映像 else {
-        panic!("供給を作れる");
+        panic!("動画を開けなくても供給は作れる");
     };
     let 様子 = 供給
         .動画の様子(動画の番号::番号から作成する(0))
