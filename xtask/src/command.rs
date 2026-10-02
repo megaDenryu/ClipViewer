@@ -63,7 +63,7 @@ fn コマンド説明一覧() -> [(&'static str, &'static str); 7] {
         ),
         (
             "check-overlay-deps",
-            "重ね合わせの作業場の層(crates/clip_viewer/src/overlay の下)が、スタックの作業場の crate::state・crate::command・crate::view を使えないことを検査し、調べたファイルの数を出す。クレートルートを * で全部取り込む書き方と、クレートルートに as で別名を付ける書き方も報告する。読めない・解析できないファイル(閉じていない波括弧を含む)も見つけたこととして報告する。マクロが組み立てるパスと #[path]・include! で読むファイルは調べない",
+            "重ね合わせの作業場の層(crates/clip_viewer/src/overlay の下)が、スタックの作業場の crate::state・crate::command・crate::view を使えないことを検査し、調べたファイルの数を出す。クレートルートを * で全部取り込む書き方と、クレートルートに as で別名を付ける書き方も報告する。読めない・解析できないファイル(閉じていない波括弧を含む)も見つけたこととして報告する。extern crate self による別名も報告する。マクロが組み立てるパスと、#[path]・include! で読むファイルと、重ね合わせの層の外のモジュールが再公開したもの(crate::他::state のような経由)は調べない",
         ),
         (
             "run",

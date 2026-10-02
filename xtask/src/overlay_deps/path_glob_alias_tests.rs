@@ -68,6 +68,24 @@ fn クレートルートに別名を付ける書き方を見つける() {
 }
 
 #[test]
+fn extern_crate_selfでクレートルートに別名を付ける書き方を見つけ_外のクレートは見つけない() {
+    assert_eq!(
+        解析できる本文の禁じた参照を調べる(
+            "overlay/mod.rs",
+            "extern crate self as 根;\nuse 根::state::状態;"
+        ),
+        ["extern crate self as 根"]
+    );
+    assert!(
+        解析できる本文の禁じた参照を調べる(
+            "overlay/mod.rs",
+            "extern crate alloc as 割り当て;\nextern \"C\" fn 甲() {}"
+        )
+        .is_empty()
+    );
+}
+
+#[test]
 fn 重ね合わせの層の中に別名を付ける書き方と式の型の変換は見つけない() {
     let 本文 = "use crate::overlay::state as 状態の層;\nfn 甲(x: u8) -> u32 { x as u32 }";
     assert!(解析できる本文の禁じた参照を調べる("overlay/mod.rs", 本文).is_empty());
