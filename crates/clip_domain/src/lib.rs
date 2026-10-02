@@ -2,7 +2,8 @@
 //!
 //! クリップとは元の動画の区間を切り出したものであり、クリップスタックとはクリップを再生順に並べたものである。
 //! 本クレートは、クリップと時間・クロップ・繰り返し・進む条件の型、タイムライン上の位置で再生するものを求める処理、
-//! 設定ファイルの読み書き、スタックのライブラリの項目と形式、動画パスの検証、クロップ枠の移動と大きさの変更の計算を持つ。
+//! 設定ファイルの読み書き、スタックのライブラリの項目と形式、動画パスの検証、クロップ枠の移動と大きさの変更の計算、
+//! 同時再生で再生する重ね合わせの型と操作を持つ。
 //! 参照: _doc/設計/アーキテクチャ.md
 
 #![warn(missing_docs)]
@@ -16,6 +17,7 @@ mod crop_drag;
 mod crop_resize;
 mod duration;
 mod library;
+mod overlay;
 mod percent;
 mod pixel;
 mod play_mode;
@@ -42,6 +44,7 @@ mod trigger;
 mod video_path;
 mod video_path_check;
 mod video_span;
+mod volume;
 
 pub use aspect::アスペクト比設定;
 pub use clip::{クリップ, クリップ名};
@@ -58,7 +61,10 @@ pub use library::{
     ライブラリのファイルの読み込みエラー, ライブラリの日時, ライブラリの日時エラー,
     ライブラリへ取り込めない理由, 空のスタックの名前エラー,
 };
-pub use percent::{百分率, 百分率の差分, 百分率の差分エラー};
+pub use overlay::*;
+pub use percent::{
+    元の動画に対する, 百分率, 百分率の差分, 百分率の差分エラー
+};
 pub use pixel::{画素の寸法, 画素の寸法エラー, 縦横比};
 pub use play_mode::再生モード;
 pub use playback_clock::{
@@ -101,3 +107,4 @@ pub use video_path_check::{
     動画パスの不備, 動画パスの検証結果, 検証済みの動画パス
 };
 pub use video_span::{動画上の区間, 区間エラー};
+pub use volume::音量;
