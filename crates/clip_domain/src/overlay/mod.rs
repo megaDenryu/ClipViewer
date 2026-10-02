@@ -29,4 +29,4 @@ pub use placed_id::{
 pub use rect::{映す矩形, 映す矩形エラー};
 pub use row::{タイムラインの行, 行の番号};
 pub use video_table::{使う動画の表, 動画の番号};
-pub use volume::{置いたクリップの音量, 音の大きさ};
+pub use volume::置いたクリップの音の設定;
