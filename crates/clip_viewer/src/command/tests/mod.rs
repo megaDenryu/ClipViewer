@@ -25,6 +25,7 @@ mod keys;
 mod keys_enter;
 mod keys_focus;
 mod keys_playback;
+mod keys_theater;
 mod keys_window;
 mod library_autosave;
 mod library_check;

@@ -47,7 +47,9 @@ fn フォーカスを持つボタンは空白キーで押されず_空白キー�
 }
 
 /// 文字を打つ部品(テキスト編集)にフォーカスが移るまで Tab を押し続けた egui の本体。移らなければ試験を失敗させる。
-fn 入力欄へフォーカスを移した本体(状態: &アプリの状態) -> egui::Context {
+pub(super) fn 入力欄へフォーカスを移した本体(
+    状態: &アプリの状態
+) -> egui::Context {
     let eguiの本体 = egui::Context::default();
     let _ = 事象を渡して描く(&eguiの本体, 状態, Vec::new(), 無し);
     let 入力欄か = |本体: &egui::Context| {
