@@ -7,7 +7,7 @@ use std::path::PathBuf;
 use serde::Deserialize;
 use serde_json::{Map, Value};
 
-use super::settings::{アプリの設定, 知らない項目, 覚えた見る側の設定};
+use super::settings::{アプリの設定, 知らない項目};
 use super::v1::{ffmpegの置き場所へ変換する, 第1版が書く項目の名前};
 
 #[derive(Deserialize)]
@@ -30,7 +30,7 @@ impl 第0版の設定 {
         }
         アプリの設定 {
             ffmpegの置き場所: ffmpegの置き場所へ変換する(ffmpeg_folder),
-            見る側: 覚えた見る側の設定::覚えていない,
+            見る側: None,
             知らない項目: 知らない項目::作成する(その他),
         }
     }

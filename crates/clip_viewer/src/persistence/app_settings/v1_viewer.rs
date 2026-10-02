@@ -7,7 +7,6 @@
 use audio_pcm::音量;
 use serde::{Deserialize, Serialize};
 
-use super::settings::覚えた見る側の設定;
 use super::v1_keys::第1版のキーの割り当て;
 use super::v1_notation::{
     アスペクト比の表記, 表示サイズの表記, 表記から読む, 表記にする
@@ -41,9 +40,9 @@ pub(super) struct 第1版の見る側の設定 {
 
 impl 第1版の見る側の設定 {
     /// 最新の見る側の設定へ変換する。どの項目も無ければ覚えていない。一部の項目だけあれば、無い項目と読めない値を既定で埋める。
-    pub(super) fn 見る側の設定へ変換する(self) -> 覚えた見る側の設定 {
+    pub(super) fn 見る側の設定へ変換する(self) -> Option<見る側の設定> {
         if self == Self::default() {
-            return 覚えた見る側の設定::覚えていない;
+            return None;
         }
         let Self {
             window_size,
@@ -56,7 +55,7 @@ impl 第1版の見る側の設定 {
             key_bindings,
         } = self;
         let 既定 = 見る側の設定::既定;
-        覚えた見る側の設定::覚えている(見る側の設定 {
+        Some(見る側の設定 {
             ウインドウ:
                 第1版のウインドウの大きさ::ウインドウの記憶へ変換する(
                     window_size,
@@ -84,11 +83,10 @@ impl 第1版の見る側の設定 {
 
     /// 最新の見る側の設定から作る。覚えていなければ、どの項目も書かない。
     pub(super) fn 見る側の設定から作る(
-        覚えた設定: 覚えた見る側の設定
+        覚えた設定: Option<見る側の設定>
     ) -> Self {
-        let 設定 = match 覚えた設定 {
-            覚えた見る側の設定::覚えていない => return Self::default(),
-            覚えた見る側の設定::覚えている(設定) => 設定,
+        let Some(設定) = 覚えた設定 else {
+            return Self::default();
         };
         let (window_size, window_maximized) =
             第1版のウインドウの大きさ::ウインドウの記憶から作る(

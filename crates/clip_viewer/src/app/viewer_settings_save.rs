@@ -3,7 +3,7 @@
 
 use std::time::Instant;
 
-use super::settings_watch::{見た結果, 設定の変化の見張り};
+use super::settings_watch::設定の変化の見張り;
 use crate::persistence::アプリの設定の保管場所;
 use crate::state::アプリの状態;
 use crate::viewer_settings::見る側の設定;
@@ -52,8 +52,7 @@ impl 見る側の設定の保存係 {
         if self.書き方 == 設定の書き方::書かない {
             return;
         }
-        if let 見た結果::保存する(設定) = self.見張り.見る(状態.見る側の設定(), 今)
-        {
+        if let Some(設定) = self.見張り.見る(状態.見る側の設定(), 今) {
             self.書く(状態, 設定);
         }
         状態.見る側の設定を保存するまでの時間 = self.見張り.保存するまでの残り時間(今);
@@ -64,8 +63,7 @@ impl 見る側の設定の保存係 {
         if self.書き方 == 設定の書き方::書かない {
             return;
         }
-        if let 見た結果::保存する(設定) = self.見張り.終わる前に見る(状態.見る側の設定())
-        {
+        if let Some(設定) = self.見張り.終わる前に見る(状態.見る側の設定()) {
             self.書く(状態, 設定);
         }
     }
