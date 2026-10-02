@@ -22,6 +22,7 @@ mod file_drop_support;
 mod fullscreen;
 mod key_support;
 mod keys;
+mod keys_enter;
 mod keys_focus;
 mod keys_playback;
 mod keys_window;

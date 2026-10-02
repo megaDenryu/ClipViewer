@@ -23,7 +23,7 @@ fn 再生のキーと応答() -> Vec<(egui::Key, egui::Modifiers, 応答)> {
         (
             egui::Key::Enter,
             無し,
-            出力(出力の操作::次へ進める(進める操作::Enterキー)),
+            出力(出力の操作::Enterキーで次へ進める),
         ),
         (
             egui::Key::PageUp,

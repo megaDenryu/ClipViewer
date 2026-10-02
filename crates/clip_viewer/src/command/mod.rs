@@ -14,6 +14,7 @@ mod file_drop;
 mod file_ops;
 mod id_issuer;
 mod library;
+mod next_clip;
 mod output_ops;
 mod playback_ops;
 mod position_target;
