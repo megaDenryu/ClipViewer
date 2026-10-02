@@ -61,6 +61,7 @@ mod unsaved_check;
 mod with_ffmpeg_edit;
 mod with_ffmpeg_library;
 mod with_ffmpeg_new_stack;
+mod with_ffmpeg_new_stack_clue;
 mod with_ffmpeg_new_stack_library;
 mod with_ffmpeg_open_note;
 mod with_ffmpeg_playback;
