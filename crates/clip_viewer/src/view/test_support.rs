@@ -2,7 +2,7 @@
 #![allow(clippy::expect_used)]
 
 use eframe::egui;
-use sengen_egui::ノード;
+use sengen_egui::{ノード, 日本語フォントの候補};
 use video_source::FFmpegが見つからないエラー;
 
 use crate::command::応答;
@@ -10,6 +10,7 @@ use crate::state::{
     FFmpegの状況, アプリの状態, 入力中のフォルダ, 画面の構え, 音の出力の状況
 };
 use crate::thumbnail_feed::一覧のサムネイル;
+use crate::view::styles;
 
 /// 動画を開いていない、起動したときの状態を、その構えにしたもの。
 pub(super) fn 動画の無い状態(構え: 画面の構え) -> アプリの状態 {
@@ -80,4 +81,26 @@ pub(super) fn 押して集める(
     let mut 集まり = 大きさを決めて描く(画面描画の共有状態, 画面の大きさ, 押す, 木).0;
     集まり.extend(大きさを決めて描く(画面描画の共有状態, 画面の大きさ, vec![ボタン(false)], 木).0);
     集まり
+}
+
+/// 日本語フォントとテーマを当てた egui の本体。フォントは次の回から効くため、何も描かない回を1回進めておく。
+/// 注意: 日本語フォントが無いと日本語の字が幅0で描かれ、幅の試験が通ってしまうため、OS の日本語フォントを読めなければ試験を失敗させる。
+pub(super) fn 日本語フォントとテーマを当てた本体を作る() -> egui::Context {
+    let 画面描画の共有状態 = egui::Context::default();
+    日本語フォントの候補::標準で入っている候補()
+        .最初に読めたものを設定する(&画面描画の共有状態)
+        .unwrap_or_else(|失敗| panic!("日本語フォントを読めないため、幅を測れない: {失敗}"));
+    styles::画面のテーマ.適用する(&画面描画の共有状態);
+    let _ = 画面描画の共有状態.run(egui::RawInput::default(), |_| {});
+    画面描画の共有状態
+}
+
+/// 左サイドバーのパネルが覚えた幅(論理画素)。パネルは中身がはみ出した幅を覚えて広がる。
+pub(super) fn サイドバーのパネルの幅(
+    画面描画の共有状態: &egui::Context
+) -> f32 {
+    egui::containers::panel::PanelState::load(画面描画の共有状態, egui::Id::new("左サイドバー"))
+        .unwrap_or_else(|| panic!("パネルの幅が記録されていない"))
+        .rect
+        .width()
 }

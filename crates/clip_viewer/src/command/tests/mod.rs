@@ -44,6 +44,7 @@ mod library_thumbnail;
 mod library_thumbnail_list;
 mod library_thumbnail_texture;
 mod library_visible_rows;
+mod new_stack;
 mod playback;
 mod playback_keys_apply;
 mod previous_clip;
@@ -59,6 +60,9 @@ mod thumbnail_place;
 mod unsaved_check;
 mod with_ffmpeg_edit;
 mod with_ffmpeg_library;
+mod with_ffmpeg_new_stack;
+mod with_ffmpeg_new_stack_clue;
+mod with_ffmpeg_new_stack_library;
 mod with_ffmpeg_open_note;
 mod with_ffmpeg_playback;
 mod with_ffmpeg_span_limit;
@@ -68,5 +72,6 @@ mod with_ffmpeg_unsaved;
 mod with_ffmpeg_video;
 
 use support::{
-    クリップを並べた状態, クリップを作る, 区間, 編集する, 識別子, 選択中の名前
+    クリップを並べた状態, クリップを作る, 並びのクリップの名前,
+    今の動画で新しいスタックを始める応答, 区間, 編集する, 識別子, 選択中の名前,
 };
