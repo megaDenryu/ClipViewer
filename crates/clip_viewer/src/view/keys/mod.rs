@@ -8,6 +8,9 @@ mod help_row;
 mod rule;
 mod table;
 
+#[cfg(test)]
+mod help_tests;
+
 pub(crate) use help::キーの一覧を出すダイアログ;
 
 use sengen_egui::{キーの組, キー操作, ノード, 無し, 縦積み};
