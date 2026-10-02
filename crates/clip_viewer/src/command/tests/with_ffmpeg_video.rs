@@ -1,4 +1,4 @@
-//! FFmpeg の結合試験が開く試験動画を作る。ffmpeg の試験用の映像源から2秒の動画を一時フォルダへ書き出す。
+//! FFmpeg の結合試験が開く試験動画を作る。ffmpeg の試験用の映像源から、既定で2秒の動画を一時フォルダへ書き出す。
 #![allow(clippy::expect_used)]
 
 use std::process::Command;
@@ -22,6 +22,15 @@ pub(super) fn 名前を付けて試験動画を作る(
     試験の名前: &str,
     ファイル名: &str,
 ) -> 入力された動画パス {
+    長さを決めて試験動画を作る(試験の名前, ファイル名, 2.0)
+}
+
+/// 秒数の長さの試験動画を、試験の名前ごとに重ならない一時フォルダへファイル名を付けて作り、そのパスの入力を返す。
+pub(super) fn 長さを決めて試験動画を作る(
+    試験の名前: &str,
+    ファイル名: &str,
+    秒数: f64,
+) -> 入力された動画パス {
     let フォルダ = std::env::temp_dir().join(format!(
         "clip_viewer_ライブラリ動画_{試験の名前}_{}",
         std::process::id()
@@ -36,7 +45,7 @@ pub(super) fn 名前を付けて試験動画を作る(
             "-f",
             "lavfi",
             "-i",
-            "testsrc2=size=320x180:rate=30:duration=2",
+            &format!("testsrc2=size=320x180:rate=30:duration={秒数}"),
         ])
         .args(["-c:v", "libx264", "-pix_fmt", "yuv420p"])
         .arg(&パス)
