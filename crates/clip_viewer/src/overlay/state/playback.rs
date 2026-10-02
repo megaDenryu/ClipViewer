@@ -38,6 +38,10 @@ impl 重ね合わせの再生の状況 {
         self.位置
     }
 
+    pub(crate) fn 全体の末尾(&self) -> 末尾での振る舞い {
+        self.全体の末尾
+    }
+
     pub(crate) fn 再生しているか(&self) -> bool {
         matches!(self.進み方, 時計の進み方::進んでいる { .. })
     }

@@ -1,8 +1,9 @@
-//! 重ね合わせの作業場の層。重ね合わせを作り、直し、再生するための作業場の状態(`state/`)・応答(`command/`)・画面(`view/`)を持つ。
+//! 重ね合わせの作業場の層。重ね合わせを作り、直し、再生するための作業場の状態(`state/`)・応答(`command/`)・画面(`view/`)・映像の供給(`feed/`)を持つ。
 //! 注意: この下ではスタックの作業場の `crate::state`・`crate::command`・`crate::view` を使わない(`cargo xtask check-overlay-deps` が検査する)。
 //! 参照: _doc/設計/同時再生.md 1節(作業場の定義)・3-2・3-3
 
 mod command;
+mod feed;
 mod state;
 mod view;
 mod workspace;
