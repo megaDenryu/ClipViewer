@@ -4,6 +4,7 @@
 mod at_time;
 mod at_time_result;
 mod clock;
+mod row_lookup;
 mod span_end;
 
 pub use at_time_result::{

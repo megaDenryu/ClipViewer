@@ -20,8 +20,8 @@ use crate::video_info::動画の情報;
 pub(crate) const 調査の期限: Duration = Duration::from_secs(30);
 
 /// 動画の読み手とは、見つけた FFmpeg の実行ファイルを保持し、それで動画を調べ・読む操作を持つもののことである。
-/// 画面のコンポジションルートが1つ作って持つ。
-#[derive(Debug, Clone)]
+/// 画面のコンポジションルートが1つ作って持つ。同じ実行ファイルの組から作った読み手は等しい。
+#[derive(Debug, Clone, PartialEq, Eq)]
 pub struct 動画の読み手 {
     実行ファイル: FFmpegの実行ファイル,
 }

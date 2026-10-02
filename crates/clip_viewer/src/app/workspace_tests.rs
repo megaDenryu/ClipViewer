@@ -5,6 +5,8 @@
 
 use std::time::{Duration, Instant};
 
+use eframe::egui;
+
 use super::front_workspace::前に出ている作業場;
 use super::launch_requests::起動の頼みの届き方;
 use super::workspace::作業場の応答;
@@ -60,7 +62,7 @@ fn 重ね合わせの作業場は控えておき_再び移ると同じ重ね合�
         スタックの作業場の値を既定から変えて再生しているビューアー();
     ビューアー.重ね合わせの作業場へ移る();
     let 作業場 = 前の重ね合わせの作業場(&mut ビューアー).expect("重ね合わせが前");
-    作業場.重ね合わせを開く(五秒の重ね合わせ());
+    作業場.重ね合わせを開く(五秒の重ね合わせ(), None, &egui::Context::default());
     重ね合わせの応答を適用する(
         &mut ビューアー,
         重ね合わせの作業場の応答::操作(重ね合わせの操作::再生を切り替える),
