@@ -12,7 +12,7 @@ impl 文字の読み手 {
         let 始めの行 = self.行;
         let mut 深さ = 1;
         while 深さ > 0 {
-            match (self.進める(), self.見る(0)) {
+            match (self.一文字読み進める(), self.先の文字を見る(0)) {
                 (Some('/'), Some('*')) => {
                     self.位置 += 1;
                     深さ += 1;
@@ -37,9 +37,9 @@ impl 文字の読み手 {
     pub fn 文字列を読み飛ばす(&mut self) -> Result<(), 解析できない理由> {
         let 始めの行 = self.行;
         loop {
-            match self.進める() {
+            match self.一文字読み進める() {
                 Some('\\') => {
-                    let _ = self.進める();
+                    let _ = self.一文字読み進める();
                 }
                 Some('"') => return Ok(()),
                 Some(_) => {}
@@ -59,8 +59,9 @@ impl 文字の読み手 {
         井桁の数: usize,
     ) -> Result<(), 解析できない理由> {
         let 始めの行 = self.行;
-        while let Some(文字) = self.進める() {
-            if 文字 == '"' && (0..井桁の数).all(|ずれ| self.見る(ずれ) == Some('#')) {
+        while let Some(文字) = self.一文字読み進める() {
+            if 文字 == '"' && (0..井桁の数).all(|ずれ| self.先の文字を見る(ずれ) == Some('#'))
+            {
                 self.位置 += 井桁の数;
                 return Ok(());
             }
@@ -74,10 +75,10 @@ impl 文字の読み手 {
     /// `'` を読んだ後に呼ぶ。文字(`'a'`・`'\n'`)なら閉じの `'` まで読み飛ばす。寿命の名前(`'a`)なら何も読まない。
     pub fn 文字なら読み飛ばす(&mut self) -> Result<(), 解析できない理由> {
         let 始めの行 = self.行;
-        if self.見る(0) == Some('\\') {
+        if self.先の文字を見る(0) == Some('\\') {
             // 注意: エスケープされた文字が `'` のこと(`'\''`)があるため、`\` とその次の1文字は閉じの印として見ない。
             self.位置 += 2;
-            while let Some(文字) = self.進める() {
+            while let Some(文字) = self.一文字読み進める() {
                 if 文字 == '\'' {
                     return Ok(());
                 }
@@ -87,7 +88,7 @@ impl 文字の読み手 {
                 "文字が閉じていない",
             ));
         }
-        if self.見る(1) == Some('\'') {
+        if self.先の文字を見る(1) == Some('\'') {
             self.位置 += 2;
         }
         Ok(())

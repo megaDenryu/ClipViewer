@@ -5,13 +5,13 @@
 use std::path::PathBuf;
 
 use super::findings::見つけたこと;
-use super::source_root::ソースの根;
+use super::source_root::ソースルート;
 
-/// 一時フォルダに `overlay` の下のファイルを置いたソースの根。
-fn 一時のソースの根(
+/// 一時フォルダに `overlay` の下のファイルを置いたソースルート。
+fn 一時のソースルート(
     名前: &str,
     ファイルの並び: &[(&str, &[u8])],
-) -> (ソースの根, PathBuf) {
+) -> (ソースルート, PathBuf) {
     let フォルダ =
         std::env::temp_dir().join(format!("xtask_overlay_deps_{名前}_{}", std::process::id()));
     let _ = std::fs::remove_dir_all(&フォルダ);
@@ -20,12 +20,12 @@ fn 一時のソースの根(
         std::fs::create_dir_all(パス.parent().expect("親")).expect("フォルダを作れる");
         std::fs::write(&パス, 中身).expect("書ける");
     }
-    (ソースの根::フォルダから作る(フォルダ.clone()), フォルダ)
+    (ソースルート::フォルダから作る(フォルダ.clone()), フォルダ)
 }
 
 #[test]
 fn フォルダの下のファイルを数え_禁じた参照と文字として読めないファイルを報告する() {
-    let (根, フォルダ) = 一時のソースの根(
+    let (調べるソースルート, フォルダ) = 一時のソースルート(
         "報告",
         &[
             ("overlay/mod.rs", b"mod view;\nuse crate::state;\n"),
@@ -34,7 +34,9 @@ fn フォルダの下のファイルを数え_禁じた参照と文字として�
             ("state/mod.rs", b"use crate::view;\n"),
         ],
     );
-    let 結果 = 根.重ね合わせの層を検査する().expect("調べられる");
+    let 結果 = 調べるソースルート
+        .重ね合わせの層を検査する()
+        .expect("調べられる");
     assert_eq!(結果.調べたファイルの数, 3);
     let 文の並び: Vec<String> = 結果
         .見つけたことの並び
@@ -52,16 +54,20 @@ fn フォルダの下のファイルを数え_禁じた参照と文字として�
 
 #[test]
 fn 重ね合わせの層のフォルダが無ければ失敗する() {
-    let (根, フォルダ) = 一時のソースの根("無い", &[("state/mod.rs", b"")]);
-    assert!(根.重ね合わせの層を検査する().is_err());
+    let (調べるソースルート, フォルダ) =
+        一時のソースルート("無い", &[("state/mod.rs", b"")]);
+    assert!(調べるソースルート.重ね合わせの層を検査する().is_err());
     let _ = std::fs::remove_dir_all(&フォルダ);
 }
 
 #[test]
 fn このリポジトリの重ね合わせの層はスタックの作業場のモジュールを使っていない() {
-    let 根 =
-        ソースの根::リポジトリから決める(&crate::verify::リポジトリルートを求める());
-    let 結果 = 根.重ね合わせの層を検査する().expect("調べられる");
+    let 調べるソースルート = ソースルート::リポジトリから決める(
+        &crate::verify::リポジトリルートを求める(),
+    );
+    let 結果 = 調べるソースルート
+        .重ね合わせの層を検査する()
+        .expect("調べられる");
     assert!(結果.調べたファイルの数 > 0);
     let 文の並び: Vec<String> = 結果
         .見つけたことの並び

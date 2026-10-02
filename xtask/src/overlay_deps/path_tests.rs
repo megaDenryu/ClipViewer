@@ -2,17 +2,22 @@
 //! 禁じた参照を見つけ、コメントと文字列の中は見ず、解析できない入力を黙って外さずに理由を返すことを確かめる。
 #![allow(clippy::expect_used, clippy::unwrap_used)]
 
-use super::module_path::モジュールの道筋;
+use super::module_path::モジュールパス;
 use super::paths::禁じた参照を探す;
 use super::tokens::字句に分ける;
 
-/// `src` から見たファイルの位置(`/` 区切り)のファイルに本文を書いたときの、禁じた参照の直したパスの並び。解析できなければその説明。
-fn 調べる(位置: &str, 本文: &str) -> Result<Vec<String>, String> {
+/// `src` から見たファイルの位置(`/` 区切り)のファイルに本文を書いたときの、禁じた参照のcrateルートからのパスの並び。解析できなければその説明。
+fn 本文の禁じた参照を調べる(位置: &str, 本文: &str) -> Result<Vec<String>, String> {
     let 位置の並び: Vec<String> = 位置.split('/').map(str::to_string).collect();
-    let 道筋 = モジュールの道筋::ファイルの位置から作る(&位置の並び);
+    let 今のモジュールパス = モジュールパス::ファイルの位置から作る(&位置の並び);
     字句に分ける(本文)
-        .and_then(|並び| 禁じた参照を探す(&並び, &道筋))
-        .map(|参照の並び| 参照の並び.into_iter().map(|参照| 参照.直したパス).collect())
+        .and_then(|並び| 禁じた参照を探す(&並び, &今のモジュールパス))
+        .map(|参照の並び| {
+            参照の並び
+                .into_iter()
+                .map(|参照| 参照.crateルートからのパス)
+                .collect()
+        })
         .map_err(|理由| 理由.説明)
 }
 
@@ -20,7 +25,7 @@ fn 調べる(位置: &str, 本文: &str) -> Result<Vec<String>, String> {
 fn crateから書いたuseと式のパスを見つける() {
     let 本文 = "use crate::state::アプリの状態;\nfn 甲() { let _ = crate::view::画面; }\nuse crate::command;";
     assert_eq!(
-        調べる("overlay/mod.rs", 本文).unwrap(),
+        本文の禁じた参照を調べる("overlay/mod.rs", 本文).unwrap(),
         [
             "crate::state::アプリの状態",
             "crate::view::画面",
@@ -33,7 +38,7 @@ fn crateから書いたuseと式のパスを見つける() {
 fn 波括弧でまとめたuseの中の禁じたものだけを見つける() {
     let 本文 = "use crate::{overlay::x, view::{y, z}, state, video_feed::台帳};";
     assert_eq!(
-        調べる("overlay/workspace.rs", 本文).unwrap(),
+        本文の禁じた参照を調べる("overlay/workspace.rs", 本文).unwrap(),
         ["crate::view::y", "crate::view::z", "crate::state"]
     );
 }
@@ -41,32 +46,47 @@ fn 波括弧でまとめたuseの中の禁じたものだけを見つける() {
 #[test]
 fn superとselfはファイルのモジュールの位置から直す() {
     assert_eq!(
-        解析できる本文を調べる("overlay/mod.rs", "use super::view::画面;"),
+        解析できる本文の禁じた参照を調べる(
+            "overlay/mod.rs",
+            "use super::view::画面;"
+        ),
         ["crate::view::画面"]
     );
     assert!(
-        解析できる本文を調べる(
+        解析できる本文の禁じた参照を調べる(
             "overlay/workspace.rs",
             "use super::view; use super::state::状態;"
         )
         .is_empty()
     );
-    assert!(解析できる本文を調べる("overlay/view/mod.rs", "use super::command::操作;").is_empty());
+    assert!(
+        解析できる本文の禁じた参照を調べる(
+            "overlay/view/mod.rs",
+            "use super::command::操作;"
+        )
+        .is_empty()
+    );
     assert_eq!(
-        解析できる本文を調べる(
+        解析できる本文の禁じた参照を調べる(
             "overlay/view/mod.rs",
             "use super::super::command::応答;"
         ),
         ["crate::command::応答"]
     );
-    assert!(解析できる本文を調べる("overlay/mod.rs", "use self::state::状態;").is_empty());
+    assert!(
+        解析できる本文の禁じた参照を調べる(
+            "overlay/mod.rs",
+            "use self::state::状態;"
+        )
+        .is_empty()
+    );
 }
 
 #[test]
-fn 中のモジュールの中ではその名前を道筋に足して直す() {
+fn 中のモジュールの中ではその名前をモジュールパスに足して直す() {
     let 本文 = "mod 試験 { use super::state::状態; use super::super::view; }\nuse super::command;";
     assert_eq!(
-        解析できる本文を調べる("overlay/mod.rs", 本文),
+        解析できる本文の禁じた参照を調べる("overlay/mod.rs", 本文),
         ["crate::view", "crate::command"]
     );
 }
@@ -81,18 +101,18 @@ fn コメントと文字列と文字の中は見ず_寿命の名前と外のク�
         fn 甲<'a>(x: &'a str) -> char { let _ = std::time::Instant::now(); '\'' }
         fn 乙() -> char { '"' }
     "###;
-    assert!(解析できる本文を調べる("overlay/mod.rs", 本文).is_empty());
+    assert!(解析できる本文の禁じた参照を調べる("overlay/mod.rs", 本文).is_empty());
 }
 
 #[test]
 fn 解析できない入力は黙って外さずに理由を返す() {
-    assert!(調べる("overlay/mod.rs", "/* 閉じない").is_err());
-    assert!(調べる("overlay/mod.rs", "const 文: &str = \"閉じない;").is_err());
-    assert!(調べる("overlay/mod.rs", "use crate::{state, view;").is_err());
-    assert!(調べる("overlay/mod.rs", "use super::super::state;").is_err());
-    assert!(調べる("overlay/mod.rs", "fn 甲() {} }").is_err());
+    assert!(本文の禁じた参照を調べる("overlay/mod.rs", "/* 閉じない").is_err());
+    assert!(本文の禁じた参照を調べる("overlay/mod.rs", "const 文: &str = \"閉じない;").is_err());
+    assert!(本文の禁じた参照を調べる("overlay/mod.rs", "use crate::{state, view;").is_err());
+    assert!(本文の禁じた参照を調べる("overlay/mod.rs", "use super::super::state;").is_err());
+    assert!(本文の禁じた参照を調べる("overlay/mod.rs", "fn 甲() {} }").is_err());
 }
 
-fn 解析できる本文を調べる(位置: &str, 本文: &str) -> Vec<String> {
-    調べる(位置, 本文).expect("解析できる")
+fn 解析できる本文の禁じた参照を調べる(位置: &str, 本文: &str) -> Vec<String> {
+    本文の禁じた参照を調べる(位置, 本文).expect("解析できる")
 }

@@ -6,11 +6,13 @@ use std::time::Duration;
 
 use eframe::egui;
 
-use super::workspace_test_support::手を加えたビューアー;
+use super::workspace_test_support::スタックの作業場の値を既定から変えて再生しているビューアー;
 use super::クリップビューアー;
 
 /// クリップビューアーの画面を2フレーム描き、2フレーム目が egui に頼んだ描き直しまでの時間を返す。
-fn 描き直しまでの時間(ビューアー: &クリップビューアー) -> Duration {
+fn 画面を描いて描き直すまでの時間を読む(
+    ビューアー: &クリップビューアー,
+) -> Duration {
     let 本体 = egui::Context::default();
     let mut 時間 = Duration::MAX;
     for _ in 0..2 {
@@ -29,12 +31,16 @@ fn 描き直しまでの時間(ビューアー: &クリップビューアー) ->
 
 #[test]
 fn 重ね合わせが前の間も_スタックの作業場の保存を待つ時刻に描き直しを予約する() {
-    let mut ビューアー = 手を加えたビューアー();
+    let mut ビューアー =
+        スタックの作業場の値を既定から変えて再生しているビューアー();
     ビューアー.重ね合わせの作業場へ移る();
-    assert_eq!(描き直しまでの時間(&ビューアー), Duration::MAX);
+    assert_eq!(
+        画面を描いて描き直すまでの時間を読む(&ビューアー),
+        Duration::MAX
+    );
     ビューアー.状態.見る側の設定を保存するまでの時間 = Some(Duration::from_millis(700));
     // egui は頼んだ時間から1フレーム分(約17ミリ秒)を引いて知らせるため、範囲で確かめる。
-    let 時間 = 描き直しまでの時間(&ビューアー);
+    let 時間 = 画面を描いて描き直すまでの時間を読む(&ビューアー);
     assert!(
         Duration::from_millis(600) < 時間 && 時間 <= Duration::from_millis(700),
         "{時間:?}"

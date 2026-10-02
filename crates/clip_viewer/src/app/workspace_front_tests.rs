@@ -9,8 +9,8 @@ use eframe::egui;
 
 use super::launch_requests::起動の頼みの届き方;
 use super::launch_requests_test_support::{試験のビューアー, 通知の文};
-use super::workspace::作業場の切り替え;
-use super::workspace_test_support::手を加えたビューアー;
+use super::workspace::前に出ている作業場;
+use super::workspace_test_support::スタックの作業場の値を既定から変えて再生しているビューアー;
 use super::クリップビューアー;
 use crate::launch::{
     受け口の案内ファイル, 起動の受け口, 起動の頼み, 起動の頼みの送り手
@@ -19,13 +19,17 @@ use crate::state::library::ライブラリのダイアログ;
 use crate::state::閉じる要求への答え;
 
 fn 重ね合わせが前か(ビューアー: &クリップビューアー) -> bool {
-    matches!(ビューアー.作業場, 作業場の切り替え::重ね合わせが前(_))
+    matches!(
+        ビューアー.前に出ている作業場,
+        前に出ている作業場::重ね合わせが前(_)
+    )
 }
 
 #[test]
 fn 重ね合わせが前でスタックだけが登録していない変更を持つとき_閉じる要求でスタックの作業場が前に出てダイアログが出る()
  {
-    let mut ビューアー = 手を加えたビューアー();
+    let mut ビューアー =
+        スタックの作業場の値を既定から変えて再生しているビューアー();
     ビューアー.重ね合わせの作業場へ移る();
     assert_eq!(
         ビューアー.閉じる要求を確かめる(),
