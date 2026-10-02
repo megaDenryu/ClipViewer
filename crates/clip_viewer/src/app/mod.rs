@@ -10,6 +10,7 @@ mod launch_preparation;
 mod launch_requests;
 mod settings_watch;
 mod sound_sender;
+mod stack_values;
 mod viewer_settings_save;
 mod window;
 mod workspace;
@@ -71,6 +72,7 @@ use workspace::作業場の応答;
 /// 状態は係の処理の対象であって依存ではないため、係の中に入れず並べて持つ。音の送り手は音声出力装置を持ち、毎フレーム指示を渡す。
 /// 起動の受け口は、ライブラリの錠を取れた1つ目のアプリだけが持ち、2つ目のアプリから届いた頼みを渡す。
 /// アプリの状態と操作の適用係はスタックの作業場のものであり、どちらの作業場が前でも常に持つ(参照: _doc/設計/同時再生.md 3-2)。
+/// 画面描画の共有状態は、初めて重ね合わせの作業場へ移るときに、重ね合わせの作業場へ渡す(行のテクスチャを登録するため)。
 pub(crate) struct クリップビューアー {
     状態: アプリの状態,
     適用係: 操作の適用係,
@@ -78,6 +80,7 @@ pub(crate) struct クリップビューアー {
     起動の受け口: Option<受け取っている受け口>,
     設定の保存係: 見る側の設定の保存係,
     前に出ている作業場: 前に出ている作業場,
+    画面描画の共有状態: eframe::egui::Context,
 }
 
 impl クリップビューアー {

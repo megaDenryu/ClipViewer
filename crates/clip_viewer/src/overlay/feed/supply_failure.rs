@@ -7,7 +7,7 @@ use sengen_egui::画素の並びの不正;
 #[derive(Debug, thiserror::Error)]
 pub(crate) enum 映像の供給を作れない理由 {
     #[error(
-        "FFmpeg が見つからないため重ね合わせの動画を開けない。スタックの作業場の画面の上部で FFmpeg の置き場所を設定する"
+        "FFmpeg が見つからないため重ね合わせの動画を開けない。「スタックへ戻る」を押し、画面の上部で FFmpeg の置き場所を設定する"
     )]
     FFmpegが無い,
     #[error("重ね合わせの行のテクスチャを作れない: {0}")]
