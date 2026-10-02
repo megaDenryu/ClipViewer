@@ -12,7 +12,7 @@ mod ledger;
 mod ledger_query;
 mod ledger_record;
 mod ledger_state;
-mod loaded_frame_source;
+mod loaded_frame_state;
 mod loaded_video;
 mod open_failure;
 mod prefetch_order;
@@ -50,7 +50,7 @@ pub(crate) use frame_target::コマの載せ先;
 pub(crate) use ledger::依頼の台帳;
 pub(crate) use ledger_state::{依頼の結末, 依頼の進み具合, 行の状態};
 #[cfg(test)]
-pub(crate) use loaded_frame_source::載せているコマの出どころ;
+pub(crate) use loaded_frame_state::載せたコマの状態;
 pub(crate) use loaded_video::読み込んだ動画;
 pub(crate) use open_failure::{動画を開く経路, 動画を開けない理由};
 pub(crate) use prefetch_order::先読みの並び;

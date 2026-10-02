@@ -15,7 +15,7 @@ use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の供給を作れたか;
 use crate::overlay::test_support::{置き方, 置き方を並べた重ね合わせ};
 use crate::video_feed::with_ffmpeg_support::実行ファイルを探す;
-use crate::video_feed::{動画を開けない理由, 載せているコマの出どころ};
+use crate::video_feed::{動画を開けない理由, 載せたコマの状態};
 
 #[test]
 #[ignore = "FFmpeg が要る。cargo xtask verify が FFmpeg を見つけたときだけ流す"]
@@ -61,10 +61,7 @@ fn 開けない動画は_その理由を持ち_その動画の行は何も載せ
         Some(動画を開けない理由::情報を取れない(_))
     ));
     let 行 = 供給
-        .行(行の番号::番号から作成する(0))
+        .行のコマの載せ先(行の番号::番号から作成する(0))
         .expect("行の数の上限の内");
-    assert_eq!(
-        行.載せているコマの出どころ(),
-        載せているコマの出どころ::載せていない
-    );
+    assert_eq!(行.載せたコマの状態(), 載せたコマの状態::載せていない);
 }
