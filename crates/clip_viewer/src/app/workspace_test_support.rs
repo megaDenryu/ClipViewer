@@ -8,12 +8,14 @@ use clip_domain::{
 };
 use sengen_egui::{キー, キーの組};
 
+use super::front_workspace::前に出ている作業場;
 use super::launch_requests_test_support::試験のビューアー;
 use super::workspace::作業場の応答;
 use super::クリップビューアー;
 use crate::command::{
     クリップの操作, クリップの編集, 主ボタンの様子, 再生の操作, 出力の操作, 応答,
 };
+use crate::overlay::重ね合わせの作業場;
 use crate::state::{並びの出どころ, 画面の構え};
 use crate::viewer_settings::キーで行う操作;
 
@@ -79,4 +81,14 @@ pub(super) fn スタックの作業場の値を既定から変えて再生して
     ));
     状態.再生.再生を始める();
     ビューアー
+}
+
+/// 前に出ている重ね合わせの作業場。スタックの作業場が前なら無い。
+pub(super) fn 前の重ね合わせの作業場(
+    ビューアー: &mut クリップビューアー,
+) -> Option<&mut 重ね合わせの作業場> {
+    match &mut ビューアー.前に出ている作業場 {
+        前に出ている作業場::重ね合わせが前(作業場) => Some(作業場),
+        前に出ている作業場::スタックが前 { .. } => None,
+    }
 }

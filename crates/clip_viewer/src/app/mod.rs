@@ -4,6 +4,7 @@
 mod assemble;
 mod close;
 mod environment;
+mod front_workspace;
 mod launch_plan;
 mod launch_preparation;
 mod launch_requests;
@@ -27,6 +28,8 @@ mod launch_window_tests;
 mod settings_watch_tests;
 #[cfg(test)]
 mod viewer_settings_save_tests;
+#[cfg(test)]
+mod workspace_drop_tests;
 #[cfg(test)]
 mod workspace_front_tests;
 #[cfg(test)]
@@ -55,9 +58,10 @@ use sengen_egui::ノード;
 use crate::command::{主ボタンの様子, 操作の適用係};
 use crate::launch::受け取っている受け口;
 use crate::state::アプリの状態;
+use front_workspace::前に出ている作業場;
 use sound_sender::音の送り手;
 use viewer_settings_save::見る側の設定の保存係;
-use workspace::{作業場の応答, 前に出ている作業場};
+use workspace::作業場の応答;
 
 /// クリップビューアーとは、アプリの状態と、応答を状態へ適用する係と、音の送り手と、起動の受け口と、見る側の設定の保存係と、前に出ている作業場の組のことである。
 /// 状態は係の処理の対象であって依存ではないため、係の中に入れず並べて持つ。音の送り手は音声出力装置を持ち、毎フレーム指示を渡す。

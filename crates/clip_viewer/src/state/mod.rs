@@ -34,6 +34,7 @@ mod viewer_preference;
 mod volume;
 mod window;
 mod window_vocabulary;
+mod workspace_leave;
 
 #[cfg(test)]
 mod band_values_tests;

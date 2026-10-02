@@ -1,4 +1,4 @@
-//! 作業場を移すことの試験の道具のうち、画面の殻と同じ順にクリップビューアーの1フレームを進めること。キーを押した入力で画面を描き、発した応答を適用する。
+//! 作業場を移すことの試験の道具のうち、画面の殻と同じ順にクリップビューアーの1フレームを進めること。キーを押した入力やファイルを落とした入力で画面を描き、発した応答を適用する。
 
 use std::time::Instant;
 
@@ -14,13 +14,28 @@ pub(super) fn キーを押して適用する(
     修飾キー: egui::Modifiers,
 ) {
     let 本体 = egui::Context::default();
-    一フレーム進める(ビューアー, &本体, Vec::new(), 修飾キー);
-    一フレーム進める(
-        ビューアー,
-        &本体,
-        vec![キーの押下(キー, 修飾キー)],
-        修飾キー,
-    );
+    一フレーム進める(ビューアー, &本体, egui::RawInput::default());
+    let 押した入力 = egui::RawInput {
+        events: vec![キーの押下(キー, 修飾キー)],
+        modifiers: 修飾キー,
+        ..Default::default()
+    };
+    一フレーム進める(ビューアー, &本体, 押した入力);
+}
+
+/// ウインドウへファイルを1つ落とした入力で1フレーム進める。
+pub(super) fn ファイルを落として一フレーム進める(
+    ビューアー: &mut クリップビューアー,
+    パス: std::path::PathBuf,
+) {
+    let 落とした入力 = egui::RawInput {
+        dropped_files: vec![egui::DroppedFile {
+            path: Some(パス),
+            ..Default::default()
+        }],
+        ..Default::default()
+    };
+    一フレーム進める(ビューアー, &egui::Context::default(), 落とした入力);
 }
 
 /// 何も押さずに1フレーム進める。毎フレームの手順が状態へ当てる値(操作の区切り等)を、キーを押す前にそろえるために使う。
@@ -30,24 +45,17 @@ pub(super) fn 何も押さずに一フレーム進める(
     一フレーム進める(
         ビューアー,
         &egui::Context::default(),
-        Vec::new(),
-        egui::Modifiers::NONE,
+        egui::RawInput::default(),
     );
 }
 
-/// 画面の殻と同じ順に1フレームを進める。状態を進め、前に出ている作業場の画面を事象を入力にして描き、発した応答を適用する。
+/// 画面の殻と同じ順に1フレームを進める。状態を進め、前に出ている作業場の画面を入力で描き、発した応答を適用する。
 fn 一フレーム進める(
     ビューアー: &mut クリップビューアー,
     本体: &egui::Context,
-    事象: Vec<egui::Event>,
-    修飾キー: egui::Modifiers,
+    入力: egui::RawInput,
 ) {
     ビューアー.フレームを進める(Instant::now());
-    let 入力 = egui::RawInput {
-        events: 事象,
-        modifiers: 修飾キー,
-        ..Default::default()
-    };
     let mut 集まり = Vec::new();
     let _ = 本体.run(入力, |本体| {
         egui::CentralPanel::default().show(本体, |ui| {

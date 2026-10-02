@@ -15,6 +15,7 @@ mod crash_record;
 mod launch;
 mod overlay;
 mod persistence;
+mod redraw_interval;
 mod screen_shell;
 mod startup_notice;
 mod state;

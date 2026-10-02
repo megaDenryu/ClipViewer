@@ -1,8 +1,6 @@
-//! 重ね合わせの作業場の層。重ね合わせを作り、直し、再生するための作業場の状態(`state/`)・操作の適用(`command/`)・画面(`view/`)を持つ。
-//! 作業場とは、利用者が1つの目的で使う画面の全体であり、自分の状態・操作の適用・キーの表・画面の木・時計を持つもののことである。
-//! 注意: このモジュールの下では、スタックの作業場の `crate::state`・`crate::command`・`crate::view` を使わない。スタックの作業場から読むものは、
-//! 配線(`app/workspace.rs`)が値として渡す。`cargo xtask check-overlay-deps` がこの決まりを検査する。
-//! 参照: _doc/設計/同時再生.md 3-2・3-3
+//! 重ね合わせの作業場の層。重ね合わせを作り、直し、再生するための作業場の状態(`state/`)・応答(`command/`)・画面(`view/`)を持つ。
+//! 注意: この下ではスタックの作業場の `crate::state`・`crate::command`・`crate::view` を使わない(`cargo xtask check-overlay-deps` が検査する)。
+//! 参照: _doc/設計/同時再生.md 1節(作業場の定義)・3-2・3-3
 
 mod command;
 mod state;
@@ -10,7 +8,11 @@ mod view;
 mod workspace;
 
 #[cfg(test)]
+pub(crate) mod test_support;
+#[cfg(test)]
 mod tests;
 
-pub(crate) use command::{操作の後の作業場, 重ね合わせの操作};
+pub(crate) use command::重ね合わせの作業場の応答;
+#[cfg(test)]
+pub(crate) use command::{落とされたファイルの知らせ, 重ね合わせの操作};
 pub(crate) use workspace::重ね合わせの作業場;
