@@ -6,6 +6,6 @@ mod at_time_result;
 mod clock;
 
 pub use at_time_result::{
-    置いたクリップの再生の中身, 行が映すもの, 行が映す中身
+    置いたクリップの再生の中身, 行が映すもの, 行の映し方
 };
 pub use clock::{重ね合わせの再生位置, 重ね合わせの時計を進めた結果};
