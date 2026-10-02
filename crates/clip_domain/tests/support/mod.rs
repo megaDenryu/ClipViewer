@@ -6,6 +6,7 @@ use clip_domain::*;
 pub mod library_text;
 pub mod next_result;
 pub mod overlay;
+pub mod overlay_playback;
 pub mod span_end;
 
 pub fn 識別子(文字列: &str) -> クリップ識別子 {
