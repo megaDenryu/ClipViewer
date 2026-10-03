@@ -3,6 +3,7 @@
 
 mod assemble;
 mod close;
+mod close_flow;
 mod close_procedure;
 mod environment;
 mod front_workspace;
