@@ -1,7 +1,9 @@
 //! 起動の準備。起動の手順(`launch_plan.rs`)が決めた結果であり、起動の部分(main.rs)がウインドウを作り、
 //! 組み立て(`assemble.rs`)が準備からクリップビューアーを組み立てる。参照: _doc/設計/画面.md 判断13
 
-use clip_library::錠を試したライブラリ;
+use clip_library::{
+    錠を試したライブラリ, 錠を試した重ね合わせのライブラリ
+};
 
 use super::environment::起動時の環境;
 use crate::launch::{起動の受け口, 起動の頼み};
@@ -9,12 +11,14 @@ use crate::persistence::アプリの設定の保管場所;
 use crate::viewer_settings::{ウインドウの記憶, 見る側の設定};
 
 /// 起動の準備とは、ウインドウを作って組み立てるときに使う、起動時の環境・settings.json から読んだ見る側の設定・アプリの設定の保管場所・錠を試したライブラリ(置き場所が無ければ無い)・
+/// 錠を試した重ね合わせのライブラリ(置き場所が無ければ無い。ライブラリの錠を持つときだけ `overlays` の錠を取りに行った結果)・
 /// 開いた起動の受け口(1つ目でなければ無い)・起動の頼み・起動の途中で利用者へ知らせる文の組のことである。
 pub(crate) struct 起動の準備 {
     pub(super) 環境: 起動時の環境,
     pub(super) 見る側: 見る側の設定,
     pub(super) 保管場所: アプリの設定の保管場所,
     pub(super) ライブラリ: Option<錠を試したライブラリ>,
+    pub(super) 重ね合わせのライブラリ: Option<錠を試した重ね合わせのライブラリ>,
     pub(super) 受け口: Option<起動の受け口>,
     pub(super) 頼み: 起動の頼み,
     pub(super) 知らせ: Vec<String>,

@@ -10,7 +10,9 @@ use super::stack_values::今のスタックの値を借りる;
 use super::workspace_response::作業場の応答;
 use super::クリップビューアー;
 use crate::command::{再生の操作, 応答};
-use crate::overlay::重ね合わせの作業場の応答;
+use crate::overlay::{
+    重ね合わせのライブラリの様子, 重ね合わせの作業場の応答
+};
 use crate::view;
 
 impl クリップビューアー {
@@ -42,6 +44,9 @@ impl クリップビューアー {
                 .画面(
                     今のスタックの値を借りる(&self.状態),
                     view::描き直すまでの時間(&self.状態),
+                    重ね合わせのライブラリの様子::裏で動くライブラリから求める(
+                        self.重ね合わせのライブラリ.as_ref(),
+                    ),
                 )
                 .写す(作業場の応答::重ね合わせの応答),
         }
