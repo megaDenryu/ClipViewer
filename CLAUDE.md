@@ -33,7 +33,10 @@ ClipViewer は、1本の動画から切り出した短い区間(クリップ)を
   同じ動画を n 本の ffmpeg で同時に読み切る時間を測り、`_doc/設計/同時再生.md` 5-4 の表と同じ列で出す。FFmpeg は verify と同じ順に探し、
   動画を渡さなければ合成画像を一時フォルダに作って測る。時間がかかり結果が計算機の負荷で揺れるため、verify には入れない
 - **egui / SengenEgui への依存は `crates/clip_viewer` だけに閉じる。** `clip_domain` と `video_source` に書かない
-- **FFmpeg への依存(外部プロセスの呼び出し)は `crates/video_source` だけに閉じる。** `clip_domain` に書かない
+- **FFmpeg への依存(外部プロセスの呼び出し)は `crates/video_source` だけに閉じる。** `clip_domain` に書かない。
+  例外として、検証と測定の道具(`xtask`)は FFmpeg と ffprobe を直接起動してよい(FFmpeg の結合試験の判定・`cargo xtask decode-load`)。
+  `xtask` が `video_source` に依存しないのは、`video_source` がビルドできない状態でも fmt と clippy を走らせるためである(2026-10-03 オーナーの決定)。
+  アプリのクレートの中では、この例外を使わない
 - **`clip_domain` は egui にも FFmpeg にも依存しない。** 依存してよいのは serde / serde_json / thiserror だけである
 - **`video_source` は egui / SengenEgui にも cpal にも依存しない。** 依存してよいのは `clip_domain`・`audio_pcm` と serde / serde_json / thiserror だけであり、
   FFmpeg は `std::process` で起動する。`video_source` はクリップスタックやタイムライン・再生の規則を使わない(Cargo で強制できないため検収で確かめる)
