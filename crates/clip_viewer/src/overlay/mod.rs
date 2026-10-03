@@ -78,10 +78,11 @@ mod with_ffmpeg_seek_tests;
 #[cfg(test)]
 mod with_ffmpeg_sound_tests;
 
+pub(crate) use command::重ね合わせの作業場の応答;
 #[cfg(test)]
-pub(crate) use command::{置き方の操作, 落とされたファイルの知らせ};
 pub(crate) use command::{
-    重ね合わせのライブラリの操作, 重ね合わせの作業場の応答, 重ね合わせの操作,
+    一覧とダイアログの操作, 置き方の操作, 落とされたファイルの知らせ, 重ね合わせのライブラリの操作,
+    重ね合わせの操作,
 };
 pub(crate) use state::library::重ね合わせのライブラリの状態;
 pub(crate) use state::{

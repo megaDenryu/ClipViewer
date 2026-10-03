@@ -3,7 +3,7 @@
 
 mod assemble;
 mod close;
-mod close_decision;
+mod close_procedure;
 mod environment;
 mod front_workspace;
 mod instruction_receiver;
@@ -12,7 +12,6 @@ mod launch_preparation;
 mod launch_requests;
 mod overlay_response;
 mod overlay_side;
-mod overlay_side_library;
 mod overlay_side_recipe;
 mod overlay_sound_sender;
 mod settings_watch;
@@ -40,7 +39,7 @@ use crate::command::操作の適用係;
 use crate::launch::受け取っている受け口;
 use crate::primary_button::主ボタンの様子;
 use crate::state::アプリの状態;
-use close_decision::閉じる決めの見張り;
+use close_procedure::アプリを閉じる手順;
 use front_workspace::前に出ている作業場;
 use sound_sender::音の送り手;
 use viewer_settings_save::見る側の設定の保存係;
@@ -52,7 +51,7 @@ use workspace_response::作業場の応答;
 /// アプリの状態と操作の適用係はスタックの作業場のものであり、どちらの作業場が前でも常に持つ(参照: _doc/設計/同時再生.md 3-2)。
 /// 重ね合わせの作業場とその2本目の流れの送り手は、前に出ている作業場が重ね合わせの側として持つ(同時再生.md 3-2・5-3)。
 /// 重ね合わせのライブラリ(`overlays` の錠を持つ裏で動く重ね合わせのライブラリ。置き場所が無ければ無い)は、重ね合わせの側の作り方が起動のときから持ち、
-/// 初めて重ね合わせの作業場を作るときに作業場へ渡す(同時再生.md 3-2・2-7)。閉じる決めの見張りは、作業場が変更を捨てて閉じると新しく決めたかを見る。
+/// 初めて重ね合わせの作業場を作るときに作業場へ渡す(同時再生.md 3-2・2-7)。閉じる手順は、ウインドウを閉じる要求を受けてから2つの作業場の決めを集める。
 /// 注意: `overlays` の錠を持つアプリは必ずスタックのライブラリの錠も持つため、落とすときは `Drop` が重ね合わせの側と重ね合わせのライブラリを先に落として
 /// `overlays` の錠を放し、その後で状態が持つスタックのライブラリの錠が放される。フィールドを並べる順には頼らない。
 pub(crate) struct クリップビューアー {
@@ -62,7 +61,7 @@ pub(crate) struct クリップビューアー {
     起動の受け口: Option<受け取っている受け口>,
     設定の保存係: 見る側の設定の保存係,
     前に出ている作業場: 前に出ている作業場,
-    閉じる決めの見張り: 閉じる決めの見張り,
+    閉じる手順: アプリを閉じる手順,
 }
 
 impl クリップビューアー {
@@ -101,10 +100,11 @@ impl クリップビューアー {
             self.作業場の応答を適用する(応答, 今);
         }
         self.状態.取り残されたドラッグを捨てる(主ボタン);
-        if let Some(側) = self.前に出ている作業場.前の重ね合わせを書き換える()
+        if let Some(作業場) = self.前に出ている作業場.前の重ね合わせの作業場を書き換える()
         {
-            側.取り残されたドラッグを捨てる(主ボタン);
+            作業場.取り残されたドラッグを捨てる(主ボタン);
         }
+        self.閉じる手順を進める(今);
         self.届いた起動の頼みを適用する(今)
     }
 }
@@ -116,18 +116,10 @@ impl Drop for クリップビューアー {
     fn drop(&mut self) {
         self.状態.書けていない並びの保存を頼む();
         self.設定の保存係.終わる前に書く(&mut self.状態);
-        if let Some(側) = self.前に出ている作業場.重ね合わせの側を書き換える()
+        if let Some(作業場) = self.前に出ている作業場.重ね合わせの作業場を書き換える()
         {
-            側.終わる前に保存を頼む();
+            作業場.終わる前に保存を頼む();
         }
-        self.重ね合わせのライブラリを放す();
-    }
-}
-
-impl クリップビューアー {
-    /// 重ね合わせの側と重ね合わせのライブラリを落とし、`overlays` の錠を放す。`Drop` が状態(スタックのライブラリの錠を持つ)より先に呼ぶ。
-    fn 重ね合わせのライブラリを放す(&mut self) {
-        self.前に出ている作業場
-            .重ね合わせの側を落としてライブラリを放す();
+        self.前に出ている作業場.重ね合わせの側を放す();
     }
 }

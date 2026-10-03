@@ -8,7 +8,7 @@ use thumbnail_cache::{
 };
 use video_source::{FFmpegが見つからないエラー, 実行ファイルの検索パス};
 
-use super::super::close_decision::閉じる決めの見張り;
+use super::super::close_procedure::アプリを閉じる手順;
 use super::super::front_workspace::前に出ている作業場;
 use super::super::instruction_receiver::二本目の流れを開く手立て;
 use super::super::overlay_side_recipe::重ね合わせの側の作り方;
@@ -73,7 +73,7 @@ pub(in crate::app) fn 試験のビューアーを二本目の流れの手立て�
                 ),
             },
         ),
-        閉じる決めの見張り: 閉じる決めの見張り::default(),
+        閉じる手順: アプリを閉じる手順::default(),
     }
 }
 

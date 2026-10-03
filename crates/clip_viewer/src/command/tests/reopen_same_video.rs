@@ -8,10 +8,11 @@ use clip_domain::{トリガー, 入力された動画パス, 正規化した動�
 
 use super::{クリップを並べた状態, クリップを作る, 編集する};
 use crate::command::クリップの編集;
+use crate::library_common::確かめた結果;
 use crate::state::library::{
     ライブラリのダイアログ, 並びを捨てる理由, 開いたときの添え書き, 関係を終える操作,
 };
-use crate::state::{アプリの状態, 確かめた結果, 閉じる要求への答え};
+use crate::state::{アプリの状態, 閉じる要求への答え};
 
 fn パス(文字列: &str) -> 正規化した動画パス {
     入力された動画パス::作成する(文字列.to_string()).正規化する()

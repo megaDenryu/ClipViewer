@@ -5,7 +5,7 @@ use clip_library::裏で動く重ね合わせのライブラリ;
 use eframe::egui;
 use video_source::{FFmpegの置き場所の設定, FFmpegを置いたフォルダ};
 
-use super::close_decision::閉じる決めの見張り;
+use super::close_procedure::アプリを閉じる手順;
 use super::front_workspace::前に出ている作業場;
 use super::instruction_receiver::既定の装置に二本目の流れを開く;
 use super::launch_preparation::起動の準備;
@@ -89,7 +89,7 @@ impl クリップビューアー {
                     サムネイルのキャッシュ: キャッシュ,
                 },
             ),
-            閉じる決めの見張り: 閉じる決めの見張り::default(),
+            閉じる手順: アプリを閉じる手順::default(),
         };
         ビューアー.起動の受け口で受け取り始めて頼みを当てる(
             準備.受け口,

@@ -8,10 +8,11 @@ use super::library_check::ファイルのクリップの名前;
 use super::library_support::試験のライブラリ;
 use super::{クリップを作る, 編集する};
 use crate::command::クリップの編集;
+use crate::library_common::確かめた結果;
 use crate::state::library::{
     開いたときの添え書き, 開いているスタック, 関係を終える操作
 };
-use crate::state::{確かめた結果, 閉じる要求への答え};
+use crate::state::閉じる要求への答え;
 
 fn 動画を開く操作(文字列: &str) -> 関係を終える操作 {
     関係を終える操作::動画を開く(

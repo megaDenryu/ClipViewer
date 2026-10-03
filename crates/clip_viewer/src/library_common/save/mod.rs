@@ -5,7 +5,6 @@
 
 mod after_register;
 mod change_watch;
-mod close_mode;
 mod connection;
 mod content;
 mod failure;
@@ -22,7 +21,6 @@ mod change_watch_tests;
 
 pub(crate) use after_register::登録の後にすること;
 pub(crate) use change_watch::見た結果;
-pub(crate) use close_mode::アプリの閉じ方;
 pub(crate) use connection::保存物のライブラリの接続;
 pub(crate) use failure::ライブラリを使えない理由;
 pub(crate) use name_input::入力中の名前;
