@@ -17,6 +17,7 @@ use crate::overlay::placement_test_support::{
     ドラッグの動きを作る, 映す矩形の枠の操作を当てる, 置いたクリップの識別子を作る,
     置き方の操作を当てる, 開いた作業場,
 };
+use crate::overlay::state::library_status::重ね合わせのライブラリの様子;
 use crate::overlay::state::placement::隅の縦横比の扱い;
 use crate::overlay::state::今のスタックから並べる状況;
 use crate::overlay::workspace::重ね合わせの作業場;
@@ -34,6 +35,7 @@ fn ダイアログを描いて押す(
             None,
             試験の全体の音量,
             None,
+            重ね合わせのライブラリの様子::書ける,
         )
     };
     let mut 出力 = 描いて集める(&画面描画の共有状態, Vec::new(), &木).1;

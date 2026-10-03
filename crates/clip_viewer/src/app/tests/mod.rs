@@ -2,10 +2,12 @@
 
 mod close_tests;
 pub(in crate::app) mod instruction_receiver_test_support;
+mod launch_plan_overlay_tests;
 mod launch_plan_tests;
 pub(in crate::app) mod launch_requests_test_support;
 mod launch_requests_tests;
 mod launch_window_tests;
+mod lock_release_order_tests;
 mod settings_watch_tests;
 mod viewer_settings_save_tests;
 mod workspace_drop_tests;
@@ -13,6 +15,7 @@ mod workspace_ffmpeg_test_support;
 mod workspace_front_tests;
 mod workspace_keys_tests;
 mod workspace_keys_with_ffmpeg_tests;
+mod workspace_overlay_library_tests;
 mod workspace_overlay_mute_with_ffmpeg_tests;
 mod workspace_overlay_notice_tests;
 mod workspace_overlay_sound_tests;

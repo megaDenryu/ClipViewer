@@ -1,5 +1,7 @@
 //! 置いたクリップ。重ね合わせの中のタイムラインの行に置かれた、映す場所と音の設定と始まりの時刻を持つ、スタックのクリップとは別の型。
 
+mod parts;
+
 use crate::duration::時間の長さ;
 use crate::overlay::basis::重ね合わせ上の秒;
 use crate::overlay::inherited::クリップから受け継いだ値;

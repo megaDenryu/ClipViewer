@@ -6,9 +6,11 @@
 mod aggregate;
 mod arrange;
 mod aspect;
+mod assemble_error;
 mod basis;
 mod error;
 mod inherited;
+mod parts;
 mod placed_id;
 mod playback;
 mod rect;
@@ -23,9 +25,14 @@ pub use arrange::{
     スタックから並べた結果, スタックから並べるエラー, 置かなかったクリップ, 置かなかった理由,
 };
 pub use aspect::{重ねる画面の縦横比, 重ねる画面の縦横比エラー};
+pub use assemble_error::重ね合わせを組み立てられない理由;
 pub use basis::{重ねる画面に対する, 重ね合わせ上, 重ね合わせ上の秒};
 pub use error::重ね合わせの操作エラー;
 pub use inherited::クリップから受け継いだ値;
+pub use parts::{
+    タイムラインの行の部品一式, 置いたクリップの部品一式, 部品の並びの中の位置,
+    重ね合わせの部品一式,
+};
 pub use placed_id::{
     空の置いたクリップの識別子エラー, 置いたクリップの識別子, 置いたクリップの識別子の発行元,
 };

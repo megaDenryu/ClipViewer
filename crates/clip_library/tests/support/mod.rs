@@ -6,6 +6,8 @@ use std::path::PathBuf;
 use clip_domain::*;
 use clip_library::{スタックのライブラリ, ライブラリのフォルダ};
 
+pub mod overlay;
+
 /// 試験ごとに重ならない一時フォルダの下のライブラリ。試験の名前とプロセス番号で分け、前の実行の残りを消してから使う。
 pub struct 一時のライブラリ {
     pub 一時フォルダ: PathBuf,
