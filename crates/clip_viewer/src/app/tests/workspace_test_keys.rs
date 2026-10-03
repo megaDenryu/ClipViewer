@@ -1,6 +1,5 @@
 //! 回帰試験(b)の手順。スタックの作業場の今のキーの割り当てから、キーで行う操作の全部のキーの組を押す入力を作り、
 //! 重ね合わせの作業場が前のときに1つずつ押して、スタックの作業場の写しが変わらないことを確かめる。動画を開いていない試験と開いた試験が共有する。
-#![allow(clippy::expect_used)]
 
 use std::time::Instant;
 
@@ -15,23 +14,9 @@ use super::workspace_test_frames::{
 use super::workspace_test_snapshot::スタックの作業場の写し;
 use crate::overlay::重ね合わせの作業場が受け取るキーの組;
 
-/// キーの組を押す入力のキーと修飾キー。キーの組は修飾キーを外へ見せないため、候補の修飾キーで組を作り直して等しいものを選ぶ。
-/// どの候補とも等しくなければ、押せないキーの組を黙って外さずに失敗させる。
+/// キーの組を押す入力のキーと修飾キー。修飾キーは、キーの組がそろえた後の値(Ctrl と Command は `修飾キー::COMMAND`)である。
 fn キーの組を押す入力(組: キーの組) -> (egui::Key, egui::Modifiers) {
-    let 候補 = [
-        egui::Modifiers::NONE,
-        egui::Modifiers::SHIFT,
-        egui::Modifiers::COMMAND,
-        egui::Modifiers::COMMAND | egui::Modifiers::SHIFT,
-        egui::Modifiers::ALT,
-        egui::Modifiers::ALT | egui::Modifiers::SHIFT,
-        egui::Modifiers::COMMAND | egui::Modifiers::ALT,
-    ];
-    let 修飾キー = 候補
-        .into_iter()
-        .find(|修飾キー| キーの組::生成する(*修飾キー, 組.キー()) == 組)
-        .unwrap_or_else(|| panic!("{} の修飾キーを候補から決められない", 組.表記()));
-    (組.キー(), 修飾キー)
+    (組.キー(), 組.修飾キー())
 }
 
 /// 今のキーの割り当てで、キーで行う操作の全部に割り当てたキーの組を押す入力の並び。重ね合わせの作業場が受け取るキー(F11)と重なる組は除く。
