@@ -102,4 +102,9 @@ impl 動画ファイル名 {
     pub fn 大文字小文字を区別せず等しいか(&self, 他方: &Self) -> bool {
         self.0.to_lowercase() == 他方.0.to_lowercase()
     }
+
+    /// 最後の点より前の名前(拡張子を除いた名前)。点が無ければファイル名そのもの。登録する名前の初期値に使う。
+    pub fn 拡張子を除いた名前(&self) -> &str {
+        self.0.rsplit_once('.').map_or(&self.0, |(幹, _)| 幹)
+    }
 }
