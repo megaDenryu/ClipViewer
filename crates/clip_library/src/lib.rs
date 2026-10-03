@@ -15,6 +15,7 @@ mod background_threads;
 mod background_worker;
 mod changes;
 mod error;
+mod file_name_id;
 mod folder;
 mod item_folder;
 mod legacy_thumbnail;
