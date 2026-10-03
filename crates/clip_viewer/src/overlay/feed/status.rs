@@ -3,7 +3,7 @@
 
 use std::time::Instant;
 
-use clip_domain::{使う動画の表, 重ね合わせ};
+use clip_domain::{使う動画の表, 動画の番号, 画素の寸法, 重ね合わせ};
 use eframe::egui;
 use video_source::{メモリの上限, 動画の読み手};
 
@@ -53,6 +53,14 @@ impl 重ね合わせの映像の供給を作れたか {
     ) {
         if let Self::作れた(供給) = self {
             供給.行ごとのコマを載せる(重ね合わせ, 条件, 今);
+        }
+    }
+
+    /// 動画の番号の動画の元の画素の寸法。供給を作れなかったときと、その動画を開けなかったときは無い。
+    pub(crate) fn 動画の元の寸法(&self, 番号: 動画の番号) -> Option<画素の寸法> {
+        match self {
+            Self::作れた(供給) => 供給.動画の元の寸法(番号),
+            Self::作れない(_) => None,
         }
     }
 

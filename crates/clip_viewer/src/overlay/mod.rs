@@ -14,7 +14,15 @@ pub(crate) mod arrange_test_support;
 #[cfg(test)]
 mod arrange_tests;
 #[cfg(test)]
+mod place_tests;
+#[cfg(test)]
 mod placed_id_issuer_tests;
+#[cfg(test)]
+mod placement_drag_tests;
+#[cfg(test)]
+pub(crate) mod placement_test_support;
+#[cfg(test)]
+mod placement_tests;
 #[cfg(test)]
 pub(crate) mod test_support;
 #[cfg(test)]

@@ -9,6 +9,7 @@
 #![cfg_attr(not(debug_assertions), windows_subsystem = "windows")]
 
 mod app;
+mod aspect_name;
 mod audio_feed;
 mod command;
 mod crash_record;
