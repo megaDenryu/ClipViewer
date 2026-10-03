@@ -5,7 +5,7 @@
 #[derive(Debug, Clone, PartialEq, Eq)]
 pub enum コマンド {
     検証,
-    重ね合わせの層の依存の向きの検査,
+    層の依存の向きの検査,
     起動,
     インストーラー作成,
     ライセンス表示作成,
@@ -32,7 +32,7 @@ impl 引数の解釈結果 {
         };
         match 名前.as_str() {
             "verify" => Self::実行する(コマンド::検証),
-            "check-overlay-deps" => Self::実行する(コマンド::重ね合わせの層の依存の向きの検査),
+            "check-overlay-deps" => Self::実行する(コマンド::層の依存の向きの検査),
             "run" => Self::実行する(コマンド::起動),
             "installer" => Self::実行する(コマンド::インストーラー作成),
             "notices" => Self::実行する(コマンド::ライセンス表示作成),

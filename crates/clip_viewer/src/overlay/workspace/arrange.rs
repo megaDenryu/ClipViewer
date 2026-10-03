@@ -4,7 +4,7 @@
 use clip_domain::重ね合わせ;
 use video_source::動画の読み手;
 
-use super::library::スタックの作業場から借りるもの;
+use super::library::今のスタックの値と動画の読み手;
 use super::重ね合わせの作業場;
 use crate::overlay::state::library::重ね合わせとの関係を終える操作;
 use crate::overlay::state::今のスタックの値;
@@ -20,7 +20,7 @@ impl 重ね合わせの作業場 {
         値: 今のスタックの値<'_>,
         読み手: Option<&動画の読み手>,
     ) {
-        let 借りるもの = スタックの作業場から借りるもの {
+        let 借りるもの = 今のスタックの値と動画の読み手 {
             今のスタック: 値,
             読み手,
         };

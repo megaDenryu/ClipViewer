@@ -21,7 +21,9 @@ pub(crate) struct 行の並び<'一覧, 識別子> {
 
 impl<識別子> 行の並び<'_, 識別子> {
     /// 見えている行を先に、続けて見せる順の全部の行を並べる。見えている行は2回出るが、2回目には仕事が済んでいるため害は無い。
-    pub(super) fn 見えている行から順に(&self) -> impl Iterator<Item = &識別子> {
+    pub(super) fn 見えている行を先にした全部の行(
+        &self,
+    ) -> impl Iterator<Item = &識別子> {
         self.見えている.iter().chain(self.見せる順.iter()).copied()
     }
 }

@@ -98,5 +98,5 @@ pub(crate) use state::{
 #[cfg(test)]
 pub(crate) use view::重ね合わせの作業場が受け取るキーの組;
 pub(crate) use workspace::{
-    スタックの作業場から借りるもの, 重ね合わせの作業場
+    今のスタックの値と動画の読み手, 重ね合わせの作業場
 };

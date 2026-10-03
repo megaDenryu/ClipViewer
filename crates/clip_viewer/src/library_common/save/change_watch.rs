@@ -33,7 +33,7 @@ impl<比べる値: ?Sized + ToOwned> fmt::Debug for 変更の見張り<比べる
 
 /// 見た結果とは、変更の見張りが1フレームで今の値を見て出した判定の区別のことである。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) enum 見た結果 {
+pub(crate) enum 保存するかの判定 {
     保存しない,
     保存する,
 }
@@ -50,15 +50,15 @@ impl<比べる値: ?Sized + PartialEq + ToOwned> 変更の見張り<比べる値
     }
 
     /// 今の値を見る。保存を頼んだ値と違い、落ち着くまでの時間のあいだ変わらなければ保存すると判定する。
-    pub(crate) fn 見る(
+    pub(crate) fn 変更を見る(
         &mut self,
         今の値: &比べる値,
         保存を頼んだ値: &比べる値,
         今: Instant,
-    ) -> 見た結果 {
+    ) -> 保存するかの判定 {
         if 今の値 == 保存を頼んだ値 {
             *self = Self::変わっていない;
-            return 見た結果::保存しない;
+            return 保存するかの判定::保存しない;
         }
         if let Self::落ち着くのを待っている {
             見た値, 見た時刻
@@ -66,15 +66,15 @@ impl<比べる値: ?Sized + PartialEq + ToOwned> 変更の見張り<比べる値
             && (*見た値).borrow() == 今の値
         {
             if 今.saturating_duration_since(*見た時刻) < 落ち着くまでの時間 {
-                return 見た結果::保存しない;
+                return 保存するかの判定::保存しない;
             }
             *self = Self::変わっていない;
-            return 見た結果::保存する;
+            return 保存するかの判定::保存する;
         }
         *self = Self::落ち着くのを待っている {
             見た値: 今の値.to_owned(),
             見た時刻: 今,
         };
-        見た結果::保存しない
+        保存するかの判定::保存しない
     }
 }
