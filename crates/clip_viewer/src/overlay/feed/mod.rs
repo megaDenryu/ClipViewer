@@ -32,7 +32,7 @@ mod with_ffmpeg_support;
 mod with_ffmpeg_tests;
 
 pub(crate) use frame_targets::このフレームで映すもの;
-pub(crate) use loaded_rows::行に描くコマ;
+pub(crate) use loaded_rows::行の描き方;
 pub(crate) use show_condition::映すものを求める条件;
 pub(crate) use sound_supply::重ね合わせの音の供給;
 pub(crate) use status::重ね合わせの映像の供給を作れたか;
