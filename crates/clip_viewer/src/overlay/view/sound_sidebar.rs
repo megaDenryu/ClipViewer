@@ -9,9 +9,9 @@ use sengen_egui::{
     縦スクロール, 縦積み,
 };
 
-use super::音量のつまみの刻み;
 use crate::overlay::command::{重ね合わせの作業場の応答, 重ね合わせの操作};
 use crate::overlay::state::開いている重ね合わせ;
+use crate::volume_step::音量のつまみの刻み;
 
 /// 左のサイドバーのパネル。重ね合わせを開いている間だけ出す。
 pub(super) fn 置いたクリップの音のパネル(

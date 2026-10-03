@@ -10,9 +10,9 @@ use sengen_egui::{
     論理画素, 進捗バー,
 };
 
-use super::音量のつまみの刻み;
 use crate::overlay::command::{重ね合わせの作業場の応答, 重ね合わせの操作};
 use crate::overlay::state::{全体の音量, 重ね合わせの作業場の状態};
+use crate::volume_step::音量のつまみの刻み;
 
 /// 位置の棒の幅。幅を決めないと棒が行の残りの幅を全部使い、後ろの全体ループのチェックボックスを区画の外へ押し出す。
 const 位置の棒の幅: 論理画素 = 画素(240.0);
