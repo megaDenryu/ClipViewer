@@ -94,6 +94,11 @@ impl 流れてくる音 {
 
 impl std::fmt::Debug for 流れてくる音 {
     fn fmt(&self, 書き先: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
-        write!(書き先, "流れてくる音({:?})", self.範囲())
+        let 状態 = self.錠を取る();
+        書き先
+            .debug_struct("流れてくる音")
+            .field("輪", &状態.輪)
+            .field("閉じたか", &状態.閉じたか)
+            .finish()
     }
 }
