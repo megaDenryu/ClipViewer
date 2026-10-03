@@ -6,7 +6,9 @@ use crate::overlay::inherited::クリップから受け継いだ値;
 use crate::overlay::placed_id::置いたクリップの識別子;
 use crate::overlay::rect::映す矩形;
 use crate::overlay::video_table::動画の番号;
-use crate::overlay::volume::置いたクリップの音の設定;
+use crate::overlay::volume::{
+    置いたクリップの音の変更, 置いたクリップの音の設定
+};
 
 /// 置いたクリップとは、1本の動画の区間に、リピート回数・クロップ範囲・動画の番号・重ね合わせ上の始まりの時刻・
 /// 映す矩形・置いたクリップの音の設定を付けたもののことである。スタックのクリップ(`クリップ`)とは別の型である。
@@ -99,5 +101,11 @@ impl 置いたクリップ {
 
     pub(super) fn 映す矩形を変える(&mut self, 映す矩形: 映す矩形) {
         self.映す矩形 = 映す矩形;
+    }
+
+    pub(super) fn 音に変更を当てる(
+        &mut self, 変更: 置いたクリップの音の変更
+    ) {
+        self.音の設定 = self.音の設定.変更を当てる(変更);
     }
 }

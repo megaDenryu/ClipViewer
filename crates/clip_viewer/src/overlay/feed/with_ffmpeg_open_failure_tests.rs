@@ -11,6 +11,7 @@ use clip_domain::{
 use eframe::egui;
 use video_source::{メモリの上限, 動画の読み手};
 
+use super::frame_targets::このフレームで映すもの;
 use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の供給を作れたか;
 use crate::overlay::test_support::{置き方, 置き方を並べた重ね合わせ};
@@ -49,7 +50,10 @@ fn 開けない動画は_その理由を持ち_その動画の行は何も載せ
         時刻: 時刻::先頭,
         全体の末尾: 末尾での振る舞い::止まる,
     };
-    映像.行ごとのコマを載せる(&重ね合わせ, 条件, Instant::now());
+    映像.行ごとのコマを載せる(
+        &このフレームで映すもの::求める(&重ね合わせ, 条件),
+        Instant::now(),
+    );
     let 重ね合わせの映像の供給を作れたか::作れた(供給) = &映像 else {
         panic!("動画を開けなくても供給は作れる");
     };
