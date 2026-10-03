@@ -56,7 +56,7 @@ release.yml の版と、この節と、`_doc/使い方.md` 2.3節の版を一緒
 ```
 cargo xtask          # コマンドの一覧を表示する
 cargo xtask verify   # fmt --check → check-overlay-deps → clippy -D warnings → test → FFmpeg の結合試験 → 音声出力装置の確認 を順に実行する
-cargo xtask check-overlay-deps  # 重ね合わせの作業場の層(crates/clip_viewer/src/overlay)がスタックの作業場の state・command・view を使っていないことを検査し、調べたファイルの数を出す
+cargo xtask check-overlay-deps  # 重ね合わせの作業場の層(crates/clip_viewer/src/overlay)がスタックの作業場の state・command・view を、ライブラリの部品の共有の置き場(crates/clip_viewer/src/library_common)がそれに加えて overlay・app を使っていないことを検査し、層ごとに調べたファイルの数を出す
 cargo xtask run      # アプリを開発のビルドで起動する
 cargo xtask installer  # アプリを release でビルドし、第三者のライセンス表示を作り、Windows のインストーラーを組み立てる
 cargo xtask notices    # 第三者のライセンス表示(THIRD-PARTY-NOTICES.html)だけを作る
