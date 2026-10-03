@@ -17,6 +17,7 @@ mod launch;
 mod output_measure;
 mod overlay;
 mod persistence;
+mod primary_button;
 mod redraw_interval;
 mod screen_shell;
 mod startup_notice;
