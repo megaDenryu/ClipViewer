@@ -1,6 +1,7 @@
 //! 動画を渡されなかったときに測る、ffmpeg の合成画像の動画。一時フォルダに作り、測り終えたらフォルダごと消す。
 
-use std::path::{Path, PathBuf};
+use std::ffi::OsStr;
+use std::path::PathBuf;
 
 use super::read_length::読む秒数;
 use crate::ffmpeg_location::FFmpegの置き場所;
@@ -14,6 +15,7 @@ pub struct 合成画像の動画 {
 
 impl 合成画像の動画 {
     /// OS の一時フォルダの下に、このプロセスだけが使うフォルダを作り、指定の秒数の動画を符号化する。
+    /// 符号化に失敗したときも、作ったフォルダは値を捨てたときに消える。
     pub fn 作る(
         ffmpegの置き場所: &FFmpegの置き場所, 長さ: 読む秒数
     ) -> Result<Self, String> {
@@ -27,11 +29,13 @@ impl 合成画像の動画 {
             一時フォルダ,
         };
         println!(
-            "合成画像の動画を作る({}秒、1920x1080、30コマ/秒): {}",
-            長さ.値(),
+            "合成画像の動画を作る({長さ}、1920x1080、30コマ/秒): {}",
             作ったもの.動画.display()
         );
-        let 入力 = format!("testsrc2=size=1920x1080:rate=30:duration={}", 長さ.値());
+        let 入力 = format!(
+            "testsrc2=size=1920x1080:rate=30:duration={}",
+            長さ.ffmpegへ渡す秒の表記()
+        );
         let 終了状態 = ffmpegの置き場所
             .ffmpegの命令()
             .args([
@@ -55,9 +59,9 @@ impl 合成画像の動画 {
         Ok(作ったもの)
     }
 
-    /// 作った動画のファイル。
-    pub fn パス(&self) -> &Path {
-        &self.動画
+    /// ffprobe と ffmpeg の引数へ渡す、作った動画のパスの表記。
+    pub fn 引数の表記(&self) -> &OsStr {
+        self.動画.as_os_str()
     }
 }
 
