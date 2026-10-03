@@ -1,7 +1,7 @@
 //! 開いている重ね合わせ。重ね合わせと、その再生の状況と、映像の供給を作れたかと、開いている重ね合わせの音(`sound/`)を持ち、
-//! 毎フレームこのフレームで映すものを1回だけ求めて映像と音へ渡す。再生と停止・全体ループ・位置を動かす操作は `playback_ops.rs`、画面が読む口は `read.rs` に置く。
+//! 毎フレームこのフレームで映すものを1回だけ求めて映像と音へ渡す。再生と停止・全体ループ・再生の位置を動かす操作は `playback_ops.rs`、画面が読む口は `read.rs` に置く。
 //! 置き方の編集(`state/placement/`)と掴んでいるもの(`state/grab.rs`)も持ち、置き方の操作は `placement_ops.rs`・`placement_drag.rs`、読む口は `placement_read.rs` に置く。
-//! タイムラインの操作(塊のドラッグ・行の選択と削除と追加・位置を動かす)は `timeline_drag.rs`・`timeline_rows.rs`、読む口は `timeline_read.rs` に置く。
+//! タイムラインの操作(塊のドラッグ・行の選択と削除と追加・再生の位置を動かす)は `timeline_drag.rs`・`timeline_rows.rs`、読む口は `timeline_read.rs` に置く。
 
 mod placement_drag;
 mod placement_ops;
