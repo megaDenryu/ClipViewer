@@ -5,6 +5,7 @@
 //! スタックの作業場の `audio_feed` と共有する。参照: _doc/設計/同時再生.md 3-3・5-1・5-2・5-3
 
 mod frame_targets;
+mod loaded_rows;
 mod prefetch;
 mod row_request;
 mod show_condition;

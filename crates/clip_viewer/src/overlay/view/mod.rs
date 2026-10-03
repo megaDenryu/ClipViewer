@@ -35,6 +35,8 @@ mod screen_tests;
 #[cfg(test)]
 mod sidebar_tests;
 #[cfg(test)]
+mod sidebar_width_tests;
+#[cfg(test)]
 mod sound_tests;
 #[cfg(test)]
 mod test_support;

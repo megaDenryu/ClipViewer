@@ -36,6 +36,8 @@ mod tests;
 #[cfg(test)]
 mod with_ffmpeg_feed_tests;
 #[cfg(test)]
+mod with_ffmpeg_place_tests;
+#[cfg(test)]
 mod with_ffmpeg_sound_tests;
 
 #[cfg(test)]
