@@ -9,7 +9,7 @@ mod row;
 #[cfg(test)]
 mod tests;
 
-pub use instructions::{行ごとの再生の指示, 行の番号が範囲の外にある};
+pub use instructions::{範囲の外の行の番号, 行ごとの再生の指示};
 
 use std::time::{Duration, Instant};
 
@@ -49,7 +49,8 @@ impl 行の音を混ぜる係 {
         for 塊 in 出力.chunks_mut(下書きの標本数) {
             let 経過 = f64::from(済んだ数) / f64::from(self.周波数.毎秒の標本数());
             塊.fill(ステレオの標本::無音);
-            for (行, 行の指示) in self.行の並び.iter_mut().zip(指示.並び()) {
+            for (行, 行の指示) in self.行の並び.iter_mut().zip(指示.再生の指示の並び())
+            {
                 行.足し込む(行の指示, 今 + Duration::from_secs_f64(経過), 塊);
             }
             for 標本 in 塊.iter_mut() {

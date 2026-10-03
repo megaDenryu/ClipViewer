@@ -23,7 +23,7 @@ mod tests;
 
 pub use device::{行を混ぜる音声出力, 音声出力, 音声出力のエラー};
 pub use instruction::{位置を飛ばした回数, 再生の指示, 再生の様子};
-pub use mixer::{行ごとの再生の指示, 行の番号が範囲の外にある};
+pub use mixer::{範囲の外の行の番号, 行ごとの再生の指示};
 pub use player::音の再生器;
 pub use reading::{線形補間で読む, 速さを変える読み方};
 pub use retired::退いた出どころの置き場;
