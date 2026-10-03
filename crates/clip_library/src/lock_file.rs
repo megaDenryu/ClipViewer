@@ -3,7 +3,7 @@
 
 use std::fs::{File, OpenOptions, TryLockError};
 use std::io;
-use std::path::{Path, PathBuf};
+use std::path::Path;
 
 /// 錠のファイル名。拡張子が json でないため、一覧の走査の対象にならない。
 const 錠のファイル名: &str = "ClipViewer.lock";
@@ -16,10 +16,28 @@ pub(crate) struct 錠のファイル {
 }
 
 /// 錠のファイルを取れない理由とは、別のアプリが錠を持っているか、錠のファイルやフォルダを作れない・開けないかの区別のことである。
-#[derive(Debug)]
-pub(crate) enum 錠のファイルを取れない理由 {
+#[derive(Debug, thiserror::Error)]
+pub enum 錠のファイルを取れない理由 {
+    /// 別のアプリ(別の ClipViewer)が錠を持っている。
+    #[error("別の ClipViewer が開いている")]
     別のアプリが持っている,
-    読み書きできない { パス: PathBuf, 原因: io::Error },
+    /// 錠のファイルかフォルダを作れない・開けない。
+    #[error("{パス} を読み書きできない: {原因}")]
+    読み書きできない {
+        /// 読み書きしようとしたパス(表示用)。
+        パス: String,
+        /// OS が返した理由。
+        原因: io::Error,
+    },
+}
+
+impl 錠のファイルを取れない理由 {
+    fn 読み書きのエラー(パス: &Path, 原因: io::Error) -> Self {
+        Self::読み書きできない {
+            パス: パス.display().to_string(),
+            原因,
+        }
+    }
 }
 
 impl 錠のファイル {
@@ -28,26 +46,17 @@ impl 錠のファイル {
         フォルダ: &Path,
     ) -> Result<Self, 錠のファイルを取れない理由> {
         std::fs::create_dir_all(フォルダ).map_err(|原因| {
-            錠のファイルを取れない理由::読み書きできない {
-                パス: フォルダ.to_path_buf(),
-                原因,
-            }
+            錠のファイルを取れない理由::読み書きのエラー(フォルダ, 原因)
         })?;
         let パス = フォルダ.join(錠のファイル名);
-        let ファイル = match OpenOptions::new()
+        let ファイル = OpenOptions::new()
             .create(true)
             .truncate(false)
             .write(true)
             .open(&パス)
-        {
-            Ok(ファイル) => ファイル,
-            Err(原因) => {
-                return Err(錠のファイルを取れない理由::読み書きできない {
-                    パス,
-                    原因,
-                });
-            }
-        };
+            .map_err(|原因| {
+                錠のファイルを取れない理由::読み書きのエラー(&パス, 原因)
+            })?;
         match ファイル.try_lock() {
             Ok(()) => Ok(Self {
                 _開いたファイル: ファイル,
@@ -56,10 +65,7 @@ impl 錠のファイル {
                 Err(錠のファイルを取れない理由::別のアプリが持っている)
             }
             Err(TryLockError::Error(原因)) => {
-                Err(錠のファイルを取れない理由::読み書きできない {
-                    パス,
-                    原因,
-                })
+                Err(錠のファイルを取れない理由::読み書きのエラー(&パス, 原因))
             }
         }
     }

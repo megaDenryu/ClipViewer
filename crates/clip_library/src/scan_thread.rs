@@ -1,9 +1,10 @@
 //! 走査のスレッド。書き込みのスレッドから渡された頼みを受けた順に行い、一覧を作って知らせを返す。
 //! 走査を書き込みと別のスレッドにするのは、遅いドライブの走査の間も書き込みを待たせないためである。
+//! 書き込みのスレッドの本体(`write_thread.rs`)と対になる。
 
 use std::sync::mpsc::{Receiver, Sender};
 
-use crate::background_threads::裏で行うライブラリ;
+use crate::background_library::裏で行うライブラリ;
 
 /// 走査のスレッドへの頼みとは、走査のスレッドへ送るものの区別のことである。
 pub(crate) enum 走査のスレッドへの頼み {
