@@ -34,6 +34,7 @@ pub(in crate::app) fn スタックの応答を適用する(
             .map(作業場の応答::スタックの応答)
             .collect(),
         主ボタンの様子::押していない,
+        Instant::now(),
     );
 }
 
