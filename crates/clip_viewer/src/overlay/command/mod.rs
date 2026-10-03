@@ -6,6 +6,9 @@ mod drag_safety;
 mod frame_drag;
 mod placement;
 mod timeline;
+mod timeline_notice;
+#[cfg(test)]
+mod timeline_notice_tests;
 
 pub(crate) use frame_drag::映す矩形の枠の操作;
 pub(crate) use placement::置き方の操作;

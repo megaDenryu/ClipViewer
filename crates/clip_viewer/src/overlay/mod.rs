@@ -58,6 +58,8 @@ mod with_ffmpeg_feed_tests;
 #[cfg(test)]
 mod with_ffmpeg_place_tests;
 #[cfg(test)]
+mod with_ffmpeg_seek_drag_tests;
+#[cfg(test)]
 mod with_ffmpeg_seek_sound_tests;
 #[cfg(test)]
 mod with_ffmpeg_seek_tests;

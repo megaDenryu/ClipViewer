@@ -16,7 +16,7 @@ use crate::video_feed::with_ffmpeg_support::{
     実行ファイルを探す, 成り立つまで待つ, 試験動画を作る,
 };
 
-pub(crate) struct 試験動画のファイル(正規化した動画パス);
+pub(crate) struct 試験動画のファイル(pub(crate) 正規化した動画パス);
 
 impl Drop for 試験動画のファイル {
     fn drop(&mut self) {
