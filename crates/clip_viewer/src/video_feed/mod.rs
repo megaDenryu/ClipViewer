@@ -37,6 +37,8 @@ mod stream_position_tests;
 #[cfg(test)]
 mod with_ffmpeg_cached_end_tests;
 #[cfg(test)]
+mod with_ffmpeg_loaded_tests;
+#[cfg(test)]
 mod with_ffmpeg_stream_tests;
 #[cfg(test)]
 pub(crate) mod with_ffmpeg_support;
@@ -49,6 +51,7 @@ pub(crate) use frame_target::コマの載せ先;
 #[cfg(test)]
 pub(crate) use ledger::依頼の台帳;
 pub(crate) use ledger_state::{依頼の結末, 依頼の進み具合, 行の状態};
+pub(crate) use loaded_frame_state::コマを載せたか;
 #[cfg(test)]
 pub(crate) use loaded_frame_state::載せたコマの状態;
 pub(crate) use loaded_video::読み込んだ動画;
