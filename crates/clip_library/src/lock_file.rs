@@ -13,6 +13,16 @@ const 錠のファイル名: &str = "ClipViewer.lock";
 #[derive(Debug)]
 pub(crate) struct 錠のファイル {
     _開いたファイル: File,
+    #[cfg(test)]
+    フォルダ: std::path::PathBuf, // 試験で、錠を放した順を記録するときだけ使う。
+}
+
+#[cfg(test)]
+impl Drop for 錠のファイル {
+    /// 試験のときだけ、放す錠のフォルダを記録する(この後でファイルが閉じて錠が放れる)。
+    fn drop(&mut self) {
+        crate::lock_release_record::放した錠を記録する(&self.フォルダ);
+    }
 }
 
 /// 錠のファイルを取れない理由とは、別のアプリが錠を持っているか、錠のファイルやフォルダを作れない・開けないかの区別のことである。
@@ -60,6 +70,8 @@ impl 錠のファイル {
         match ファイル.try_lock() {
             Ok(()) => Ok(Self {
                 _開いたファイル: ファイル,
+                #[cfg(test)]
+                フォルダ: フォルダ.to_path_buf(),
             }),
             Err(TryLockError::WouldBlock) => {
                 Err(錠のファイルを取れない理由::別のアプリが持っている)

@@ -5,7 +5,8 @@
 
 use std::sync::mpsc::{self, Receiver, Sender};
 
-use crate::background_library::{裏で行うライブラリ, 頼みの扱い};
+use crate::background_library::封じた手順::頼みの扱い;
+use crate::background_library::裏で行うライブラリ;
 use crate::background_threads::裏のスレッドたち;
 use crate::library::スタックのライブラリ;
 use crate::permission::錠による書き込みの許し;
@@ -71,7 +72,7 @@ impl<ライブラリ: 裏で行うライブラリ> 裏で動く保存物のラ�
         self.送る(match ライブラリ::頼みの扱い(&頼み) {
             頼みの扱い::一覧を作る => {
                 書き込みのスレッドへの頼み::一覧を作らせる(
-                    self.許し.走査の前の片付け(),
+                    self.許し.書ける証しを作る(),
                 )
             }
             頼みの扱い::書き込む if self.許し.書けるか() => {

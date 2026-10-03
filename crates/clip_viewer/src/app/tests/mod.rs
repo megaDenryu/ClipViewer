@@ -7,6 +7,7 @@ mod launch_plan_tests;
 pub(in crate::app) mod launch_requests_test_support;
 mod launch_requests_tests;
 mod launch_window_tests;
+mod lock_release_order_tests;
 mod settings_watch_tests;
 mod viewer_settings_save_tests;
 mod workspace_drop_tests;

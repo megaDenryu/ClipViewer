@@ -6,8 +6,8 @@ use std::path::Path;
 
 use clip_domain::ライブラリのファイルの書き出しエラー;
 
-use crate::item_folder::書き換えの失敗;
 use crate::item_id::ライブラリの保存物の識別子;
+use crate::replace_write::書き換えの失敗;
 
 /// 保存物の操作エラーとは、ライブラリのフォルダ(または重ね合わせのフォルダ)の読み書きや、ファイルの中身の変換ができなかった理由のことである。
 #[derive(Debug, thiserror::Error)]
