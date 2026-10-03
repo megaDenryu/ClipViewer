@@ -6,5 +6,5 @@ mod drawn_blocks;
 
 pub(crate) use block_drag::{塊のドラッグ, 塊のドラッグの動き};
 pub(crate) use drawn_blocks::{
-    タイムラインに描く塊, 選んでいる行の番号と空か
+    タイムラインに描く塊, 選んでいる行の番号と空の行かの組
 };
