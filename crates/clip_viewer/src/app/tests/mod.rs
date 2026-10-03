@@ -15,6 +15,7 @@ mod workspace_ffmpeg_test_support;
 mod workspace_front_tests;
 mod workspace_keys_tests;
 mod workspace_keys_with_ffmpeg_tests;
+mod workspace_overlay_close_tests;
 mod workspace_overlay_library_tests;
 mod workspace_overlay_mute_with_ffmpeg_tests;
 mod workspace_overlay_notice_tests;

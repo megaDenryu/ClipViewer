@@ -6,9 +6,10 @@ use audio_output::音声出力のエラー;
 use audio_pcm::サンプリング周波数;
 use eframe::egui;
 
-use super::sound_test_support::{知らせの文, 装置の無い作業場を作る};
+use super::sound_test_support::{
+    知らせの文, 装置の無い作業場を作る, 音の出力で作業場を作る
+};
 use super::state::重ね合わせの音の出力の状況;
-use super::workspace::重ね合わせの作業場;
 
 #[test]
 fn 開けなかったことと途中で使えなくなったことを1回だけ知らせる() {
@@ -19,7 +20,7 @@ fn 開けなかったことと途中で使えなくなったことを1回だけ�
         "音声出力装置が見つからない。重ね合わせの作業場は音を鳴らさずに映像だけで再生する"
     ));
     let 周波数 = サンプリング周波数::作成する(48_000).expect("周波数");
-    let mut 使える = 重ね合わせの作業場::開いていない作業場(
+    let mut 使える = 音の出力で作業場を作る(
         egui::Context::default(),
         重ね合わせの音の出力の状況::使える(周波数),
     );

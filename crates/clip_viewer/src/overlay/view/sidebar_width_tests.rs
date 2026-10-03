@@ -17,7 +17,6 @@ use crate::overlay::placement_test_support::{
     置いたクリップの識別子を作る, 置き方の操作を当てる
 };
 use crate::overlay::sound_test_support::装置の無い作業場を作る;
-use crate::overlay::state::library_status::重ね合わせのライブラリの様子;
 use crate::overlay::state::placement::{
     置くクリップ, 置くクリップの一覧, 置くクリップの動画
 };
@@ -76,7 +75,6 @@ fn 長い名前と置けない理由を折り返し_サイドバーは既定の�
                     Some(&一覧),
                     試験の全体の音量,
                     None,
-                    重ね合わせのライブラリの様子::書ける,
                 )
                 .描画して集める(ui);
             });

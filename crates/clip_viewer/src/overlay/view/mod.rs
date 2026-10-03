@@ -9,11 +9,16 @@ mod header;
 mod invisible;
 mod keys;
 mod layout;
+mod library_dialog;
+mod library_header;
+mod library_list;
+mod library_row_text;
+mod library_rows;
+mod library_toolbar;
 mod not_open;
 mod output_area;
 mod placed_sound;
 mod playback_row;
-mod rearrange_dialog;
 mod screen;
 mod sidebar;
 mod sidebar_placed;
@@ -30,11 +35,11 @@ mod frame_tests;
 #[cfg(test)]
 mod header_tests;
 #[cfg(test)]
+mod library_dialog_tests;
+#[cfg(test)]
 mod not_open_tests;
 #[cfg(test)]
 mod playback_row_tests;
-#[cfg(test)]
-mod rearrange_dialog_tests;
 #[cfg(test)]
 mod screen_press_support;
 #[cfg(test)]

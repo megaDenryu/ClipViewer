@@ -5,10 +5,11 @@ use clip_library::裏で動く重ね合わせのライブラリ;
 use eframe::egui;
 use video_source::{FFmpegの置き場所の設定, FFmpegを置いたフォルダ};
 
+use super::close_decision::閉じる決めの見張り;
 use super::front_workspace::前に出ている作業場;
 use super::instruction_receiver::既定の装置に二本目の流れを開く;
 use super::launch_preparation::起動の準備;
-use super::overlay_side::重ね合わせの側の作り方;
+use super::overlay_side_recipe::重ね合わせの側の作り方;
 use super::sound_sender::音の送り手;
 use super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
 use super::クリップビューアー;
@@ -56,7 +57,7 @@ impl クリップビューアー {
         let キャッシュ =
             サムネイルのキャッシュを決める(環境.ローカルのアプリのデータのフォルダ);
         let サムネイル =
-            一覧のサムネイル::作成する(画面描画の共有状態.clone(), キャッシュ);
+            一覧のサムネイル::作成する(画面描画の共有状態.clone(), キャッシュ.clone());
         let mut 適用係 =
             操作の適用係::作成する(保管場所, 環境.検索パス, 画面描画の共有状態.clone());
         let ffmpegの状況 = 適用係.ffmpegを探す(&候補.使う置き場所());
@@ -73,9 +74,6 @@ impl クリップビューアー {
                 .出す(format!("{理由}。音を鳴らさずに映像だけで再生する"));
         }
         let mut ビューアー = Self {
-            重ね合わせのライブラリ: 重ね合わせのライブラリ.map(
-                裏で動く重ね合わせのライブラリ::錠を試した後で起動する,
-            ),
             状態,
             適用係,
             音の送り手,
@@ -85,8 +83,13 @@ impl クリップビューアー {
                 重ね合わせの側の作り方 {
                     画面描画の共有状態: 画面描画の共有状態.clone(),
                     流れを開く手立て: Box::new(既定の装置に二本目の流れを開く),
+                    重ね合わせのライブラリ: 重ね合わせのライブラリ.map(
+                        裏で動く重ね合わせのライブラリ::錠を試した後で起動する,
+                    ),
+                    サムネイルのキャッシュ: キャッシュ,
                 },
             ),
+            閉じる決めの見張り: 閉じる決めの見張り::default(),
         };
         ビューアー.起動の受け口で受け取り始めて頼みを当てる(
             準備.受け口,

@@ -6,7 +6,6 @@ use eframe::egui;
 use super::screen_press_support::試験の全体の音量;
 use super::test_support::{描いて集める, 黒く塗った矩形};
 use crate::overlay::command::重ね合わせの作業場の応答;
-use crate::overlay::state::library_status::重ね合わせのライブラリの様子;
 use crate::overlay::state::今のスタックから並べる状況;
 use crate::overlay::workspace::重ね合わせの作業場;
 
@@ -24,7 +23,6 @@ pub(super) fn ドラッグして応答を集める(
             None,
             試験の全体の音量,
             None,
-            重ね合わせのライブラリの様子::書ける,
         )
     };
     let (_, 出力) = 描いて集める(&画面描画の共有状態, Vec::new(), &木);

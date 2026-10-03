@@ -10,10 +10,9 @@ use sengen_egui::{並べる通知, 通知の回};
 use super::arrange_test_support::{クリップ, 値, 練習の動画};
 use super::feed::映像の供給を作れない理由;
 use super::sound_test_support::{
-    装置の無い作業場を作る, 装置の無い音の出力を作る
+    装置の無い作業場を作る, 装置の無い音の出力を作る, 音の出力で作業場を作る,
 };
 use super::state::今のスタックの値;
-use super::workspace::重ね合わせの作業場;
 
 #[test]
 fn 先頭から8つを並べて開き_置けないクリップと行の数の上限で置かなかったクリップを名前と理由で報告する()
@@ -95,10 +94,8 @@ fn 並べた後は描き直しを頼む() {
         let _ = 画面描画の共有状態.run(egui::RawInput::default(), |_| {});
     }
     assert!(!画面描画の共有状態.has_requested_repaint());
-    let mut 作業場 = 重ね合わせの作業場::開いていない作業場(
-        画面描画の共有状態.clone(),
-        装置の無い音の出力を作る(),
-    );
+    let mut 作業場 =
+        音の出力で作業場を作る(画面描画の共有状態.clone(), 装置の無い音の出力を作る());
     作業場.今のスタックから並べる(値(&スタック, &パス, 60.0), None);
     assert!(画面描画の共有状態.has_requested_repaint());
 }

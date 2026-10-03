@@ -14,6 +14,18 @@ pub(crate) mod arrange_test_support;
 #[cfg(test)]
 mod arrange_tests;
 #[cfg(test)]
+mod library_open_tests;
+#[cfg(test)]
+mod library_read_only_tests;
+#[cfg(test)]
+mod library_rearrange_tests;
+#[cfg(test)]
+mod library_save_tests;
+#[cfg(test)]
+pub(crate) mod library_test_ops;
+#[cfg(test)]
+pub(crate) mod library_test_support;
+#[cfg(test)]
 mod place_tests;
 #[cfg(test)]
 mod placed_id_issuer_tests;
@@ -67,13 +79,17 @@ mod with_ffmpeg_seek_tests;
 mod with_ffmpeg_sound_tests;
 
 #[cfg(test)]
-pub(crate) use command::落とされたファイルの知らせ;
-pub(crate) use command::{重ね合わせの作業場の応答, 重ね合わせの操作};
-pub(crate) use state::library_status::重ね合わせのライブラリの様子;
+pub(crate) use command::{置き方の操作, 落とされたファイルの知らせ};
+pub(crate) use command::{
+    重ね合わせのライブラリの操作, 重ね合わせの作業場の応答, 重ね合わせの操作,
+};
+pub(crate) use state::library::重ね合わせのライブラリの状態;
 pub(crate) use state::{
     スタックの保存の観測結果, 今のスタックの値, 全体の音量, 重ね合わせの音の出力の状況,
     開いている動画の値,
 };
 #[cfg(test)]
 pub(crate) use view::重ね合わせの作業場が受け取るキーの組;
-pub(crate) use workspace::重ね合わせの作業場;
+pub(crate) use workspace::{
+    スタックの作業場から借りるもの, 重ね合わせの作業場
+};
