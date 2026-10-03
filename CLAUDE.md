@@ -29,6 +29,9 @@ ClipViewer は、1本の動画から切り出した短い区間(クリップ)を
   「実行しなかった」と表示して残りを続け、最終行が「検証列は FFmpeg の結合試験(FFmpeg が見つからない)を除いて通過した」になる。音声出力装置が無いときも同じく「音声出力装置の確認(音声出力装置が無い)を除いて」と並ぶ。除いた工程は未検証である(FFmpeg が PATH に無い開発機では、
   `CLIPVIEWER_FFMPEG_DIR` に ffmpeg.exe と ffprobe.exe のあるフォルダを渡す。例: `CLIPVIEWER_FFMPEG_DIR=C:\ffmpeg\bin`)
 - **`crates/clip_viewer/src/overlay/`(重ね合わせの作業場の層)は、スタックの作業場の `crate::state`・`crate::command`・`crate::view` を使わない。** スタックの作業場から読むものは配線(`app/workspace.rs`)が値として渡す。1つのクレートの中なので Cargo では強制できず、`cargo xtask check-overlay-deps`(verify の工程)が検査する(`_doc/設計/同時再生.md` 3-2)
+- **デコードの負荷の測定は `cargo xtask decode-load [<動画のパス>] [--streams <本数,...>] [--seconds <秒数>]`**(実行場所はリポジトリのルート)。
+  同じ動画を n 本の ffmpeg で同時に読み切る時間を測り、`_doc/設計/同時再生.md` 5-4 の表と同じ列で出す。FFmpeg は verify と同じ順に探し、
+  動画を渡さなければ合成画像を一時フォルダに作って測る。時間がかかり結果が計算機の負荷で揺れるため、verify には入れない
 - **egui / SengenEgui への依存は `crates/clip_viewer` だけに閉じる。** `clip_domain` と `video_source` に書かない
 - **FFmpeg への依存(外部プロセスの呼び出し)は `crates/video_source` だけに閉じる。** `clip_domain` に書かない
 - **`clip_domain` は egui にも FFmpeg にも依存しない。** 依存してよいのは serde / serde_json / thiserror だけである

@@ -9,6 +9,8 @@ pub enum コマンド {
     起動,
     インストーラー作成,
     ライセンス表示作成,
+    /// デコードの負荷の測定。持つのは decode-load へ渡す引数である。
+    デコードの負荷の測定(Vec<String>),
     /// 手元の SengenEgui へ差し替えた cargo の実行。持つのは cargo へ渡す引数である。
     手元のSengenEguiでcargoを実行(Vec<String>),
     /// local-sengen が内部で起こす Cargo.lock の見張り役。人が直接使うものではない。
@@ -34,6 +36,9 @@ impl 引数の解釈結果 {
             "run" => Self::実行する(コマンド::起動),
             "installer" => Self::実行する(コマンド::インストーラー作成),
             "notices" => Self::実行する(コマンド::ライセンス表示作成),
+            "decode-load" => Self::実行する(コマンド::デコードの負荷の測定(
+                引数一覧[1..].to_vec(),
+            )),
             "local-sengen" => Self::実行する(コマンド::手元のSengenEguiでcargoを実行(
                 引数一覧[1..].to_vec(),
             )),
@@ -55,7 +60,7 @@ pub fn 使い方を表示する() {
     }
 }
 
-fn コマンド説明一覧() -> [(&'static str, &'static str); 7] {
+fn コマンド説明一覧() -> [(&'static str, &'static str); 8] {
     [
         (
             "verify",
@@ -76,6 +81,10 @@ fn コマンド説明一覧() -> [(&'static str, &'static str); 7] {
         (
             "notices",
             "cargo-about で第三者のライセンス表示(THIRD-PARTY-NOTICES.html)をビルドの出力先の installer フォルダへ作る。ライセンスを決められないクレートがあれば失敗する。cargo-about が要る: cargo install cargo-about --locked --features cli",
+        ),
+        (
+            "decode-load [<動画のパス>] [--streams <本数,...>] [--seconds <秒数>]",
+            "同じ動画を n 本の ffmpeg で同時に、アプリの流し読みと同じ形(fps フィルタ・長辺1280画素・RGBA)で先頭から読み切る時間を測り、本数ごとの合計の速さ・1本あたりの速さ・再生の速さに対する倍率を表で出す。本数の既定は 1,2,4,8、秒数の既定は30。動画を渡さなければ ffmpeg の合成画像(testsrc2、1920x1080、30コマ/秒)を一時フォルダに作って測り、終わったら消す。FFmpeg は環境変数 CLIPVIEWER_FFMPEG_DIR → PATH の順に探す。時間がかかり結果が揺れるため verify には入れない",
         ),
         (
             "local-sengen <cargo の引数>",

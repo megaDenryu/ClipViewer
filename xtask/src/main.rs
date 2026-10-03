@@ -2,6 +2,8 @@
 
 mod audio_device;
 mod command;
+mod decode_load;
+mod ffmpeg_location;
 mod ffmpeg_tests;
 mod installer;
 mod local_sengen;
@@ -44,6 +46,7 @@ fn コマンドを実行する(コマンド名: コマンド) -> Result<(), Stri
         コマンド::起動 => run::アプリを起動する(),
         コマンド::インストーラー作成 => installer::インストーラーを作る(),
         コマンド::ライセンス表示作成 => installer::ライセンス表示を作る(),
+        コマンド::デコードの負荷の測定(引数) => decode_load::負荷を測る(&引数),
         コマンド::手元のSengenEguiでcargoを実行(cargoの引数) => {
             local_sengen::手元のsengen_eguiへ差し替えてcargoを実行する(&cargoの引数)
         }

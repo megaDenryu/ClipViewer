@@ -61,6 +61,7 @@ cargo xtask run      # アプリを開発のビルドで起動する
 cargo xtask installer  # アプリを release でビルドし、第三者のライセンス表示を作り、Windows のインストーラーを組み立てる
 cargo xtask notices    # 第三者のライセンス表示(THIRD-PARTY-NOTICES.html)だけを作る
 cargo xtask local-sengen <cargo の引数>  # push する前の手元の SengenEgui で試すときだけ使う(下の「SengenEgui を直したとき」)
+cargo xtask decode-load [<動画のパス>] [--streams 1,2,4,8] [--seconds 30]  # 同じ動画を n 本の ffmpeg で同時に読み切る時間を測る(下の「デコードの負荷の測定」)
 ```
 
 ### SengenEgui を直したとき
@@ -116,6 +117,22 @@ $env:CLIPVIEWER_FFMPEG_DIR='C:\ffmpeg\bin'; cargo xtask run    # PowerShell
 ```
 
 FFmpeg が見つからないときに画面で置き場所を指定する手順と、FFmpeg を探す順は、`_doc/使い方.md` 2.3節に書いてある。
+
+### デコードの負荷の測定
+
+`cargo xtask decode-load` は、同じ動画を n 本の ffmpeg で同時に、アプリの流し読みと同じ形(fps フィルタ・長辺1280画素へ縮める・RGBA)で
+先頭から読み切る時間を測り、本数ごとの合計の速さ・1本あたりの速さ・再生の速さに対する倍率を、`_doc/設計/同時再生.md` 5-4 の表と同じ列の
+Markdown の表で出す。同時再生で同時に流し読みできる行の数の見積もりに使う。本数の既定は 1,2,4,8、読む長さの既定は先頭から30秒である。
+動画のパスを渡さなければ、ffmpeg の合成画像(testsrc2、1920x1080、30コマ/秒、libx264)を OS の一時フォルダに作って測り、終わったらフォルダごと消す。
+FFmpeg は verify と同じく環境変数 `CLIPVIEWER_FFMPEG_DIR` → PATH の順に探す(実行場所はリポジトリのルート)。
+
+```
+$env:CLIPVIEWER_FFMPEG_DIR='C:\ffmpeg\bin'; cargo xtask decode-load                       # 合成画像で測る(PowerShell)
+$env:CLIPVIEWER_FFMPEG_DIR='C:\ffmpeg\bin'; cargo xtask decode-load 'D:\動画\実写.mp4' --streams 1,2,4,8,12  # 実写の動画で測る
+```
+
+このコマンドは `cargo xtask verify` に入れない。数十秒から数分かかり、結果が計算機と、そのときの他の負荷で揺れるため、
+通ったか落ちたかで判定する検証列に向かないためである。
 
 ### インストーラーとリリース
 
