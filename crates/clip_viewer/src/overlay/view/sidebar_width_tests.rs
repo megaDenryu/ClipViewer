@@ -13,7 +13,9 @@ use sengen_egui::日本語フォントの候補;
 use super::screen_press_support::試験の全体の音量;
 use crate::overlay::arrange_test_support::練習の動画;
 use crate::overlay::command::置き方の操作;
-use crate::overlay::placement_test_support::{当てる, 置いた};
+use crate::overlay::placement_test_support::{
+    置いたクリップの識別子を作る, 置き方の操作を当てる
+};
 use crate::overlay::sound_test_support::装置の無い作業場を作る;
 use crate::overlay::state::placement::{
     置くクリップ, 置くクリップの一覧, 置くクリップの動画
@@ -52,9 +54,9 @@ fn 長い名前のクリップの重ね合わせ() -> 重ね合わせ {
 fn 長い名前と置けない理由を折り返し_サイドバーは既定の幅のままである() {
     let mut 作業場 = 装置の無い作業場を作る();
     作業場.重ね合わせを開く(長い名前のクリップの重ね合わせ(), None);
-    当てる(
+    置き方の操作を当てる(
         &mut 作業場,
-        置き方の操作::置いたクリップを選ぶ(置いた("置-1")),
+        置き方の操作::置いたクリップを選ぶ(置いたクリップの識別子を作る("置-1")),
     );
     let 一覧 = 置くクリップの一覧 {
         並び: vec![置くクリップ {

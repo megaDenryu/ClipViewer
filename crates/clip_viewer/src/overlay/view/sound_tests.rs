@@ -10,7 +10,9 @@ use super::sidebar_placed::置いたクリップの見出し;
 use crate::overlay::command::{
     置き方の操作, 重ね合わせの作業場の応答, 重ね合わせの操作
 };
-use crate::overlay::placement_test_support::{当てる, 置いた};
+use crate::overlay::placement_test_support::{
+    置いたクリップの識別子を作る, 置き方の操作を当てる
+};
 use crate::overlay::sound_test_support::装置の無い作業場を作る;
 use crate::overlay::state::今のスタックから並べる状況;
 use crate::overlay::test_support::五秒の重ね合わせ;
@@ -29,9 +31,9 @@ fn 選んでいる置いたクリップの設定に音量のつまみと消音�
         !描いたか(&作業場, 押せる, "消音"),
         "選んでいない間は置いたクリップの音を出さない"
     );
-    当てる(
+    置き方の操作を当てる(
         &mut 作業場,
-        置き方の操作::置いたクリップを選ぶ(置いた("置-1")),
+        置き方の操作::置いたクリップを選ぶ(置いたクリップの識別子を作る("置-1")),
     );
     assert!(描いたか(&作業場, 押せる, 置いたクリップの音量の見出し));
     let 押した = 文字を押して集める(&作業場, 押せる, "消音");
