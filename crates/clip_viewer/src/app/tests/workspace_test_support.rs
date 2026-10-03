@@ -13,9 +13,10 @@ use super::super::workspace_response::作業場の応答;
 use super::super::クリップビューアー;
 use super::launch_requests_test_support::試験のビューアー;
 use crate::command::{
-    クリップの操作, クリップの編集, 主ボタンの様子, 再生の操作, 出力の操作, 応答,
+    クリップの操作, クリップの編集, 再生の操作, 出力の操作, 応答
 };
 use crate::overlay::重ね合わせの作業場;
+use crate::primary_button::主ボタンの様子;
 use crate::state::{並びの出どころ, 画面の構え};
 use crate::viewer_settings::キーで行う操作;
 

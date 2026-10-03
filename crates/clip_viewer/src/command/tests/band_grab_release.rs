@@ -6,7 +6,8 @@ use clip_domain::トリガー;
 
 use super::band::{再生している甲, 区間の帯を操作する, 甲の区間};
 use super::{クリップを並べた状態, クリップを作る, 選択中の名前};
-use crate::command::{主ボタンの様子, 区間の帯の段階};
+use crate::command::区間の帯の段階;
+use crate::primary_button::主ボタンの様子;
 use crate::state::区間の帯で掴んだもの;
 
 const つまみ: 区間の帯で掴んだもの = 区間の帯で掴んだもの::開始のつまみ;

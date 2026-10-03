@@ -12,9 +12,9 @@ use super::workspace_test_snapshot::スタックの作業場の写し;
 use super::workspace_test_support::{
     スタックの作業場の値を既定から変えて再生しているビューアー, 前の重ね合わせの作業場,
 };
-use crate::command::主ボタンの様子;
 use crate::overlay::test_support::五秒の重ね合わせ;
 use crate::overlay::{重ね合わせの作業場の応答, 重ね合わせの操作};
+use crate::primary_button::主ボタンの様子;
 use clip_domain::音量;
 
 fn 重ね合わせの応答を適用する(

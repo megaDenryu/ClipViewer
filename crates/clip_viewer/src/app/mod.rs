@@ -32,8 +32,9 @@ use std::time::Instant;
 
 use sengen_egui::ノード;
 
-use crate::command::{主ボタンの様子, 操作の適用係};
+use crate::command::操作の適用係;
 use crate::launch::受け取っている受け口;
+use crate::primary_button::主ボタンの様子;
 use crate::state::アプリの状態;
 use front_workspace::前に出ている作業場;
 use sound_sender::音の送り手;

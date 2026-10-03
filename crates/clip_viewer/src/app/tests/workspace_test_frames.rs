@@ -5,7 +5,7 @@ use std::time::Instant;
 use eframe::egui;
 
 use super::super::クリップビューアー;
-use crate::command::主ボタンの様子;
+use crate::primary_button::主ボタンの様子;
 
 /// 新しい egui の本体で、何も押さずに1フレーム進めてから、キーを1つ押した入力で1フレーム進める。
 pub(in crate::app) fn キーを押して適用する(
