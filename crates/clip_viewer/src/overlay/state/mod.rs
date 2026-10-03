@@ -13,6 +13,7 @@ mod read;
 mod sound;
 mod stack_save_failure;
 mod stack_source;
+mod whole_volume;
 
 #[cfg(test)]
 mod stack_save_failure_tests;
@@ -33,6 +34,7 @@ pub(crate) use stack_save_failure::{
 pub(crate) use stack_source::{
     今のスタックから並べる状況, 今のスタックの値, 開いている動画の値
 };
+pub(crate) use whole_volume::全体の音量;
 
 use std::time::Instant;
 

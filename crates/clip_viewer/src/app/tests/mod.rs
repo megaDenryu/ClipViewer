@@ -12,6 +12,7 @@ mod workspace_front_tests;
 mod workspace_keys_tests;
 mod workspace_keys_with_ffmpeg_tests;
 mod workspace_overlay_notice_tests;
+mod workspace_overlay_sound_tests;
 mod workspace_overlay_tests;
 mod workspace_overlay_with_ffmpeg_tests;
 mod workspace_redraw_tests;

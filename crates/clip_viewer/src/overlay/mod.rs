@@ -34,7 +34,8 @@ mod with_ffmpeg_sound_tests;
 pub(crate) use command::落とされたファイルの知らせ;
 pub(crate) use command::{重ね合わせの作業場の応答, 重ね合わせの操作};
 pub(crate) use state::{
-    スタックの保存の観測結果, 今のスタックの値, 重ね合わせの音の出力の状況, 開いている動画の値,
+    スタックの保存の観測結果, 今のスタックの値, 全体の音量, 重ね合わせの音の出力の状況,
+    開いている動画の値,
 };
 #[cfg(test)]
 pub(crate) use view::重ね合わせの作業場が受け取るキーの組;

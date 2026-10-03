@@ -1,15 +1,14 @@
 //! 重ね合わせの作業場の画面全体を描いて文字を探し、押す試験の道具。作業場の状態と今のスタックから並べる状況を渡して画面を組む。
 
-use clip_domain::音量;
 use eframe::egui;
 
 use super::test_support::{押して集める, 描いた文字の範囲, 描いて集める};
 use crate::overlay::command::重ね合わせの作業場の応答;
-use crate::overlay::state::今のスタックから並べる状況;
+use crate::overlay::state::{今のスタックから並べる状況, 全体の音量};
 use crate::overlay::workspace::重ね合わせの作業場;
 
-/// 試験で画面へ渡す音量のつまみの値。
-pub(super) const 試験のつまみの音量: 音量 = 音量::起動したときの音量;
+/// 試験で画面へ渡す全体の音量。
+pub(super) const 試験の全体の音量: 全体の音量 = 全体の音量::試験で使う起動時の値;
 
 /// 作業場の画面を1回描いてから、その文字の真ん中を押して発した応答を返す。
 pub(super) fn 文字を押して集める(
@@ -18,7 +17,7 @@ pub(super) fn 文字を押して集める(
     文字: &str,
 ) -> Vec<重ね合わせの作業場の応答> {
     let 画面描画の共有状態 = egui::Context::default();
-    let 木 = || super::画面(作業場.状態(), 並べられるか, 試験のつまみの音量, None);
+    let 木 = || super::画面(作業場.状態(), 並べられるか, 試験の全体の音量, None);
     let (_, 出力) = 描いて集める(&画面描画の共有状態, Vec::new(), &木);
     let 位置 = 描いた文字の範囲(&出力, 文字)
         .unwrap_or_else(|| panic!("「{文字}」を描いていない"))
@@ -33,7 +32,7 @@ pub(super) fn 描いたか(
     文字: &str,
 ) -> bool {
     let (_, 出力) = 描いて集める(&egui::Context::default(), Vec::new(), &|| {
-        super::画面(作業場.状態(), 並べられるか, 試験のつまみの音量, None)
+        super::画面(作業場.状態(), 並べられるか, 試験の全体の音量, None)
     });
     描いた文字の範囲(&出力, 文字).is_some()
 }
