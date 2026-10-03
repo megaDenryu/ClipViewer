@@ -9,9 +9,9 @@ use clip_domain::正規化した動画パス;
 use eframe::egui;
 use video_source::{メモリの上限, 動画の読み手};
 
+use super::frame_loaded::コマを載せたか;
 use super::frame_source::動画のコマの供給元;
 use super::frame_target::コマの載せ先;
-use super::loaded_frame_state::コマを載せたか;
 use super::video_texture::テクスチャの名前;
 use super::with_ffmpeg_support::{
     実行ファイルを探す, 成り立つまで待つ, 求め, 試験動画を作る
@@ -86,7 +86,7 @@ fn 流し読みのコマをテクスチャへ載せたら載せたと返す() {
     let mut 試験 =
         試験動画の供給元と載せ先::試験動画を作って開く("載せたと返す");
     成り立つまで待つ("1秒のコマを載せたと返すこと", || {
-        試験.位置のコマを載せる(1.0) == コマを載せたか::載せた
+        matches!(試験.位置のコマを載せる(1.0), コマを載せたか::載せた(_))
     });
     assert!(!試験.載せ先.テクスチャ().まだ映していないか());
 }
