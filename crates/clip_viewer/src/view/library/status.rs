@@ -3,7 +3,8 @@
 use sengen_egui::{ノード, ボタン, 子, 文字表示, 横並び};
 
 use crate::command::{ライブラリの操作, 応答};
-use crate::state::library::{ライブラリの使える様子, 保存の段階};
+use crate::library_common::view::保存の段階の文字;
+use crate::state::library::ライブラリの使える様子;
 use crate::state::アプリの状態;
 use crate::view::styles;
 
@@ -41,17 +42,4 @@ pub(crate) fn ヘッダーのライブラリの様子(
         ])
         .into(),
     }
-}
-
-/// 開いている登録済みのスタックの保存の段階の文字。
-fn 保存の段階の文字(段階: 保存の段階<'_>) -> ノード<応答> {
-    let (段階, 装飾) = match 段階 {
-        保存の段階::保存済み => ("保存済み".to_string(), styles::補足),
-        保存の段階::変更を保存待ち => ("変更を保存待ち".to_string(), styles::補足),
-        保存の段階::保存中 => ("保存中".to_string(), styles::補足),
-        保存の段階::保存に失敗(理由) => {
-            (format!("保存に失敗: {理由}"), styles::不備の文)
-        }
-    };
-    文字表示(段階).装飾(装飾).into()
 }

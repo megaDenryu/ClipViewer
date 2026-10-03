@@ -7,7 +7,6 @@ mod row;
 mod row_source;
 mod rows;
 mod status;
-mod thumbnail;
 mod toolbar;
 
 pub(crate) use dialog::開いているダイアログ;

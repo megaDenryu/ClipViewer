@@ -8,12 +8,8 @@ use sengen_egui::{
 
 use super::keys;
 use crate::command::{ファイルの操作, 一度に落としたファイル, 応答};
-use crate::redraw_interval::描き直しの間隔;
+use crate::redraw_interval::{サムネイルの返事を待つ間隔, 描き直しの間隔};
 use crate::state::{アプリの状態, 画面の構え};
-
-/// 一覧のサムネイルの裏のスレッドの返事を待つ間に描き直す間隔。見えていない行を撮っておく間に、毎フレーム描き直さないためである
-/// (見えている行がまだ出せない間は、行の枠が約60回/秒で予約する。キャッシュを見る前の行が残っている間も約60回/秒にする)。
-const サムネイルの返事を待つ間隔: Duration = Duration::from_millis(100);
 
 pub(super) fn 見えない部品(状態: &アプリの状態) -> ノード<応答> {
     縦積み(子![

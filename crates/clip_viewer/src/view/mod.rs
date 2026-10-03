@@ -12,7 +12,7 @@ mod keys;
 mod library;
 mod output;
 mod sidebar;
-pub(crate) mod styles;
+pub(crate) use crate::styles;
 mod text;
 
 #[cfg(test)]
