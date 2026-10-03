@@ -79,3 +79,17 @@ impl 音の輪 {
         番号 % self.値の並び.len()
     }
 }
+
+// 試験が落ちたときに輪の状態を残せるよう、値の並びの中身を除いた位置と長さをすべて出す。
+impl std::fmt::Debug for 音の輪 {
+    fn fmt(&self, 書き先: &mut std::fmt::Formatter<'_>) -> std::fmt::Result {
+        書き先
+            .debug_struct("音の輪")
+            .field("容量", &self.値の並び.len())
+            .field("最も古い位置", &self.最も古い位置)
+            .field("書いた先", &self.書いた先)
+            .field("鳴らしている位置", &self.鳴らしている位置)
+            .field("残す長さ", &self.残す長さ)
+            .finish()
+    }
+}
