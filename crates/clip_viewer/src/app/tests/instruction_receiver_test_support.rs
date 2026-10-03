@@ -4,9 +4,11 @@
 
 use std::cell::RefCell;
 use std::rc::Rc;
+use std::time::Instant;
 
 use audio_output::{再生の指示, 行ごとの再生の指示, 音声出力のエラー};
 use audio_pcm::サンプリング周波数;
+use clip_domain::行の番号;
 
 use super::super::instruction_receiver::{
     二本目の流れを開く手立て, 再生の指示の受け口, 行ごとの再生の指示の受け口,
@@ -38,6 +40,22 @@ impl 再生の指示の受け口 for 渡した指示の控え<再生の指示> {
 
     fn 使えなくなった理由(&self) -> Option<音声出力のエラー> {
         None
+    }
+}
+
+impl 渡した指示の控え<行ごとの再生の指示> {
+    /// 最後に渡された行ごとの指示の、行の番号の行の指示。まだ渡されていなければ無い。
+    pub(in crate::app) fn 最後に渡された行の指示(
+        &self,
+        番号: usize,
+    ) -> Option<再生の指示> {
+        let mut 最後 = self.渡された指示の並び().pop()?;
+        最後
+            .行の指示を置き換える(
+                行の番号::番号から作成する(番号),
+                再生の指示::黙る(Instant::now()),
+            )
+            .ok()
     }
 }
 

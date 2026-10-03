@@ -9,6 +9,7 @@ mod launch_window_tests;
 mod settings_watch_tests;
 mod viewer_settings_save_tests;
 mod workspace_drop_tests;
+mod workspace_ffmpeg_test_support;
 mod workspace_front_tests;
 mod workspace_keys_tests;
 mod workspace_keys_with_ffmpeg_tests;
