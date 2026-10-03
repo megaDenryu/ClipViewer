@@ -43,11 +43,11 @@ mod tried_lock;
 mod tried_lock_pair;
 mod write_thread;
 
-pub use background::{裏で動くライブラリ, 裏で動く項目のライブラリ};
+pub use background::{裏で動くライブラリ, 裏で動く保存物のライブラリ};
 pub use background_library::{裏で行うライブラリ, 頼みの扱い};
 pub use folder::ライブラリのフォルダ;
-pub use item_error::項目の操作エラー;
-pub use item_id::ライブラリの項目の識別子;
+pub use item_error::保存物の操作エラー;
+pub use item_id::ライブラリの保存物の識別子;
 pub use library::{スタックのライブラリ, ライブラリの操作エラー};
 pub use listing::{
     ライブラリのファイル名, ライブラリの一覧, 一覧の項目, 動画の有無, 読めたスタック,
@@ -75,6 +75,6 @@ pub use request::{
 };
 pub use request_refusal::頼めない理由;
 pub use tried_lock::{
-    錠を試したライブラリ, 錠を試した重ね合わせのライブラリ, 錠を試した項目のライブラリ,
+    錠を試したライブラリ, 錠を試した保存物のライブラリ, 錠を試した重ね合わせのライブラリ,
 };
 pub use tried_lock_pair::錠を試したライブラリの組;
