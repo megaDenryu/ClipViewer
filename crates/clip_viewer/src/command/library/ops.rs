@@ -6,6 +6,7 @@ use crate::command::applier::操作の適用係;
 use crate::library_common::list::{
     並べ替え方, 絞り込みの語, 見えている行の範囲
 };
+use crate::library_common::続ける操作を持つダイアログ;
 use crate::state::library::{
     ライブラリのダイアログ, 登録の後にすること, 関係を終える操作
 };

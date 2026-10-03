@@ -4,8 +4,7 @@ use sengen_egui::{ノード, ボタン, 子, 文字表示, 横並び};
 
 use crate::command::{ライブラリの操作, 応答};
 use crate::library_common::list::並べ替え方;
-use crate::library_common::view::絞り込みと並べ替えの材料;
-use crate::state::library::最後に読んだ一覧;
+use crate::library_common::view::{件数の文, 絞り込みと並べ替えの材料};
 use crate::state::アプリの状態;
 use crate::styles;
 
@@ -24,12 +23,7 @@ fn 並べ替えを選んだ(並べ替え: 並べ替え方) -> 応答 {
 }
 
 pub(super) fn 道具の帯(状態: &アプリの状態) -> ノード<応答> {
-    let 件数 = match 状態.ライブラリ.一覧.一覧() {
-        最後に読んだ一覧::読めた(一覧) => format!("{}件", 一覧.項目.len()),
-        最後に読んだ一覧::まだ無い | 最後に読んだ一覧::読めない(_) => {
-            String::new()
-        }
-    };
+    let 件数 = 件数の文(状態.ライブラリ.一覧.一覧());
     let 見せ方 = 状態.ライブラリ.一覧.見せ方();
     let 絞り込みと並べ替え = 絞り込みと並べ替えの材料 {
         絞り込みの文字列: 見せ方.絞り込み.文字列(),

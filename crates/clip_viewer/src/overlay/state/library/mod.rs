@@ -7,6 +7,7 @@ mod check;
 mod dialog;
 mod list;
 mod notice;
+mod open_status;
 mod purpose;
 mod read;
 mod register;
@@ -17,8 +18,8 @@ mod save;
 pub(crate) use dialog::{
     重ね合わせとの関係を終える操作, 重ね合わせのダイアログ
 };
+pub(crate) use open_status::開いている重ね合わせのライブラリの様子;
 pub(crate) use purpose::重ね合わせの保存の目的;
-pub(crate) use read::開いている重ね合わせのライブラリの様子;
 pub(crate) use relation::重ね合わせとライブラリの関係;
 
 use std::time::Duration;

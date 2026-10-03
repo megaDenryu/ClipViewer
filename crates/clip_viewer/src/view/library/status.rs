@@ -4,27 +4,15 @@ use sengen_egui::{ノード, ボタン, 子, 文字表示, 横並び};
 
 use crate::command::{ライブラリの操作, 応答};
 use crate::library_common::view::保存の段階の文字;
-use crate::state::library::ライブラリの使える様子;
 use crate::state::アプリの状態;
 use crate::styles;
 
 pub(crate) fn ヘッダーのライブラリの様子(
     状態: &アプリの状態
 ) -> ノード<応答> {
-    match 状態.ライブラリ.接続.使える様子() {
-        ライブラリの使える様子::書ける(_) => {}
-        ライブラリの使える様子::読むだけ(..) => {
-            return 文字表示(
-                "ライブラリ: 読み取り専用(別の ClipViewer が開いている等。一覧の画面に理由を出す)",
-            )
-            .装飾(styles::不備の文)
-            .into();
-        }
-        ライブラリの使える様子::置き場所が無い => {
-            return 文字表示("ライブラリ: 使えない(置き場所が無い)")
-                .装飾(styles::不備の文)
-                .into();
-        }
+    if let Some(文) = super::一覧の文言.書けないことの文(状態.ライブラリ.接続.使える様子())
+    {
+        return 文字表示(文).装飾(styles::不備の文).into();
     }
     match 状態.開いている登録済みのスタックと保存の段階() {
         None => 横並び(子![

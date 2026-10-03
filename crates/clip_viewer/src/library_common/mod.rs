@@ -4,9 +4,11 @@
 
 mod check_result;
 mod close_decision;
+mod dialog_state;
 pub(crate) mod list;
 pub(crate) mod save;
 pub(crate) mod view;
 
 pub(crate) use check_result::確かめた結果;
 pub(crate) use close_decision::アプリを閉じてよいとの決め;
+pub(crate) use dialog_state::続ける操作を持つダイアログ;

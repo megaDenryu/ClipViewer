@@ -16,6 +16,11 @@ impl アプリを閉じてよいとの決め {
         *self = Self::閉じてよいと決めた;
     }
 
+    /// 閉じてよいと決めたか。
+    pub(crate) fn 閉じてよいと決めたか(self) -> bool {
+        self == Self::閉じてよいと決めた
+    }
+
     /// 決めを取り出して、決めていない様子へ戻す。配線が毎フレーム取り出す。
     pub(crate) fn 取り出す(&mut self) -> Self {
         std::mem::take(self)

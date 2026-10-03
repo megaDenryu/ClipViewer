@@ -2,6 +2,7 @@
 //! 読み取り専用のときは開かずにその旨を知らせる。参照: _doc/設計/同時再生.md 2-7、_doc/設計/ライブラリ.md 判断5・判断9
 
 use crate::library_common::save::{入力中の名前, 登録の後にすること};
+use crate::library_common::続ける操作を持つダイアログ;
 use crate::overlay::state::重ね合わせの作業場の状態;
 
 use super::dialog::{
