@@ -33,6 +33,10 @@ ClipViewer は、1本の動画から切り出した短い区間(クリップ)を
 - **デコードの負荷の測定は `cargo xtask decode-load [<動画のパス>] [--streams <本数,...>] [--seconds <秒数>]`**(実行場所はリポジトリのルート)。
   同じ動画を n 本の ffmpeg で同時に読み切る時間を測り、`_doc/設計/同時再生.md` 5-4 の表と同じ列で出す。FFmpeg は verify と同じ順に探し、
   動画を渡さなければ合成画像を一時フォルダに作って測る。時間がかかり結果が計算機の負荷で揺れるため、verify には入れない
+- **1フレームの時間の測定は `cargo xtask frame-time [<動画のパス>]`**(実行場所はリポジトリのルート)。アプリを release でビルドして測る起動をし、
+  重ね合わせの8行を再生している間の1フレームの時間(GPU へ載せる時間を含む)をアプリの中の計測(`crates/clip_viewer/src/frame_time/` と `app/frame_time_*.rs`。
+  環境変数 `CLIPVIEWER_FRAME_TIME_RESULT` があるときだけ働く)に測らせて出す。アプリのデータの置き場所は一時フォルダへ向ける。ウインドウを開くため、verify には入れない
+- **`crates/clip_viewer/src/edit_history/`(取り消しの履歴の共有の置き場)も、`library_common/` と同じく `crate::state`・`crate::command`・`crate::view`・`crate::overlay`・`crate::app` を使わない。** 同じく `cargo xtask check-overlay-deps` が検査する(`_doc/設計/画面.md` 判断23)
 - **egui / SengenEgui への依存は `crates/clip_viewer` だけに閉じる。** `clip_domain` と `video_source` に書かない
 - **FFmpeg への依存(外部プロセスの呼び出し)は `crates/video_source` だけに閉じる。** `clip_domain` に書かない。
   例外として、検証と測定の道具(`xtask`)は FFmpeg と ffprobe を直接起動してよい(FFmpeg の結合試験の判定・`cargo xtask decode-load`)。

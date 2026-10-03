@@ -5,6 +5,7 @@ mod command;
 mod decode_load;
 mod ffmpeg_location;
 mod ffmpeg_tests;
+mod frame_time;
 mod installer;
 mod local_sengen;
 mod overlay_deps;
@@ -48,6 +49,9 @@ fn コマンドを実行する(コマンド名: コマンド) -> Result<(), Stri
         コマンド::ライセンス表示作成 => installer::ライセンス表示を作る(),
         コマンド::デコードの負荷の測定(引数) => {
             decode_load::動画の同時読み出しの負荷を測る(&引数)
+        }
+        コマンド::一フレームの時間の測定(引数) => {
+            frame_time::八行を映したときの一フレームの時間を測る(&引数)
         }
         コマンド::手元のSengenEguiでcargoを実行(cargoの引数) => {
             local_sengen::手元のsengen_eguiへ差し替えてcargoを実行する(&cargoの引数)

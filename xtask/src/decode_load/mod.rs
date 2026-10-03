@@ -44,6 +44,9 @@ mod table_tests;
 #[cfg(test)]
 mod video_shape_tests;
 
+pub use read_length::読む秒数;
+pub use synthetic::合成画像の動画;
+
 use arguments::測定の指定;
 use load_measurement::負荷の測定;
 

@@ -14,6 +14,7 @@ mod audio_feed;
 mod command;
 mod crash_record;
 mod edit_history;
+mod frame_time;
 mod launch;
 mod library_common;
 mod output_measure;
@@ -70,6 +71,10 @@ fn main() -> ExitCode {
         環境.ローカルのアプリのデータのフォルダ.clone(),
     );
     記録の置き場所.落ちたときの記録を取り付ける();
+    let 計測 = 環境
+        .フレームの時間を測る頼み
+        .clone()
+        .map(app::フレームの時間の計測::頼みから始める);
     let 準備 = app::起動の手順::作成する(環境).決める();
     // 警告の記録(warnings.log を移して書き始める)は、ライブラリの錠を持つアプリだけが取り付ける。読み取り専用で起動した
     // 2つ目のアプリが、1つ目の書いている warnings.log を前回の記録へ移さないためである。読み取り専用のアプリの警告は残さない。
@@ -106,6 +111,7 @@ fn main() -> ExitCode {
             );
             Ok(Box::new(screen_shell::画面の殻::作成する(
                 ビューアー,
+                計測,
             )))
         }),
     );
