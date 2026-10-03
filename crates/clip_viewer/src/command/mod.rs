@@ -39,7 +39,7 @@ pub(crate) use clip_arrange::動かす向き;
 pub(crate) use clip_edit::クリップの編集;
 pub(crate) use clip_ops::クリップの操作;
 pub(crate) use clue_ops::手がかりの操作;
-pub(crate) use crop_ops::{クロップ枠の掴む所, クロップ枠の操作};
+pub(crate) use crop_ops::クロップ枠の操作;
 pub(crate) use ffmpeg_ops::FFmpegの操作;
 pub(crate) use file_drop::一度に落としたファイル;
 pub(crate) use file_ops::ファイルの操作;

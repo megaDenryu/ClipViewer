@@ -10,7 +10,7 @@ use clip_domain::{
 
 /// 「置-1」「置-2」…を順に発行する、試験用の決まった発行元。
 #[derive(Default)]
-struct 置いた連番の発行元(u32);
+pub(crate) struct 置いた連番の発行元(u32);
 
 impl 置いたクリップの識別子の発行元 for 置いた連番の発行元 {
     fn 新しい識別子を発行する(&mut self) -> 置いたクリップの識別子 {

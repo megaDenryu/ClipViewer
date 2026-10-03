@@ -13,9 +13,8 @@ mod clip;
 mod clip_ending;
 mod clip_id;
 mod crop;
-mod crop_drag;
-mod crop_resize;
 mod duration;
+mod frame;
 mod library;
 mod overlay;
 mod percent;
@@ -51,9 +50,9 @@ pub use clip::{クリップ, クリップ名};
 pub use clip_id::{
     クリップ識別子, クリップ識別子の発行元, 発行時刻, 空の識別子エラー, 識別子の乱数,
 };
-pub use crop::クロップ範囲;
-pub use crop_drag::{クロップの移動量, 四隅のつまみ};
+pub use crop::{クロップの移動量, クロップ範囲};
 pub use duration::{時間の値エラー, 時間の長さ};
+pub use frame::{四隅のつまみ, 枠の掴む所, 枠の移動量};
 pub use library::{
     サムネイルの大きさ, サムネイルの撮り方, サムネイルの画像, スタックの名前, スタックの識別子,
     スタックの識別子の不備, ライブラリのクリップの不備, ライブラリのスタック,

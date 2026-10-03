@@ -12,6 +12,7 @@ mod inherited;
 mod placed_id;
 mod playback;
 mod rect;
+mod rect_drag;
 mod rows;
 mod video_table;
 mod volume;
@@ -32,6 +33,7 @@ pub use playback::{
     重ね合わせの再生位置, 重ね合わせの時計を進めた結果, 重ね合わせの進み具合,
 };
 pub use rect::{映す矩形, 映す矩形エラー};
+pub use rect_drag::映す矩形の移動量;
 pub use rows::{
     タイムラインの行, タイムラインの行の並び, 同時に重ねられる行の数, 置いたクリップ, 行の番号,
 };

@@ -17,7 +17,7 @@ pub(super) fn 文字を押して集める(
     文字: &str,
 ) -> Vec<重ね合わせの作業場の応答> {
     let 画面描画の共有状態 = egui::Context::default();
-    let 木 = || super::画面(作業場.状態(), 並べられるか, 試験の全体の音量, None);
+    let 木 = || super::画面(作業場.状態(), 並べられるか, None, 試験の全体の音量, None);
     let (_, 出力) = 描いて集める(&画面描画の共有状態, Vec::new(), &木);
     let 位置 = 描いた文字の範囲(&出力, 文字)
         .unwrap_or_else(|| panic!("「{文字}」を描いていない"))
@@ -32,7 +32,7 @@ pub(super) fn 描いたか(
     文字: &str,
 ) -> bool {
     let (_, 出力) = 描いて集める(&egui::Context::default(), Vec::new(), &|| {
-        super::画面(作業場.状態(), 並べられるか, 試験の全体の音量, None)
+        super::画面(作業場.状態(), 並べられるか, None, 試験の全体の音量, None)
     });
     描いた文字の範囲(&出力, 文字).is_some()
 }

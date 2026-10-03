@@ -14,7 +14,17 @@ pub(crate) mod arrange_test_support;
 #[cfg(test)]
 mod arrange_tests;
 #[cfg(test)]
+mod place_tests;
+#[cfg(test)]
 mod placed_id_issuer_tests;
+#[cfg(test)]
+mod placement_drag_aspect_tests;
+#[cfg(test)]
+mod placement_drag_tests;
+#[cfg(test)]
+pub(crate) mod placement_test_support;
+#[cfg(test)]
+mod placement_tests;
 #[cfg(test)]
 mod sound_notice_tests;
 #[cfg(test)]
@@ -27,6 +37,8 @@ pub(crate) mod test_support;
 mod tests;
 #[cfg(test)]
 mod with_ffmpeg_feed_tests;
+#[cfg(test)]
+mod with_ffmpeg_place_tests;
 #[cfg(test)]
 mod with_ffmpeg_sound_tests;
 
