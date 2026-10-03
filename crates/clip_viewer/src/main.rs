@@ -13,6 +13,7 @@ mod aspect_name;
 mod audio_feed;
 mod command;
 mod crash_record;
+mod edit_history;
 mod launch;
 mod library_common;
 mod output_measure;
