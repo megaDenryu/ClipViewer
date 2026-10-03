@@ -4,6 +4,8 @@
 use audio_output::音声出力のエラー;
 use audio_pcm::サンプリング周波数;
 
+use crate::audio_feed::鳴らせない様子の文;
+
 /// 重ね合わせの音の出力の状況とは、2本目の流れを開いて鳴らしているか、使えないかの区別のことである。使えない間も映像は再生を続ける。
 #[derive(Debug, Clone)]
 pub(crate) enum 重ね合わせの音の出力の状況 {
@@ -48,7 +50,7 @@ impl 重ね合わせの音の出力の状況 {
     pub(crate) fn 様子の文(&self) -> Option<String> {
         match self {
             Self::使える(_) => None,
-            Self::使えない(理由) => Some(format!("音: 鳴らせない({理由})")),
+            Self::使えない(理由) => Some(鳴らせない様子の文(理由)),
         }
     }
 }
