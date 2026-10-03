@@ -1,2 +1,3 @@
 # 見本のファイルはバイト列を比べる試験に使うため、改行の変換をしない。
 library_v1.json -text
+overlay_v1.json -text

@@ -7,6 +7,8 @@ pub mod arrange;
 pub mod library_text;
 pub mod next_result;
 pub mod overlay;
+pub mod overlay_library;
+pub mod overlay_library_text;
 pub mod overlay_playback;
 pub mod rect_drag;
 pub mod span_end;

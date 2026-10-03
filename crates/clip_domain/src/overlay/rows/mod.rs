@@ -3,6 +3,7 @@
 //! 塊のドラッグの行き先を求める口は子の `destination.rs`(ぶつかった所で止める規則は `collision.rs`)に置き、私有の行の並びに子から触れる。
 //! 行(`row.rs`)と置いたクリップ(`placed.rs`)の中身を変える口はこのモジュールの中にだけ開き、ほかから不変条件を破れなくする。
 
+mod assemble;
 mod collision;
 mod destination;
 mod edit;
