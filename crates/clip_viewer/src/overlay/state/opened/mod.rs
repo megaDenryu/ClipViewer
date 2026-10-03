@@ -1,34 +1,41 @@
 //! 開いている重ね合わせ。重ね合わせと、その再生の状況と、映像の供給を作れたかと、開いている重ね合わせの音(`sound/`)を持ち、
-//! 毎フレームこのフレームで映すものを1回だけ求めて映像と音へ渡す。長さが0秒の重ね合わせは再生を始めない。画面が読む口は `read.rs` に置く。
-//! 置き方の編集(`state/placement/`)も持ち、その操作は `placement_ops.rs`・`placement_drag.rs`、読む口は `placement_read.rs` に置く。
+//! 毎フレームこのフレームで映すものを1回だけ求めて映像と音へ渡す。再生と停止・全体ループ・位置を動かす操作は `playback_ops.rs`、画面が読む口は `read.rs` に置く。
+//! 置き方の編集(`state/placement/`)と掴んでいるもの(`state/grab.rs`)も持ち、置き方の操作は `placement_ops.rs`・`placement_drag.rs`、読む口は `placement_read.rs` に置く。
+//! タイムラインの操作(塊のドラッグ・行の選択と削除と追加・位置を動かす)は `timeline_drag.rs`・`timeline_rows.rs`、読む口は `timeline_read.rs` に置く。
 
 mod placement_drag;
 mod placement_ops;
 mod placement_read;
+mod playback_ops;
 mod read;
+mod timeline_drag;
+mod timeline_read;
+mod timeline_rows;
 
 pub(crate) use placement_read::重ねる枠;
 
 use std::time::Instant;
 
 use audio_output::{再生の様子, 行ごとの再生の指示};
-use clip_domain::{時刻, 重ね合わせ, 音量};
+use clip_domain::{重ね合わせ, 音量};
 
 use crate::overlay::feed::{
     このフレームで映すもの, 重ね合わせの映像の供給を作れたか
 };
+use crate::overlay::state::grab::掴んでいるもの;
 use crate::overlay::state::placement::置き方の編集;
 use crate::overlay::state::playback::重ね合わせの再生の状況;
 use crate::overlay::state::sound::開いている重ね合わせの音;
 
 /// 開いている重ね合わせとは、重ね合わせの作業場が開いている重ね合わせと、その再生の状況と、その映像の供給を作れたかと、
-/// 開いている重ね合わせの音と、置き方の編集の組のことである。供給は重ね合わせを開くときに作り、重ね合わせと一緒に捨てる。
+/// 開いている重ね合わせの音と、置き方の編集と、掴んでいるもの(ドラッグの間の仮の値)の組のことである。供給は重ね合わせを開くときに作り、重ね合わせと一緒に捨てる。
 pub(crate) struct 開いている重ね合わせ {
     重ね合わせ: 重ね合わせ,
     再生: 重ね合わせの再生の状況,
     映像: 重ね合わせの映像の供給を作れたか,
     音: 開いている重ね合わせの音,
     編集: 置き方の編集,
+    掴んでいるもの: 掴んでいるもの,
 }
 
 impl 開いている重ね合わせ {
@@ -44,6 +51,7 @@ impl 開いている重ね合わせ {
             映像,
             音,
             編集: 置き方の編集::開いた直後(),
+            掴んでいるもの: 掴んでいるもの::無し,
         }
     }
 
@@ -93,27 +101,11 @@ impl 開いている重ね合わせ {
         self.再生.再生しているか()
     }
 
-    /// 再生を始められるか。置いたクリップが無い(長さが0秒の)重ね合わせは、映すものが無く時計も0秒に留まるため、再生を始めない。
-    pub(crate) fn 再生を始められるか(&self) -> bool {
-        self.重ね合わせの長さ() > 時刻::先頭
-    }
-
-    /// 再生と停止を切り替える。再生を始められないときは、止まったままにする。
-    pub(crate) fn 再生を切り替える(&mut self) {
-        if self.再生しているか() || self.再生を始められるか() {
-            self.再生.再生を切り替える(&self.重ね合わせ);
-        }
-    }
-
     /// 作業場を控える前に呼ぶ。再生を止め、全部の行の映像と音の流し読みを閉じる。重ね合わせと再生の位置と、行のテクスチャに載せたコマは残す。
     pub(crate) fn 控える前に再生を止めて流し読みを閉じる(&mut self) {
         self.再生.止める();
         self.映像.流し読みを閉じる();
         self.音.流し読みを閉じる();
-    }
-
-    pub(crate) fn 全体ループを設定する(&mut self, 有効: bool) {
-        self.再生.全体ループを設定する(有効);
     }
 
     /// 2本目の流れが途中で使えなくなったときに、音の流し読みと音の倉庫の読み込みを止める。
