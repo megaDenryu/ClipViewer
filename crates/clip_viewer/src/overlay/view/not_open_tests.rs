@@ -4,12 +4,12 @@
 use super::not_open::並べ方の案内;
 use super::screen_press_support::{描いたか, 文字を押して集める};
 use crate::overlay::command::重ね合わせの作業場の応答;
-use crate::overlay::sound_test_support::装置の無い作業場;
+use crate::overlay::sound_test_support::装置の無い作業場を作る;
 use crate::overlay::state::今のスタックから並べる状況;
 
 #[test]
 fn 開いていない間は案内と今のスタックから並べるを出し_押せるときだけ並べる応答を発する() {
-    let 作業場 = 装置の無い作業場();
+    let 作業場 = 装置の無い作業場を作る();
     assert!(描いたか(
         &作業場,
         今のスタックから並べる状況::並べられる,
