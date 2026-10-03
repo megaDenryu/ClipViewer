@@ -6,6 +6,8 @@ mod close;
 mod close_flow;
 mod close_procedure;
 mod environment;
+mod frame_time_measure;
+mod frame_time_setup;
 mod front_workspace;
 mod instruction_receiver;
 mod launch_plan;
@@ -28,6 +30,7 @@ mod tests;
 
 pub(crate) use close::ウインドウへの指示;
 pub(crate) use environment::起動時の環境;
+pub(crate) use frame_time_measure::{フレームの時間の計測, 計測の続き};
 pub(crate) use launch_plan::起動の手順;
 pub(crate) use launch_requests::起動の頼みの届き方;
 pub(crate) use window::ウインドウの題名;

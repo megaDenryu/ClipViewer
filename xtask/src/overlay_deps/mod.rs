@@ -1,6 +1,6 @@
 //! `check-overlay-deps` コマンド: 重ね合わせの作業場の層(`crates/clip_viewer/src/overlay/`)が、スタックの作業場の `crate::state`・
 //! `crate::command`・`crate::view` を使えないことと、ライブラリの部品の共有の置き場(`crates/clip_viewer/src/library_common/`)が、
-//! それに加えて `crate::overlay`・`crate::app` も使えないことを検査する(検査する層は `layer.rs` が並べる)。調べないもの: マクロが組み立てるパス、`#[path]` と `include!` で読むファイル、
+//! それに加えて `crate::overlay`・`crate::app` も使えないことと、取り消しの履歴の共有の置き場(`crates/clip_viewer/src/edit_history/`)も同じく使えないことを検査する(検査する層は `layer.rs` が並べる)。調べないもの: マクロが組み立てるパス、`#[path]` と `include!` で読むファイル、
 //! 検査する層の外のモジュールが再公開したもの(`crate::他::state` のような経由)。参照: _doc/設計/同時再生.md 3-2「依存の向きの検査」
 
 mod extern_crate;

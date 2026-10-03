@@ -11,6 +11,8 @@ pub enum コマンド {
     ライセンス表示作成,
     /// デコードの負荷の測定。持つのは decode-load へ渡す引数である。
     デコードの負荷の測定(Vec<String>),
+    /// 8行を映したときの1フレームの時間の測定。持つのは frame-time へ渡す引数である。
+    一フレームの時間の測定(Vec<String>),
     /// 手元の SengenEgui へ差し替えた cargo の実行。持つのは cargo へ渡す引数である。
     手元のSengenEguiでcargoを実行(Vec<String>),
     /// local-sengen が内部で起こす Cargo.lock の見張り役。人が直接使うものではない。
@@ -39,6 +41,9 @@ impl 引数の解釈結果 {
             "decode-load" => Self::実行する(コマンド::デコードの負荷の測定(
                 引数一覧[1..].to_vec(),
             )),
+            "frame-time" => Self::実行する(コマンド::一フレームの時間の測定(
+                引数一覧[1..].to_vec(),
+            )),
             "local-sengen" => Self::実行する(コマンド::手元のSengenEguiでcargoを実行(
                 引数一覧[1..].to_vec(),
             )),
@@ -60,7 +65,7 @@ pub fn 使い方を表示する() {
     }
 }
 
-fn コマンド説明一覧() -> [(&'static str, &'static str); 8] {
+fn コマンド説明一覧() -> [(&'static str, &'static str); 9] {
     [
         (
             "verify",
@@ -68,7 +73,7 @@ fn コマンド説明一覧() -> [(&'static str, &'static str); 8] {
         ),
         (
             "check-overlay-deps",
-            "重ね合わせの作業場の層(crates/clip_viewer/src/overlay の下)が、スタックの作業場の crate::state・crate::command・crate::view を使えないことと、ライブラリの部品の共有の置き場(crates/clip_viewer/src/library_common の下)がそれに加えて crate::overlay・crate::app も使えないことを検査し、層ごとに調べたファイルの数を出す。クレートルートを * で全部取り込む書き方と、クレートルートに as で別名を付ける書き方も報告する。読めない・解析できないファイル(閉じていない波括弧を含む)も見つけたこととして報告する。extern crate self による別名も報告する。マクロが組み立てるパスと、#[path]・include! で読むファイルと、検査する層の外のモジュールが再公開したもの(crate::他::state のような経由)は調べない",
+            "重ね合わせの作業場の層(crates/clip_viewer/src/overlay の下)が、スタックの作業場の crate::state・crate::command・crate::view を使えないことと、ライブラリの部品の共有の置き場(crates/clip_viewer/src/library_common の下)と取り消しの履歴の共有の置き場(crates/clip_viewer/src/edit_history の下)がそれに加えて crate::overlay・crate::app も使えないことを検査し、層ごとに調べたファイルの数を出す。クレートルートを * で全部取り込む書き方と、クレートルートに as で別名を付ける書き方も報告する。読めない・解析できないファイル(閉じていない波括弧を含む)も見つけたこととして報告する。extern crate self による別名も報告する。マクロが組み立てるパスと、#[path]・include! で読むファイルと、検査する層の外のモジュールが再公開したもの(crate::他::state のような経由)は調べない",
         ),
         (
             "run",
@@ -85,6 +90,10 @@ fn コマンド説明一覧() -> [(&'static str, &'static str); 8] {
         (
             "decode-load [<動画のパス>] [--streams <本数,...>] [--seconds <秒数>]",
             "同じ動画を n 本の ffmpeg で同時に、アプリの流し読みと同じ形(fps フィルタ・長辺1280画素・RGBA)で先頭から読み切る時間を測り、本数ごとの合計の速さ・1本あたりの速さ・再生の速さに対する倍率を表で出す。本数の既定は 1,2,4,8、秒数の既定は30。動画を渡さなければ ffmpeg の合成画像(testsrc2、1920x1080、30コマ/秒)を一時フォルダに作って測り、終わったら消す。FFmpeg は環境変数 CLIPVIEWER_FFMPEG_DIR → PATH の順に探す。時間がかかり結果が揺れるため verify には入れない",
+        ),
+        (
+            "frame-time [<動画のパス>]",
+            "アプリを release でビルドし、渡した動画(省けば ffmpeg の合成画像 testsrc2・1920x1080・30コマ/秒・40秒を一時フォルダに作る)を開いて起動する。アプリは別々の5秒の区間を8行に並べて再生し、3秒待ってから20秒の間の1フレームの時間(eframe が知らせる、GPU へテクスチャを載せる時間を含み垂直同期の待ちを含まない時間)と前のフレームからの間隔を測り、数・平均・中央値・95百分位・最大を書いて自分で閉じる。アプリのデータの置き場所は一時フォルダへ向けるため、本物のライブラリと設定を使わない。FFmpeg は環境変数 CLIPVIEWER_FFMPEG_DIR → PATH の順に探す。時間がかかり結果が揺れるため verify には入れない",
         ),
         (
             "local-sengen <cargo の引数>",

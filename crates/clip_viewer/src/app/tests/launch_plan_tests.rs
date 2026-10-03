@@ -29,6 +29,7 @@ fn 決める(アプリのデータ: &Path, 引数: &[&str]) -> 起動の準備 {
         ffmpegのフォルダ: None,
         検索パス: 実行ファイルの検索パス::作成する(Vec::new()),
         起動の引数: 引数.iter().map(OsString::from).collect(),
+        フレームの時間を測る頼み: None,
     })
     .決める()
 }

@@ -1,4 +1,4 @@
-//! ClipViewer の起動の部分。落ちたときの記録を取り付け、起動の手順を決め、ウインドウを作り、テーマと日本語フォントを適用し、
+//! ClipViewer の起動の部分。落ちたときの記録を取り付け、起動の手順を決め、ウインドウを作り(選択肢は `window_options.rs`)、テーマと日本語フォントを適用し、
 //! 毎フレームの手順を画面の殻(`screen_shell.rs`)として eframe へ渡す。素の eframe と egui を呼ぶのは、本ファイルと画面の殻だけである。
 //! 参照: _doc/設計/画面.md
 //! 起動: リポジトリのルートで `cargo xtask run`
@@ -13,6 +13,8 @@ mod aspect_name;
 mod audio_feed;
 mod command;
 mod crash_record;
+mod edit_history;
+mod frame_time;
 mod launch;
 mod library_common;
 mod output_measure;
@@ -30,6 +32,7 @@ mod video_feed;
 mod view;
 mod viewer_settings;
 mod volume_step;
+mod window_options;
 
 #[cfg(test)]
 mod main_tests;
@@ -52,16 +55,6 @@ fn 日本語フォントを設定する(画面描画の共有状態: &egui::Cont
     }
 }
 
-/// ウインドウのアイコンにする画像(256×256 の PNG)。題名の帯と Alt+Tab に出す。実行ファイルのアイコンは build.rs が埋め込む。
-const ウインドウのアイコンの画像: &[u8] = include_bytes!("../../../assets/icon/ClipViewer-256.png");
-
-/// ウインドウのアイコンを画素へ直す。埋め込んだ画像を読めなければ(ビルドの誤りであり、試験で確かめている)警告の記録へ書き、アイコンなしで起動する。
-fn ウインドウのアイコン() -> Option<egui::IconData> {
-    eframe::icon_data::from_png_bytes(ウインドウのアイコンの画像)
-        .inspect_err(|原因| log::warn!("ウインドウのアイコンの画像を読めない: {原因}"))
-        .ok()
-}
-
 fn main() -> ExitCode {
     // 起動の引数は、エクスプローラーの「このアプリで開く」とダブルクリックが渡す動画のパスである(参照: _doc/設計/画面.md 判断13)。
     let 環境 = app::起動時の環境::今のプロセスから読む();
@@ -69,30 +62,14 @@ fn main() -> ExitCode {
         環境.ローカルのアプリのデータのフォルダ.clone(),
     );
     記録の置き場所.落ちたときの記録を取り付ける();
+    let 計測の頼み = 環境.フレームの時間を測る頼み.clone();
     let 準備 = app::起動の手順::作成する(環境).決める();
     // 警告の記録(warnings.log を移して書き始める)は、ライブラリの錠を持つアプリだけが取り付ける。読み取り専用で起動した
     // 2つ目のアプリが、1つ目の書いている warnings.log を前回の記録へ移さないためである。読み取り専用のアプリの警告は残さない。
     if 準備.ライブラリの錠を持つか() {
         記録の置き場所.警告の記録を取り付ける();
     }
-    let ウインドウ = 準備.ウインドウの記憶();
-    let ウインドウの作り方 = match ウインドウのアイコン() {
-        Some(アイコン) => egui::ViewportBuilder::default().with_icon(アイコン),
-        None => egui::ViewportBuilder::default(),
-    };
-    let 選択肢 = eframe::NativeOptions {
-        viewport: ウインドウの作り方
-            .with_inner_size(ウインドウ.大きさ.論理画素の組().eguiへ渡す値())
-            .with_min_inner_size(
-                viewer_settings::ウインドウの大きさ::最小
-                    .論理画素の組()
-                    .eguiへ渡す値(),
-            )
-            .with_maximized(ウインドウ.最大化 == viewer_settings::最大化の様子::最大化している)
-            .with_title(app::ウインドウの題名),
-        centered: true,
-        ..Default::default()
-    };
+    let 選択肢 = window_options::ウインドウの選択肢(準備.ウインドウの記憶());
     let 結果 = eframe::run_native(
         "ClipViewer",
         選択肢,
@@ -105,6 +82,7 @@ fn main() -> ExitCode {
             );
             Ok(Box::new(screen_shell::画面の殻::作成する(
                 ビューアー,
+                計測の頼み,
             )))
         }),
     );

@@ -7,6 +7,7 @@
 mod arrange_report;
 mod drawn_rows;
 pub(crate) mod grab;
+mod history;
 pub(crate) mod library;
 mod notice;
 mod opened;

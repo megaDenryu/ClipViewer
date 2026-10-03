@@ -56,12 +56,13 @@ release.yml の版と、この節と、`_doc/使い方.md` 2.3節の版を一緒
 ```
 cargo xtask          # コマンドの一覧を表示する
 cargo xtask verify   # fmt --check → check-overlay-deps → clippy -D warnings → test → FFmpeg の結合試験 → 音声出力装置の確認 を順に実行する
-cargo xtask check-overlay-deps  # 重ね合わせの作業場の層(crates/clip_viewer/src/overlay)がスタックの作業場の state・command・view を、ライブラリの部品の共有の置き場(crates/clip_viewer/src/library_common)がそれに加えて overlay・app を使っていないことを検査し、層ごとに調べたファイルの数を出す
+cargo xtask check-overlay-deps  # 重ね合わせの作業場の層(crates/clip_viewer/src/overlay)がスタックの作業場の state・command・view を、ライブラリの部品の共有の置き場(crates/clip_viewer/src/library_common)と取り消しの履歴の共有の置き場(crates/clip_viewer/src/edit_history)がそれに加えて overlay・app を使っていないことを検査し、層ごとに調べたファイルの数を出す
 cargo xtask run      # アプリを開発のビルドで起動する
 cargo xtask installer  # アプリを release でビルドし、第三者のライセンス表示を作り、Windows のインストーラーを組み立てる
 cargo xtask notices    # 第三者のライセンス表示(THIRD-PARTY-NOTICES.html)だけを作る
 cargo xtask local-sengen <cargo の引数>  # push する前の手元の SengenEgui で試すときだけ使う(下の「SengenEgui を直したとき」)
 cargo xtask decode-load [<動画のパス>] [--streams 1,2,4,8] [--seconds 30]  # 同じ動画を n 本の ffmpeg で同時に読み切る時間を測る(下の「デコードの負荷の測定」)
+cargo xtask frame-time [<動画のパス>]  # 重ね合わせの8行を映して再生している間の1フレームの時間をアプリの中で測る(下の「1フレームの時間の測定」)
 ```
 
 ### SengenEgui を直したとき
@@ -135,6 +136,22 @@ $env:CLIPVIEWER_FFMPEG_DIR='C:\ffmpeg\bin'; cargo xtask decode-load 'D:\動画\�
 
 このコマンドは `cargo xtask verify` に入れない。数十秒から数分かかり、結果が計算機と、そのときの他の負荷で揺れるため、
 通ったか落ちたかで判定する検証列に向かないためである。
+
+### 1フレームの時間の測定
+
+`cargo xtask frame-time` は、アプリを release でビルドし、動画を起動の引数で渡して測る起動をする。アプリは、開いた動画の別々の5秒の区間を
+重ね合わせの作業場で8行に並べて再生し、3秒待ってから20秒の間、フレームごとに eframe が知らせる1フレームの時間(入力の処理から、画面を組み、
+テクスチャを GPU へ載せて描く命令を出すまで。垂直同期の待ちを含まない)と前のフレームからの間隔を溜め、数・平均・中央値・95百分位・最大を書いて
+自分でウインドウを閉じる。ウインドウは約25秒開く。動画のパスを渡さなければ、ffmpeg の合成画像(testsrc2、1920x1080、30コマ/秒、40秒)を
+OS の一時フォルダに作って使う。動画は40秒以上が要る。測る起動はアプリのデータの置き場所(%APPDATA%・%LOCALAPPDATA%)を一時フォルダへ向けるため、
+利用者のライブラリと設定を読み書きしない。FFmpeg は verify と同じ順に探す(実行場所はリポジトリのルート)。測った値は `_doc/設計/同時再生.md` 5-4 にある。
+
+```
+$env:CLIPVIEWER_FFMPEG_DIR='C:\ffmpeg\bin'; cargo xtask frame-time                      # 合成画像で測る(PowerShell)
+$env:CLIPVIEWER_FFMPEG_DIR='C:\ffmpeg\bin'; cargo xtask frame-time 'D:\動画\実写.mp4'   # 実写の動画で測る
+```
+
+このコマンドも `cargo xtask verify` に入れない。ウインドウを開き、結果が計算機と、そのときの他の負荷で揺れるためである。
 
 ### インストーラーとリリース
 
