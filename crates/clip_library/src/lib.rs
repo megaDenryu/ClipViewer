@@ -10,13 +10,16 @@
 
 mod background;
 mod background_threads;
+mod background_worker;
 mod changes;
 mod error;
 mod folder;
+mod item_folder;
 mod legacy_thumbnail;
 mod library;
 mod listing;
 mod lock;
+mod lock_file;
 mod permission;
 mod pre_scan_cleanup;
 mod request;
