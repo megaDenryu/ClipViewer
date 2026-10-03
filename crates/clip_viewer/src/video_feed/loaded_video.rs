@@ -14,6 +14,7 @@ use super::frame_request::{コマの出どころ, 表示するコマの求め};
 use super::frame_source::動画のコマの供給元;
 use super::frame_target::コマの載せ先;
 use super::ledger::依頼の台帳;
+use super::load_range::載せるコマの範囲;
 use super::open_failure::動画を開けない理由;
 use super::prefetch_order::先読みの並び;
 use super::video_texture::{テクスチャの名前, 映像のテクスチャ};
@@ -50,6 +51,7 @@ impl 読み込んだ動画 {
         let 載せ先 = コマの載せ先::登録して作る(
             画面描画の共有状態,
             スタックの映像のテクスチャの名前,
+            載せるコマの範囲::どのコマも,
         )?;
         Ok(Self {
             供給元, 載せ先, 音

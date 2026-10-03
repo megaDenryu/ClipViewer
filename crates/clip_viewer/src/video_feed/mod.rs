@@ -3,6 +3,7 @@
 //! (`overlay/feed/`)が共に使う。重ね合わせの供給は、ほかに表示するコマの求めと動画を開けない理由の値の型を使い、`読み込んだ動画` を使わない。
 //! 参照: _doc/設計/画面.md 判断2〜判断5、_doc/設計/同時再生.md 3-3
 
+mod frame_loaded;
 mod frame_request;
 mod frame_source;
 mod frame_target;
@@ -12,6 +13,7 @@ mod ledger;
 mod ledger_query;
 mod ledger_record;
 mod ledger_state;
+mod load_range;
 mod loaded_frame_state;
 mod loaded_video;
 mod open_failure;
@@ -37,18 +39,26 @@ mod stream_position_tests;
 #[cfg(test)]
 mod with_ffmpeg_cached_end_tests;
 #[cfg(test)]
+mod with_ffmpeg_loaded_support;
+#[cfg(test)]
+mod with_ffmpeg_loaded_tests;
+#[cfg(test)]
+mod with_ffmpeg_seam_tests;
+#[cfg(test)]
 mod with_ffmpeg_stream_tests;
 #[cfg(test)]
 pub(crate) mod with_ffmpeg_support;
 #[cfg(test)]
 mod with_ffmpeg_tests;
 
+pub(crate) use frame_loaded::コマを載せたか;
 pub(crate) use frame_request::{コマの出どころ, 表示するコマの求め};
 pub(crate) use frame_source::動画のコマの供給元;
 pub(crate) use frame_target::コマの載せ先;
 #[cfg(test)]
 pub(crate) use ledger::依頼の台帳;
 pub(crate) use ledger_state::{依頼の結末, 依頼の進み具合, 行の状態};
+pub(crate) use load_range::載せるコマの範囲;
 #[cfg(test)]
 pub(crate) use loaded_frame_state::載せたコマの状態;
 pub(crate) use loaded_video::読み込んだ動画;

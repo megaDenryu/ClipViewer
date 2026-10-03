@@ -4,10 +4,12 @@
 //! `読み込んだ動画` を使わない。音の側(重ね合わせの音の供給)も同じ形で、動画ごとの動画の音の供給元と行ごとの音の流し読みを
 //! スタックの作業場の `audio_feed` と共有する。参照: _doc/設計/同時再生.md 3-3・5-1・5-2・5-3
 
+mod continuation;
 mod frame_targets;
 mod loaded_rows;
 mod prefetch;
 mod row_request;
+mod row_video;
 mod show_condition;
 mod sound_query;
 mod sound_supply;
@@ -19,7 +21,17 @@ mod supply_query;
 mod video_status;
 
 #[cfg(test)]
+mod continuation_tests;
+#[cfg(test)]
+mod loaded_rows_continuation_tests;
+#[cfg(test)]
+mod loaded_rows_test_support;
+#[cfg(test)]
+mod loaded_rows_tests;
+#[cfg(test)]
 mod prefetch_tests;
+#[cfg(test)]
+mod row_video_tests;
 #[cfg(test)]
 mod with_ffmpeg_open_failure_tests;
 #[cfg(test)]
@@ -30,8 +42,10 @@ mod with_ffmpeg_support;
 mod with_ffmpeg_tests;
 
 pub(crate) use frame_targets::このフレームで映すもの;
+pub(crate) use loaded_rows::行の描き方;
 pub(crate) use show_condition::映すものを求める条件;
 pub(crate) use sound_supply::重ね合わせの音の供給;
 pub(crate) use status::重ね合わせの映像の供給を作れたか;
+pub(crate) use supply::重ね合わせの映像の供給;
 #[cfg(test)]
 pub(crate) use supply_failure::映像の供給を作れない理由;
