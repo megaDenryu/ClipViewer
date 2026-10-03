@@ -31,6 +31,8 @@ mod loaded_rows_tests;
 #[cfg(test)]
 mod prefetch_tests;
 #[cfg(test)]
+mod row_video_tests;
+#[cfg(test)]
 mod with_ffmpeg_open_failure_tests;
 #[cfg(test)]
 mod with_ffmpeg_stream_tests;
