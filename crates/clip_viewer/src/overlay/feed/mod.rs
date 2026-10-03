@@ -21,6 +21,8 @@ mod supply_query;
 mod video_status;
 
 #[cfg(test)]
+mod continuation_tests;
+#[cfg(test)]
 mod loaded_rows_continuation_tests;
 #[cfg(test)]
 mod loaded_rows_test_support;

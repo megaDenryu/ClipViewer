@@ -18,8 +18,6 @@ mod stack_source;
 mod whole_volume;
 
 #[cfg(test)]
-mod drawn_rows_tests;
-#[cfg(test)]
 mod stack_save_failure_tests;
 #[cfg(test)]
 mod stack_source_tests;

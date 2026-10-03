@@ -13,6 +13,7 @@ mod ledger;
 mod ledger_query;
 mod ledger_record;
 mod ledger_state;
+mod load_range;
 mod loaded_frame_state;
 mod loaded_video;
 mod open_failure;
@@ -38,7 +39,11 @@ mod stream_position_tests;
 #[cfg(test)]
 mod with_ffmpeg_cached_end_tests;
 #[cfg(test)]
+mod with_ffmpeg_loaded_support;
+#[cfg(test)]
 mod with_ffmpeg_loaded_tests;
+#[cfg(test)]
+mod with_ffmpeg_seam_tests;
 #[cfg(test)]
 mod with_ffmpeg_stream_tests;
 #[cfg(test)]
@@ -53,6 +58,7 @@ pub(crate) use frame_target::コマの載せ先;
 #[cfg(test)]
 pub(crate) use ledger::依頼の台帳;
 pub(crate) use ledger_state::{依頼の結末, 依頼の進み具合, 行の状態};
+pub(crate) use load_range::載せるコマの範囲;
 #[cfg(test)]
 pub(crate) use loaded_frame_state::載せたコマの状態;
 pub(crate) use loaded_video::読み込んだ動画;
