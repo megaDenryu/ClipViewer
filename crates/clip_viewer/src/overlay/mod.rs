@@ -14,6 +14,8 @@ pub(crate) mod arrange_test_support;
 #[cfg(test)]
 mod arrange_tests;
 #[cfg(test)]
+mod arrange_unplaceable_tests;
+#[cfg(test)]
 mod library_continue_tests;
 #[cfg(test)]
 mod library_open_tests;
@@ -21,6 +23,8 @@ mod library_open_tests;
 mod library_read_only_tests;
 #[cfg(test)]
 mod library_rearrange_tests;
+#[cfg(test)]
+mod library_save_failure_tests;
 #[cfg(test)]
 mod library_save_tests;
 #[cfg(test)]

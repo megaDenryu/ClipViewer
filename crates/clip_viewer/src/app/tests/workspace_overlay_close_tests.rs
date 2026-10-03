@@ -14,6 +14,7 @@ use super::super::launch_requests::起動の頼みの届き方;
 use super::super::workspace_response::作業場の応答;
 use super::super::クリップビューアー;
 use super::launch_requests_test_support::試験のビューアー;
+use super::workspace_close_test_support::重ね合わせを開いて縦横比を変える;
 use super::workspace_test_support::前の重ね合わせの作業場;
 use crate::overlay::library_test_ops::{
     名前を付けて登録する, 書き終えるまで待って進める
@@ -25,19 +26,6 @@ use crate::overlay::{
 };
 use crate::primary_button::主ボタンの様子;
 use crate::state::閉じる要求への答え;
-
-/// 重ね合わせの作業場へ移り、五秒の重ね合わせを開いて、縦横比を正方形に変える(置き方を手で直す)。
-pub(in crate::app) fn 重ね合わせを開いて縦横比を変える(
-    ビューアー: &mut クリップビューアー,
-) {
-    ビューアー.重ね合わせの作業場へ移る(Instant::now());
-    let 作業場 = 前の重ね合わせの作業場(ビューアー).expect("重ね合わせが前");
-    作業場.重ね合わせを開く(五秒の重ね合わせ(), None);
-    let 正方形 = 重ねる画面の縦横比::作成する(アスペクト比設定::正方形).expect("固定の比");
-    作業場.操作を適用する(重ね合わせの操作::置き方(
-        置き方の操作::重ねる画面の縦横比を選ぶ(正方形),
-    ));
-}
 
 fn 指示の並び(
     ビューアー: &mut クリップビューアー
