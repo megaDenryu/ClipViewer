@@ -3,6 +3,7 @@
 #![allow(clippy::expect_used)]
 
 use clip_domain::四隅のつまみ;
+use clip_domain::枠の掴む所;
 use eframe::egui;
 
 use super::rearrange_dialog::{並べ直すボタンの文, 並べ直す前に確かめる文};
@@ -15,7 +16,7 @@ use crate::overlay::command::{
 use crate::overlay::placement_test_support::{
     動き, 当てる, 枠を当てる, 置いた, 開いた作業場
 };
-use crate::overlay::state::placement::{映す矩形の掴む所, 隅の縦横比の扱い};
+use crate::overlay::state::placement::隅の縦横比の扱い;
 use crate::overlay::state::今のスタックから並べる状況;
 use crate::overlay::workspace::重ね合わせの作業場;
 
@@ -54,7 +55,7 @@ fn 置き方を手で直した重ね合わせでは並べ直す前に確かめ_�
     枠を当てる(&mut 作業場, 映す矩形の枠の操作::掴み始めた(置いた("置-1")));
     let 縮める = 動き(
         "置-1",
-        映す矩形の掴む所::隅(四隅のつまみ::右下),
+        枠の掴む所::隅(四隅のつまみ::右下),
         -50.0,
         -50.0,
         隅の縦横比の扱い::保たない,
