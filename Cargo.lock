@@ -2849,7 +2849,7 @@ checksum = "8a7852d02fc848982e0c167ef163aaff9cd91dc640ba85e263cb1ce46fae51cd"
 [[package]]
 name = "sengen_egui"
 version = "0.1.0"
-source = "git+https://github.com/megaDenryu/SengenEgui?rev=096d17c#096d17ca70e46d78974d6edc2c994e78d932fd6c"
+source = "git+https://github.com/megaDenryu/SengenEgui?rev=c684409#c6844096914462fdc92c963662fb7e14ba3f4adf"
 dependencies = [
  "egui",
 ]
