@@ -35,6 +35,8 @@ mod frame_tests;
 #[cfg(test)]
 mod header_tests;
 #[cfg(test)]
+mod keys_tests;
+#[cfg(test)]
 mod library_dialog_tests;
 #[cfg(test)]
 mod not_open_tests;
@@ -60,6 +62,6 @@ mod timeline_conversion_tests;
 mod timeline_tests;
 
 #[cfg(test)]
-pub(crate) use keys::重ね合わせの作業場が受け取るキーの組;
+pub(crate) use keys::重ね合わせの作業場の外へ届くキーの組;
 
 pub(crate) use layout::画面;

@@ -16,6 +16,12 @@ mod arrange_tests;
 #[cfg(test)]
 mod arrange_unplaceable_tests;
 #[cfg(test)]
+mod history_library_tests;
+#[cfg(test)]
+mod history_tests;
+#[cfg(test)]
+mod history_timeline_tests;
+#[cfg(test)]
 mod library_continue_tests;
 #[cfg(test)]
 mod library_open_tests;
@@ -96,7 +102,7 @@ pub(crate) use state::{
     開いている動画の値,
 };
 #[cfg(test)]
-pub(crate) use view::重ね合わせの作業場が受け取るキーの組;
+pub(crate) use view::重ね合わせの作業場の外へ届くキーの組;
 pub(crate) use workspace::{
     今のスタックの値と動画の読み手, 重ね合わせの作業場
 };
