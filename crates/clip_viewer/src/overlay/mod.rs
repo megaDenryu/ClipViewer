@@ -18,7 +18,7 @@ mod placed_id_issuer_tests;
 #[cfg(test)]
 mod sound_notice_tests;
 #[cfg(test)]
-mod sound_test_support;
+pub(crate) mod sound_test_support;
 #[cfg(test)]
 mod sound_tests;
 #[cfg(test)]

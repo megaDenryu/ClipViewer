@@ -5,8 +5,9 @@ use eframe::egui;
 use video_source::{FFmpegの置き場所の設定, FFmpegを置いたフォルダ};
 
 use super::front_workspace::前に出ている作業場;
+use super::instruction_receiver::既定の装置に二本目の流れを開く;
 use super::launch_preparation::起動の準備;
-use super::overlay_side::{二本目の流れの開き方, 重ね合わせの側の作り方};
+use super::overlay_side::重ね合わせの側の作り方;
 use super::sound_sender::音の送り手;
 use super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
 use super::クリップビューアー;
@@ -75,7 +76,7 @@ impl クリップビューアー {
             前に出ている作業場: 前に出ている作業場::起動時(
                 重ね合わせの側の作り方 {
                     画面描画の共有状態: 画面描画の共有状態.clone(),
-                    流れの開き方: 二本目の流れの開き方::既定の装置を開く,
+                    流れを開く手立て: Box::new(既定の装置に二本目の流れを開く),
                 },
             ),
         };

@@ -6,12 +6,12 @@ use eframe::egui;
 use video_source::{FFmpegが見つからないエラー, 実行ファイルの検索パス};
 
 use super::super::front_workspace::前に出ている作業場;
-use super::super::overlay_side::{
-    二本目の流れの開き方, 重ね合わせの側の作り方
-};
+use super::super::instruction_receiver::二本目の流れを開く手立て;
+use super::super::overlay_side::重ね合わせの側の作り方;
 use super::super::sound_sender::音の送り手;
 use super::super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
 use super::super::クリップビューアー;
+use super::instruction_receiver_test_support::開けなかったものとして開く;
 use crate::command::操作の適用係;
 use crate::persistence::アプリの設定の保管場所;
 use crate::state::{
@@ -20,8 +20,19 @@ use crate::state::{
 use crate::thumbnail_feed::一覧のサムネイル;
 use crate::viewer_settings::見る側の設定;
 
-/// FFmpeg も音声出力装置も無く、動画を開いていないクリップビューアー。
+/// FFmpeg も音声出力装置も無く、動画を開いていないクリップビューアー。2本目の流れは、本番と同じ経路で開けなかったものとして作る。
 pub(in crate::app) fn 試験のビューアー() -> クリップビューアー {
+    試験のビューアーを二本目の流れの手立てで作る(
+        Box::new(開けなかったものとして開く(
+            audio_output::音声出力のエラー::装置が無い,
+        )),
+    )
+}
+
+/// FFmpeg も音声出力装置も無く、動画を開いていないクリップビューアー。2本目の流れは渡した手立てで開く。
+pub(in crate::app) fn 試験のビューアーを二本目の流れの手立てで作る(
+    流れを開く手立て: Box<dyn 二本目の流れを開く手立て>,
+) -> クリップビューアー {
     let ffmpegの状況 = FFmpegの状況::見つからない {
         理由: FFmpegが見つからないエラー {
             見つからない道具: Vec::new(),
@@ -49,7 +60,7 @@ pub(in crate::app) fn 試験のビューアー() -> クリップビューアー 
         前に出ている作業場: 前に出ている作業場::起動時(
             重ね合わせの側の作り方 {
                 画面描画の共有状態: 本体,
-                流れの開き方: 二本目の流れの開き方::試験では開かない,
+                流れを開く手立て,
             },
         ),
     }

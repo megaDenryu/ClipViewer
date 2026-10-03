@@ -1,6 +1,7 @@
 //! 配線の層の試験。起動の手順・閉じる前の確かめ・起動の頼み・見る側の設定の保存・作業場を移すことの試験と、その試験の道具を集める。
 
 mod close_tests;
+pub(in crate::app) mod instruction_receiver_test_support;
 mod launch_plan_tests;
 pub(in crate::app) mod launch_requests_test_support;
 mod launch_requests_tests;
@@ -11,8 +12,10 @@ mod workspace_drop_tests;
 mod workspace_front_tests;
 mod workspace_keys_tests;
 mod workspace_keys_with_ffmpeg_tests;
+mod workspace_overlay_mute_with_ffmpeg_tests;
 mod workspace_overlay_notice_tests;
 mod workspace_overlay_sound_tests;
+mod workspace_overlay_stream_tests;
 mod workspace_overlay_tests;
 mod workspace_overlay_with_ffmpeg_tests;
 mod workspace_redraw_tests;

@@ -5,6 +5,7 @@ mod assemble;
 mod close;
 mod environment;
 mod front_workspace;
+mod instruction_receiver;
 mod launch_plan;
 mod launch_preparation;
 mod launch_requests;
