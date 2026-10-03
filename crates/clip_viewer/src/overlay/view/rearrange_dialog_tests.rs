@@ -7,6 +7,7 @@ use eframe::egui;
 
 use super::rearrange_dialog::{並べ直すボタンの文, 並べ直す前に確かめる文};
 use super::screen_press_support::文字を押して集める;
+use super::screen_press_support::試験の全体の音量;
 use super::test_support::{押して集める, 描いた文字の範囲, 描いて集める};
 use crate::overlay::command::{
     映す矩形の枠の操作, 置き方の操作, 重ね合わせの作業場の応答, 重ね合わせの操作,
@@ -14,9 +15,8 @@ use crate::overlay::command::{
 use crate::overlay::placement_test_support::{
     動き, 当てる, 枠を当てる, 置いた, 開いた作業場
 };
-use crate::overlay::state::{
-    今のスタックから並べる状況, 映す矩形の掴む所, 隅の縦横比の扱い
-};
+use crate::overlay::state::placement::{映す矩形の掴む所, 隅の縦横比の扱い};
+use crate::overlay::state::今のスタックから並べる状況;
 use crate::overlay::workspace::重ね合わせの作業場;
 
 fn 置き方(操作: 置き方の操作) -> 重ね合わせの作業場の応答 {
@@ -34,6 +34,7 @@ fn ダイアログを描いて押す(
             作業場.状態(),
             今のスタックから並べる状況::並べられる,
             None,
+            試験の全体の音量,
             None,
         )
     };

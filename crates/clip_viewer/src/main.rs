@@ -26,6 +26,7 @@ mod thumbnail_feed;
 mod video_feed;
 mod view;
 mod viewer_settings;
+mod volume_step;
 
 #[cfg(test)]
 mod main_tests;

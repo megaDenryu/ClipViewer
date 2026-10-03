@@ -6,15 +6,16 @@
 use std::time::Instant;
 
 use clip_domain::{正規化した動画パス, 行の番号};
-use eframe::egui;
 use video_source::{バイト数, メモリの上限, 動画の読み手};
 
 use super::feed::重ね合わせの映像の供給を作れたか;
+use super::sound_test_support::装置の無い作業場を作る;
 use super::test_support::{置き方, 置き方を並べた重ね合わせ};
 use super::workspace::重ね合わせの作業場;
 use crate::video_feed::with_ffmpeg_support::{
     実行ファイルを探す, 成り立つまで待つ, 試験動画を作る,
 };
+use clip_domain::音量;
 
 /// 試験動画のファイル。落とすとファイルを消す。
 struct 試験動画のファイル(正規化した動画パス);
@@ -63,8 +64,7 @@ fn 作業場の口から行のテクスチャにコマが載り_控える前に�
             始まり: 0.0,
         }]],
     );
-    let mut 作業場 =
-        重ね合わせの作業場::開いていない作業場(egui::Context::default());
+    let mut 作業場 = 装置の無い作業場を作る();
     作業場.倉庫の上限で重ね合わせを開く(
         重ね合わせ,
         Some(&動画の読み手::作成する(実行ファイル)),
@@ -73,7 +73,7 @@ fn 作業場の口から行のテクスチャにコマが載り_控える前に�
     成り立つまで待つ(
         "止まった0秒の位置で0.5秒のコマが流し読みから載ること",
         || {
-            作業場.フレームを進める(Instant::now());
+            作業場.フレームを進める(Instant::now(), 音量::起動したときの音量);
             matches!(
                 載せたコマの番号と流し読みを開いているか(&作業場, 0),
                 (Some(15), true)

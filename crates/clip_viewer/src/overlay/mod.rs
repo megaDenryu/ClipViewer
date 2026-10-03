@@ -24,17 +24,26 @@ pub(crate) mod placement_test_support;
 #[cfg(test)]
 mod placement_tests;
 #[cfg(test)]
+mod sound_notice_tests;
+#[cfg(test)]
+pub(crate) mod sound_test_support;
+#[cfg(test)]
+mod sound_tests;
+#[cfg(test)]
 pub(crate) mod test_support;
 #[cfg(test)]
 mod tests;
 #[cfg(test)]
 mod with_ffmpeg_feed_tests;
-
-pub(crate) use command::重ね合わせの作業場の応答;
 #[cfg(test)]
-pub(crate) use command::{落とされたファイルの知らせ, 重ね合わせの操作};
+mod with_ffmpeg_sound_tests;
+
+#[cfg(test)]
+pub(crate) use command::落とされたファイルの知らせ;
+pub(crate) use command::{重ね合わせの作業場の応答, 重ね合わせの操作};
 pub(crate) use state::{
-    スタックの保存の観測結果, 今のスタックの値, 開いている動画の値
+    スタックの保存の観測結果, 今のスタックの値, 全体の音量, 重ね合わせの音の出力の状況,
+    開いている動画の値,
 };
 #[cfg(test)]
 pub(crate) use view::重ね合わせの作業場が受け取るキーの組;

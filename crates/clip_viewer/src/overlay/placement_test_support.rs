@@ -1,14 +1,13 @@
 //! 置き方の編集の試験の道具。五秒の重ね合わせを開いた作業場と、置き方の操作を作業場へ当てることと、映す矩形のドラッグの動きと、重ねる枠と置いたクリップの映す矩形を読むことを受け持つ。
 #![allow(clippy::expect_used)]
 
-use eframe::egui;
-
 use clip_domain::{
     四隅のつまみ, 映す矩形, 映す矩形の移動量, 百分率, 百分率の差分, 置いたクリップの識別子,
 };
 
 use super::command::{映す矩形の枠の操作, 置き方の操作, 重ね合わせの操作};
-use super::state::{
+use super::sound_test_support::装置の無い作業場を作る;
+use super::state::placement::{
     映す矩形のドラッグの動き, 映す矩形の掴む所, 隅の縦横比の扱い
 };
 use super::test_support::五秒の重ね合わせ;
@@ -84,8 +83,7 @@ pub(crate) const 右下: 映す矩形の掴む所 = 映す矩形の掴む所::�
 
 /// 五秒の重ね合わせを開いた作業場。
 pub(crate) fn 開いた作業場() -> 重ね合わせの作業場 {
-    let mut 作業場 =
-        重ね合わせの作業場::開いていない作業場(egui::Context::default());
+    let mut 作業場 = 装置の無い作業場を作る();
     作業場.重ね合わせを開く(五秒の重ね合わせ(), None);
     作業場
 }

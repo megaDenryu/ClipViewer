@@ -13,8 +13,8 @@ use sengen_egui::{
 use crate::overlay::command::{
     映す矩形の枠の操作, 置き方の操作, 重ね合わせの作業場の応答, 重ね合わせの操作,
 };
-use crate::overlay::state::{
-    映す矩形のドラッグの動き, 映す矩形の掴む所, 隅の縦横比の扱い
+use crate::overlay::state::placement::{
+    映す矩形のドラッグの動き, 映す矩形の掴む所, 隅の縦横比の扱い,
 };
 
 /// 置き方の操作を、重ね合わせの作業場の応答にする。

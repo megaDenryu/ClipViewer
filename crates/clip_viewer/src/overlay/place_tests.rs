@@ -2,19 +2,17 @@
 //! スタックの動画が重ね合わせの動画と違うときと置く操作が拒んだときは置かずに理由を知らせることを、作業場の口から確かめる。
 #![allow(clippy::expect_used)]
 
-use eframe::egui;
-
 use clip_domain::{クリップスタック, クリップ識別子, 入力された動画パス};
 use sengen_egui::{並べる通知, 通知の回};
 
 use super::arrange_test_support::{クリップ, 値, 練習の動画};
-use super::state::{動画が違うため置けない文, 置くクリップの動画};
+use super::sound_test_support::装置の無い作業場を作る;
+use super::state::placement::{動画が違うため置けない文, 置くクリップの動画};
 use super::test_support::五秒の重ね合わせ;
 use super::workspace::重ね合わせの作業場;
 
 fn 開いた作業場() -> 重ね合わせの作業場 {
-    let mut 作業場 =
-        重ね合わせの作業場::開いていない作業場(egui::Context::default());
+    let mut 作業場 = 装置の無い作業場を作る();
     作業場.重ね合わせを開く(五秒の重ね合わせ(), None);
     作業場
 }

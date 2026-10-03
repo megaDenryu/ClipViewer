@@ -15,9 +15,8 @@ use crate::output_measure::{
     クロップを描く部分にする, 丸める前の論理画素の寸法, 描く縦横比
 };
 use crate::overlay::command::{置き方の操作, 重ね合わせの作業場の応答};
-use crate::overlay::state::{
-    重ねる枠, 重ねる画面に描く行, 開いている重ね合わせ
-};
+use crate::overlay::state::placement::重ねる枠;
+use crate::overlay::state::{重ねる画面に描く行, 開いている重ね合わせ};
 
 /// 重ねる画面の黒い背景。置いたクリップを映していない所は黒で塗る。
 const 重ねる画面の黒い背景: スタイル = スタイル {

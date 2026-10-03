@@ -24,7 +24,7 @@ ClipViewer は、1本の動画から切り出した短い区間(クリップ)を
   ビルド・実行・検証のツールはすべて xtask クレートへ登録する。シェルスクリプトを散らさない。登録なきツール作成禁止
 - **検証列は `cargo xtask verify`**(`cargo fmt --check` → 重ね合わせの作業場の層の依存の向きの検査(`cargo xtask check-overlay-deps`) → `cargo clippy --workspace --all-targets -- -D warnings`
   → `cargo test --workspace` → FFmpeg の結合試験 → 音声出力装置の確認)。作業の区切りごとに実行し、全通過させてからコミットする。
-  FFmpeg の結合試験(`crates/video_source/tests/with_ffmpeg/` と `crates/clip_viewer` の `video_feed/with_ffmpeg_tests.rs` と `video_feed/with_ffmpeg_cached_end_tests.rs` と `state/with_ffmpeg_sound_tests.rs` と `state/with_ffmpeg_band_tests.rs` と `command/tests/with_ffmpeg_library.rs` と `command/tests/with_ffmpeg_thumbnail.rs` と `command/tests/with_ffmpeg_thumbnail_time.rs` と `command/tests/with_ffmpeg_edit.rs` と `command/tests/with_ffmpeg_unsaved.rs` と `command/tests/with_ffmpeg_open_note.rs` と `command/tests/with_ffmpeg_playback.rs` と `app/workspace_keys_with_ffmpeg_tests.rs` と `command/tests/with_ffmpeg_span_limit.rs` と `command/tests/with_ffmpeg_new_stack.rs` と `command/tests/with_ffmpeg_new_stack_library.rs` と `command/tests/with_ffmpeg_new_stack_clue.rs` と `overlay/feed/with_ffmpeg_tests.rs` と `overlay/feed/with_ffmpeg_stream_tests.rs` と `overlay/feed/with_ffmpeg_open_failure_tests.rs` と `overlay/with_ffmpeg_feed_tests.rs` と `app/workspace/overlay_with_ffmpeg_tests.rs`)は `#[ignore]` にしてあり、verify が環境変数
+  FFmpeg の結合試験(`crates/video_source/tests/with_ffmpeg/` と `crates/clip_viewer` の `video_feed/with_ffmpeg_tests.rs` と `video_feed/with_ffmpeg_cached_end_tests.rs` と `state/with_ffmpeg_sound_tests.rs` と `overlay/with_ffmpeg_sound_tests.rs` と `app/tests/workspace_overlay_mute_with_ffmpeg_tests.rs` と `state/with_ffmpeg_band_tests.rs` と `command/tests/with_ffmpeg_library.rs` と `command/tests/with_ffmpeg_thumbnail.rs` と `command/tests/with_ffmpeg_thumbnail_time.rs` と `command/tests/with_ffmpeg_edit.rs` と `command/tests/with_ffmpeg_unsaved.rs` と `command/tests/with_ffmpeg_open_note.rs` と `command/tests/with_ffmpeg_playback.rs` と `app/tests/workspace_keys_with_ffmpeg_tests.rs` と `command/tests/with_ffmpeg_span_limit.rs` と `command/tests/with_ffmpeg_new_stack.rs` と `command/tests/with_ffmpeg_new_stack_library.rs` と `command/tests/with_ffmpeg_new_stack_clue.rs` と `overlay/feed/with_ffmpeg_tests.rs` と `overlay/feed/with_ffmpeg_stream_tests.rs` と `overlay/feed/with_ffmpeg_open_failure_tests.rs` と `overlay/with_ffmpeg_feed_tests.rs` と `app/tests/workspace_overlay_with_ffmpeg_tests.rs`)は `#[ignore]` にしてあり、verify が環境変数
   `CLIPVIEWER_FFMPEG_DIR` → PATH の順に ffmpeg と ffprobe を探して、見つかったときだけ `--ignored` で流す。見つからなければ
   「実行しなかった」と表示して残りを続け、最終行が「検証列は FFmpeg の結合試験(FFmpeg が見つからない)を除いて通過した」になる。音声出力装置が無いときも同じく「音声出力装置の確認(音声出力装置が無い)を除いて」と並ぶ。除いた工程は未検証である(FFmpeg が PATH に無い開発機では、
   `CLIPVIEWER_FFMPEG_DIR` に ffmpeg.exe と ffprobe.exe のあるフォルダを渡す。例: `CLIPVIEWER_FFMPEG_DIR=C:\ffmpeg\bin`)
@@ -33,7 +33,10 @@ ClipViewer は、1本の動画から切り出した短い区間(クリップ)を
   同じ動画を n 本の ffmpeg で同時に読み切る時間を測り、`_doc/設計/同時再生.md` 5-4 の表と同じ列で出す。FFmpeg は verify と同じ順に探し、
   動画を渡さなければ合成画像を一時フォルダに作って測る。時間がかかり結果が計算機の負荷で揺れるため、verify には入れない
 - **egui / SengenEgui への依存は `crates/clip_viewer` だけに閉じる。** `clip_domain` と `video_source` に書かない
-- **FFmpeg への依存(外部プロセスの呼び出し)は `crates/video_source` だけに閉じる。** `clip_domain` に書かない
+- **FFmpeg への依存(外部プロセスの呼び出し)は `crates/video_source` だけに閉じる。** `clip_domain` に書かない。
+  例外として、検証と測定の道具(`xtask`)は FFmpeg と ffprobe を直接起動してよい(FFmpeg の結合試験の判定・`cargo xtask decode-load`)。
+  `xtask` が `video_source` に依存しないのは、`video_source` がビルドできない状態でも fmt と clippy を走らせるためである(2026-10-03 オーナーの決定)。
+  アプリのクレートの中では、この例外を使わない
 - **`clip_domain` は egui にも FFmpeg にも依存しない。** 依存してよいのは serde / serde_json / thiserror だけである
 - **`video_source` は egui / SengenEgui にも cpal にも依存しない。** 依存してよいのは `clip_domain`・`audio_pcm` と serde / serde_json / thiserror だけであり、
   FFmpeg は `std::process` で起動する。`video_source` はクリップスタックやタイムライン・再生の規則を使わない(Cargo で強制できないため検収で確かめる)

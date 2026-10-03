@@ -5,6 +5,7 @@
 use clip_domain::{クリップ名, クリップ識別子};
 use eframe::egui;
 
+use super::screen_press_support::試験の全体の音量;
 use super::sidebar::置くクリップの見出し;
 use super::sidebar_placed::選んでいないときの文;
 use super::test_support::{押して集める, 描いた文字の範囲, 描いて集める};
@@ -12,10 +13,11 @@ use crate::overlay::command::{
     置き方の操作, 重ね合わせの作業場の応答, 重ね合わせの操作
 };
 use crate::overlay::placement_test_support::{当てる, 置いた};
-use crate::overlay::state::{
-    今のスタックから並べる状況, 動画が違うため置けない文, 置くクリップ, 置くクリップの一覧,
-    置くクリップの動画,
+use crate::overlay::sound_test_support::装置の無い作業場を作る;
+use crate::overlay::state::placement::{
+    動画が違うため置けない文, 置くクリップ, 置くクリップの一覧, 置くクリップの動画,
 };
+use crate::overlay::state::今のスタックから並べる状況;
 use crate::overlay::test_support::五秒の重ね合わせ;
 use crate::overlay::workspace::重ね合わせの作業場;
 
@@ -41,6 +43,7 @@ fn 押す(
             作業場.状態(),
             今のスタックから並べる状況::並べられる,
             Some(一覧),
+            試験の全体の音量,
             None,
         )
     };
@@ -50,8 +53,7 @@ fn 押す(
 }
 
 fn 開いた作業場() -> 重ね合わせの作業場 {
-    let mut 作業場 =
-        重ね合わせの作業場::開いていない作業場(egui::Context::default());
+    let mut 作業場 = 装置の無い作業場を作る();
     作業場.重ね合わせを開く(五秒の重ね合わせ(), None);
     作業場
 }

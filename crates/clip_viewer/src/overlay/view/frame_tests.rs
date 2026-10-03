@@ -9,14 +9,14 @@ use sengen_egui::{
 };
 
 use super::frame_conversion::範囲枠の操作を変換する;
+use super::screen_press_support::試験の全体の音量;
 use super::test_support::{描いて集める, 黒く塗った矩形};
 use crate::overlay::command::{
     映す矩形の枠の操作, 置き方の操作, 重ね合わせの作業場の応答, 重ね合わせの操作,
 };
 use crate::overlay::placement_test_support::{動き, 置いた, 開いた作業場};
-use crate::overlay::state::{
-    今のスタックから並べる状況, 映す矩形の掴む所, 隅の縦横比の扱い
-};
+use crate::overlay::state::placement::{映す矩形の掴む所, 隅の縦横比の扱い};
+use crate::overlay::state::今のスタックから並べる状況;
 use crate::overlay::workspace::重ね合わせの作業場;
 
 fn 置き方(操作: 置き方の操作) -> 重ね合わせの作業場の応答 {
@@ -35,6 +35,7 @@ fn ドラッグして集める(
             作業場.状態(),
             今のスタックから並べる状況::並べられる,
             None,
+            試験の全体の音量,
             None,
         )
     };

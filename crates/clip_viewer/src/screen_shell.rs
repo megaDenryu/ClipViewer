@@ -23,12 +23,14 @@ impl 画面の殻 {
 
 impl eframe::App for 画面の殻 {
     fn update(&mut self, 画面描画の共有状態: &egui::Context, _枠: &mut eframe::Frame) {
+        // 注意: 時刻はフレームの手順の最初に1回だけ読み、閉じる要求の確かめ・フレームの手順・応答の適用へ同じ値を渡す(画面.md 判断7)。
+        let 今 = Instant::now();
         let 閉じる要求への答え = 画面描画の共有状態
             .input(|入力| 入力.viewport().close_requested())
-            .then(|| self.ビューアー.閉じる要求を確かめる());
+            .then(|| self.ビューアー.閉じる要求を確かめる(今));
         self.ビューアー
             .ウインドウの様子を知らせる(ウインドウの様子を読む(画面描画の共有状態));
-        self.ビューアー.フレームを進める(Instant::now());
+        self.ビューアー.フレームを進める(今);
         let mut 応答一覧 = Vec::new();
         egui::CentralPanel::default()
             .frame(egui::Frame::NONE)
@@ -41,7 +43,7 @@ impl eframe::App for 画面の殻 {
         } else {
             command::主ボタンの様子::押していない
         };
-        let 届き方 = self.ビューアー.応答を適用する(応答一覧, 主ボタン);
+        let 届き方 = self.ビューアー.応答を適用する(応答一覧, 主ボタン, 今);
         for 指示 in self
             .ビューアー
             .ウインドウへの指示の並び(閉じる要求への答え, 届き方)
