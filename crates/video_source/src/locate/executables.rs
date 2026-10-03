@@ -20,7 +20,7 @@ pub struct FFmpegの実行ファイル {
 impl FFmpegの実行ファイル {
     /// 設定の場所 → PATH の順に、ffmpeg と ffprobe の実行ファイルが両方そろうフォルダを探す。
     /// 版の違う組を選ばないため、2つを別々のフォルダから選ばない。見つからなければ、探した場所を並べたエラーを返す。
-    /// 参照: xtask/src/ffmpeg_tests.rs は同じ探す順と同じフォルダの規則で、結合試験を流すかを判定する。
+    /// 参照: xtask/src/ffmpeg_location.rs は同じ探す順と同じフォルダの規則で探し、verify(結合試験を流すかの判定)と decode-load が共有する。
     pub fn 探す(
         設定: &FFmpegの置き場所の設定,
         検索パス: &実行ファイルの検索パス,

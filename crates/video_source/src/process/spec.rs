@@ -67,6 +67,7 @@ impl デコードの指定 {
     }
 
     /// ffmpeg へ渡す引数を並べる。-ss を -i の前に置き、キーフレームから目当ての位置までをデコードして捨てさせる。
+    // 参照: xtask/src/decode_load/one_stream.rs が流し読みの引数を同じ形で写して負荷を測る。読み方を変えたらそちらも直す。
     pub(crate) fn 引数を並べる(&self) -> Vec<OsString> {
         let 読む位置 = コマを読む位置::求める(self.コマの速さ, self.先頭のコマ);
         let mut 引数: Vec<OsString> = ["-hide_banner", "-nostdin", "-loglevel", "error", "-ss"]
