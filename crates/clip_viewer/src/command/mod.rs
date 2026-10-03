@@ -33,7 +33,6 @@ mod video_ops;
 mod tests;
 
 pub(crate) use applier::操作の適用係;
-pub(crate) use band_commit::主ボタンの様子;
 pub(crate) use band_ops::{クリップの区間の帯の操作, 区間の帯の段階};
 pub(crate) use clip_arrange::動かす向き;
 pub(crate) use clip_edit::クリップの編集;

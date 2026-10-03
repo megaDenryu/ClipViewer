@@ -6,6 +6,7 @@
 
 mod arrange_report;
 mod drawn_rows;
+pub(crate) mod grab;
 mod notice;
 mod opened;
 mod opening;
@@ -15,6 +16,7 @@ mod read;
 mod sound;
 mod stack_save_failure;
 mod stack_source;
+pub(crate) mod timeline;
 mod whole_volume;
 
 #[cfg(test)]

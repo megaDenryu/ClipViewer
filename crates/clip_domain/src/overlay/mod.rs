@@ -14,6 +14,7 @@ mod playback;
 mod rect;
 mod rect_drag;
 mod rows;
+mod shift;
 mod video_table;
 mod volume;
 
@@ -30,12 +31,14 @@ pub use placed_id::{
 };
 pub use playback::{
     置いたクリップの再生の中身, 置いたクリップの区間の終わりの行き先, 行が映すもの, 行の映し方,
-    重ね合わせの再生位置, 重ね合わせの時計を進めた結果, 重ね合わせの進み具合,
+    重ね合わせの再生位置, 重ね合わせの時計を進めた結果,
 };
 pub use rect::{映す矩形, 映す矩形エラー};
 pub use rect_drag::映す矩形の移動量;
 pub use rows::{
-    タイムラインの行, タイムラインの行の並び, 同時に重ねられる行の数, 置いたクリップ, 行の番号,
+    タイムラインの行, タイムラインの行の並び, 上から数えた行の順番, 同時に重ねられる行の数,
+    置いたクリップ, 置いたクリップの行き先, 行の番号,
 };
+pub use shift::{時刻をずらす量, 行の差};
 pub use video_table::{使う動画の表, 動画の番号};
 pub use volume::{置いたクリップの音の変更, 置いたクリップの音の設定};

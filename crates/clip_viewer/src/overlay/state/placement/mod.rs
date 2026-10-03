@@ -14,6 +14,7 @@ mod hand_fix;
 mod place_from_stack;
 mod place_source;
 mod rearrange_confirm;
+mod selection;
 
 pub(crate) use super::opened::重ねる枠;
 pub(crate) use drag::映す矩形のドラッグ;

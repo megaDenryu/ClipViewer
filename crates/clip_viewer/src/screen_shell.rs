@@ -8,7 +8,7 @@ use std::time::Instant;
 use eframe::egui;
 
 use crate::viewer_settings::{ウインドウの大きさ, 画面の大きさ};
-use crate::{app, command, state};
+use crate::{app, state};
 
 /// 画面の殻とは、eframe が毎フレーム呼び出す所であり、クリップビューアーの手順を順に呼ぶだけのもののことである。
 pub(crate) struct 画面の殻 {
@@ -39,9 +39,9 @@ impl eframe::App for 画面の殻 {
             });
         let 主ボタン = if 画面描画の共有状態.input(|入力| 入力.pointer.primary_down())
         {
-            command::主ボタンの様子::押している
+            crate::primary_button::主ボタンの様子::押している
         } else {
-            command::主ボタンの様子::押していない
+            crate::primary_button::主ボタンの様子::押していない
         };
         let 届き方 = self.ビューアー.応答を適用する(応答一覧, 主ボタン, 今);
         for 指示 in self

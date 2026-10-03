@@ -5,14 +5,8 @@
 use clip_domain::{クリップ識別子, 動画上の区間, 動画上の秒};
 
 use super::position_target::位置の印の行き先;
+use crate::primary_button::主ボタンの様子;
 use crate::state::{アプリの状態, 区間の帯のドラッグの結末};
-
-/// 主ボタンの様子とは、描画の後の時点で、ポインタの主ボタン(左ボタン)を押しているかの区別のことである。
-#[derive(Debug, Clone, Copy, PartialEq, Eq)]
-pub(crate) enum 主ボタンの様子 {
-    押している,
-    押していない,
-}
 
 impl アプリの状態 {
     /// 応答を適用した後に呼ぶ安全網。主ボタンを押していないのにドラッグが残っていたら(放したを受け取る前に部品が描かれなくなった等)、

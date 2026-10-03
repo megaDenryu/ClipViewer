@@ -10,9 +10,9 @@ use clip_domain::トリガー;
 use super::library_support::試験のライブラリ;
 use super::{クリップを並べた状態, クリップを作る, 編集する, 識別子};
 use crate::command::{
-    クリップの操作, クリップの編集, ファイルの操作, ライブラリの操作, 主ボタンの様子, 区間の端,
-    応答,
+    クリップの操作, クリップの編集, ファイルの操作, ライブラリの操作, 区間の端, 応答,
 };
+use crate::primary_button::主ボタンの様子;
 use crate::state::library::{
     ライブラリのダイアログ, 並びを捨てる理由, 関係を終える操作
 };

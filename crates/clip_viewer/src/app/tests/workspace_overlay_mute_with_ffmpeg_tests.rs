@@ -14,9 +14,10 @@ use super::launch_requests_test_support::試験のビューアーを二本目の
 use super::workspace_ffmpeg_test_support::{
     区間を決めたクリップを作る, 試験のffmpegを見つけて動画を開く,
 };
-use crate::command::{主ボタンの様子, 再生の操作, 応答};
+use crate::command::{再生の操作, 応答};
 use crate::overlay::sound_test_support::音付きの試験動画;
 use crate::overlay::{重ね合わせの作業場の応答, 重ね合わせの操作};
+use crate::primary_button::主ボタンの様子;
 use crate::state::並びの出どころ;
 
 fn 当てる(

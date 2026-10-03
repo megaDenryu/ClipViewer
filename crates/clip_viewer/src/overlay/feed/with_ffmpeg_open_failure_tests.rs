@@ -15,6 +15,7 @@ use super::frame_targets::このフレームで映すもの;
 use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の供給を作れたか;
 use crate::overlay::test_support::{置き方, 置き方を並べた重ね合わせ};
+use crate::stream_rules::流し読みの開き直し;
 use crate::video_feed::with_ffmpeg_support::実行ファイルを探す;
 use crate::video_feed::{動画を開けない理由, 載せたコマの状態};
 
@@ -52,6 +53,7 @@ fn 開けない動画は_その理由を持ち_その動画の行は何も載せ
     };
     映像.行ごとのコマを載せる(
         &このフレームで映すもの::求める(&重ね合わせ, 条件),
+        流し読みの開き直し::してよい,
         Instant::now(),
     );
     let 重ね合わせの映像の供給を作れたか::作れた(供給) = &映像 else {

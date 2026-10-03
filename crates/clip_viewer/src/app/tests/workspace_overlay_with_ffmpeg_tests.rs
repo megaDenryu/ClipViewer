@@ -15,8 +15,9 @@ use super::launch_requests_test_support::試験のビューアー;
 use super::workspace_test_support::{
     スタックの応答を適用する, 前の重ね合わせの作業場
 };
-use crate::command::{主ボタンの様子, 応答};
+use crate::command::応答;
 use crate::overlay::重ね合わせの作業場の応答;
+use crate::primary_button::主ボタンの様子;
 use crate::state::library::開いたときの添え書き;
 use crate::state::並びの出どころ;
 use crate::video_feed::with_ffmpeg_support::{実行ファイルを探す, 試験動画を作る};

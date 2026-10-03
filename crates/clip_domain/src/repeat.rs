@@ -39,6 +39,11 @@ impl リピート回数 {
         self.0
     }
 
+    /// 回数を0でない数で返す。回数は1以上であることを型が守るため、0になることは無い。
+    pub fn 回数を0でない数にする(self) -> std::num::NonZeroU32 {
+        std::num::NonZeroU32::MIN.saturating_add(u32::from(self.0.saturating_sub(1)))
+    }
+
     /// 1回増やす。上限では増えない。
     pub fn 増やす(self) -> Self {
         Self(self.0.saturating_add(1).min(Self::上限))

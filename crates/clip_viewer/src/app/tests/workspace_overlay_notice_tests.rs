@@ -13,8 +13,8 @@ use super::super::クリップビューアー;
 use super::workspace_test_support::{
     スタックの作業場の値を既定から変えて再生しているビューアー, 前の重ね合わせの作業場,
 };
-use crate::command::主ボタンの様子;
 use crate::overlay::重ね合わせの作業場の応答;
+use crate::primary_button::主ボタンの様子;
 use crate::state::library::{
     ライブラリを使えない理由, 登録済みのスタック, 開いているスタック
 };
