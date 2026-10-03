@@ -28,7 +28,7 @@ use sengen_egui::{
 
 use crate::command::応答;
 use crate::state::{アプリの状態, 画面の構え};
-use crate::view::styles;
+use crate::styles;
 use screen::出力の画面の材料;
 
 pub(crate) fn 出力の区画(状態: &アプリの状態) -> ノード<応答> {

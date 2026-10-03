@@ -7,7 +7,8 @@ use sengen_egui::{
 
 use crate::command::{出力の操作, 応答};
 use crate::state::{アプリの状態, 左右の向き, 画面の構え, 表示サイズ};
-use crate::view::{keys, styles, text};
+use crate::styles;
+use crate::view::{keys, text};
 use crate::viewer_settings::キーで行う操作;
 
 fn 出力(操作: 出力の操作) -> 応答 {

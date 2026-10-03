@@ -17,7 +17,7 @@ use sengen_egui::{ノード, パネル, パネルの位置, 子, 文字表示, �
 use crate::command::応答;
 use crate::state::library::{ライブラリの使える様子, 最後に読んだ一覧};
 use crate::state::アプリの状態;
-use crate::view::styles;
+use crate::styles;
 
 pub(crate) fn ライブラリの区画(状態: &アプリの状態) -> ノード<応答> {
     パネル(

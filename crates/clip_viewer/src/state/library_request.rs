@@ -2,8 +2,9 @@
 
 use clip_library::ライブラリへの頼み;
 
-use super::library::{ライブラリを使えない理由, 最後に読んだ一覧};
+use super::library::最後に読んだ一覧;
 use super::アプリの状態;
+use crate::library_common::save::ライブラリを使えない理由;
 
 /// 頼んだ結果とは、ライブラリへ頼みを送れたか、送れずに理由を通知したかの区別のことである。
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]

@@ -3,9 +3,11 @@
 use clip_domain::スタックの識別子;
 
 use crate::command::applier::操作の適用係;
+use crate::library_common::list::{
+    並べ替え方, 絞り込みの語, 見えている行の範囲
+};
 use crate::state::library::{
-    ライブラリのダイアログ, 並べ替え方, 登録の後にすること, 絞り込みの語, 見えている行の範囲,
-    関係を終える操作,
+    ライブラリのダイアログ, 登録の後にすること, 関係を終える操作
 };
 use crate::state::アプリの状態;
 

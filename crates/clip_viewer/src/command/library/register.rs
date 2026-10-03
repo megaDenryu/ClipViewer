@@ -4,8 +4,9 @@
 use clip_domain::{スタックの名前, ライブラリのスタック};
 
 use crate::command::applier::操作の適用係;
+use crate::library_common::save::入力中の名前;
 use crate::state::library::{
-    ライブラリのダイアログ, ライブラリの使える様子, 保存の目的, 入力中の名前, 登録の後にすること,
+    ライブラリのダイアログ, ライブラリの使える様子, 保存の目的, 登録の後にすること,
     登録済みのスタック, 開いているスタック,
 };
 use crate::state::アプリの状態;

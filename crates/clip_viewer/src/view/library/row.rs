@@ -6,8 +6,8 @@ use sengen_egui::{ノード, ボタン, 子, 条件付き表示, 横並び};
 
 use crate::command::{ライブラリの操作, 応答};
 use crate::library_common::view::{行の印, 読めた行, 読めない行};
+use crate::styles;
 use crate::thumbnail_feed::サムネイルの見せ方;
-use crate::view::styles;
 
 /// 一覧の行とは、一覧の1行に出す値の組のことである。行を組む閉包へ所有させるため、画面の状態を借りない値で持つ。
 pub(super) enum 一覧の行 {

@@ -15,7 +15,7 @@ use sengen_egui::{
 
 use crate::command::{クリップの操作, 応答};
 use crate::state::アプリの状態;
-use crate::view::styles;
+use crate::styles;
 
 pub(crate) fn 左サイドバー(状態: &アプリの状態) -> ノード<応答> {
     縦スクロール(

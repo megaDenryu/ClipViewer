@@ -5,7 +5,8 @@ use clip_domain::{スタックの名前, スタックの識別子};
 use clip_library::ライブラリへの頼み;
 
 use crate::command::applier::操作の適用係;
-use crate::state::library::{ライブラリのダイアログ, 入力中の名前};
+use crate::library_common::save::入力中の名前;
+use crate::state::library::ライブラリのダイアログ;
 use crate::state::アプリの状態;
 
 impl アプリの状態 {

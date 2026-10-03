@@ -6,7 +6,7 @@ use crate::command::{ライブラリの操作, 応答};
 use crate::library_common::view::保存の段階の文字;
 use crate::state::library::ライブラリの使える様子;
 use crate::state::アプリの状態;
-use crate::view::styles;
+use crate::styles;
 
 pub(crate) fn ヘッダーのライブラリの様子(
     状態: &アプリの状態

@@ -9,7 +9,8 @@ use sengen_egui::{スライダー, ノード, 子, 文字表示, 横並び, 縦�
 
 use crate::command::{再生の操作, 応答};
 use crate::state::アプリの状態;
-use crate::view::{styles, text};
+use crate::styles;
+use crate::view::text;
 
 fn 再生(操作: 再生の操作) -> 応答 {
     応答::再生(操作)

@@ -9,8 +9,8 @@ use crate::command::応答;
 use crate::state::{
     FFmpegの状況, アプリの状態, 入力中のフォルダ, 画面の構え, 音の出力の状況
 };
+use crate::styles;
 use crate::thumbnail_feed::一覧のサムネイル;
-use crate::view::styles;
 
 /// 動画を開いていない、起動したときの状態を、その構えにしたもの。
 pub(super) fn 動画の無い状態(構え: 画面の構え) -> アプリの状態 {

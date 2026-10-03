@@ -10,7 +10,8 @@ use sengen_egui::{
 
 use crate::command::{クリップの操作, ファイルの操作, 出力の操作, 応答};
 use crate::state::{アプリの状態, 画面の構え};
-use crate::view::{keys, library, styles};
+use crate::styles;
+use crate::view::{keys, library};
 use crate::viewer_settings::キーで行う操作;
 
 /// 構えを切り替えるボタン。今の構えと同じ構えのボタンを、選ばれた見た目にする。

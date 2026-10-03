@@ -15,8 +15,9 @@ use eframe::egui;
 use super::test_support::{
     動画の無い状態, 大きさを決めて描く, 描いた文字の範囲, 日本語フォントとテーマを当てた本体を作る,
 };
+use crate::library_common::save::ライブラリを使えない理由;
 use crate::state::library::{
-    ライブラリの接続, ライブラリを使えない理由, 登録済みのスタック, 開いているスタック,
+    ライブラリの接続, 登録済みのスタック, 開いているスタック
 };
 use crate::state::{アプリの状態, 画面の構え};
 

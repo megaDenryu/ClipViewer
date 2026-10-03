@@ -97,7 +97,7 @@ fn main() -> ExitCode {
         "ClipViewer",
         選択肢,
         Box::new(|ウインドウを作るときの情報| {
-            view::styles::画面のテーマ.適用する(&ウインドウを作るときの情報.egui_ctx);
+            styles::画面のテーマ.適用する(&ウインドウを作るときの情報.egui_ctx);
             日本語フォントを設定する(&ウインドウを作るときの情報.egui_ctx);
             let ビューアー = app::クリップビューアー::組み立てる(
                 ウインドウを作るときの情報.egui_ctx.clone(),

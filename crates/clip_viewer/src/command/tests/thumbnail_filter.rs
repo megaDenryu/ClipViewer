@@ -4,7 +4,7 @@
 use super::library_support::試験のライブラリ;
 use super::library_thumbnail_list::一覧を読んだ状態;
 use super::thumbnail_place::動画のあるスタックを置く;
-use crate::state::library::絞り込みの語;
+use crate::library_common::list::絞り込みの語;
 
 #[test]
 fn 絞り込みで隠れた行はキャッシュを見る前でも描き直しを早める判定に数えない() {

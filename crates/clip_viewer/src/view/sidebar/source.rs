@@ -7,7 +7,7 @@ use sengen_egui::{
 
 use crate::command::{ファイルの操作, 応答, 手がかりの操作};
 use crate::state::アプリの状態;
-use crate::view::styles;
+use crate::styles;
 
 pub(crate) fn 動画の欄(状態: &アプリの状態) -> ノード<応答> {
     縦積み(子![

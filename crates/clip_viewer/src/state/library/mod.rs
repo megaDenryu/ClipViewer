@@ -1,19 +1,11 @@
 //! スタックのライブラリの状態。ライブラリの接続、開いているスタック(未登録か登録済みか)、並べた一覧、開いているダイアログ、アプリを閉じてよいとの決めを持つ。
 //! 参照: _doc/設計/ライブラリ.md
 
-mod connection_wait;
 mod dialog;
 mod open_stack;
 mod registered_stack;
 mod save_purpose;
 
-pub(crate) use crate::library_common::list::{
-    並べ替え方, 絞り込みの語, 見えている行の範囲, 見せる行,
-};
-pub(crate) use crate::library_common::save::{
-    ライブラリを使えない理由, 入力中の名前, 見た結果
-};
-pub(crate) use connection_wait::{ライブラリの使える様子, ライブラリの接続};
 pub(crate) use dialog::{
     ライブラリのダイアログ, 並びを捨てる理由, 登録の後にすること, 開いたときの添え書き,
     関係を終える操作,
@@ -21,6 +13,21 @@ pub(crate) use dialog::{
 pub(crate) use open_stack::開いているスタック;
 pub(crate) use registered_stack::登録済みのスタック;
 pub(crate) use save_purpose::保存の目的;
+
+/// ライブラリの接続とは、スタックのライブラリへのライブラリの接続のことである。接続そのもの(一覧から開く前に書き込みを終えてから読むことを含む)は、
+/// 2つの作業場が共有する `library_common::save::保存物のライブラリの接続` である。
+pub(crate) type ライブラリの接続 =
+    crate::library_common::save::保存物のライブラリの接続<
+        スタックのライブラリ,
+        保存の目的,
+    >;
+
+/// ライブラリの使える様子とは、スタックのライブラリの使える様子のことである。
+pub(crate) type ライブラリの使える様子<'接続> =
+    crate::library_common::save::保存物のライブラリの使える様子<
+        '接続,
+        スタックのライブラリ,
+    >;
 
 /// 保存の段階とは、開いている登録済みのスタックの保存の段階のことである。
 pub(crate) type 保存の段階<'様子> =
@@ -35,8 +42,12 @@ pub(crate) type 最後に読んだ一覧 =
 
 use std::time::Duration;
 
+use crate::library_common::list::見えている行の範囲;
+
 use clip_domain::{クリップ, スタックの名前, スタックの識別子};
-use clip_library::{ライブラリの一覧, ライブラリの操作エラー};
+use clip_library::{
+    スタックのライブラリ, ライブラリの一覧, ライブラリの操作エラー
+};
 
 use crate::library_common::アプリを閉じてよいとの決め;
 use crate::thumbnail_feed::一覧のサムネイル;

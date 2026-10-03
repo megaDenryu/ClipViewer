@@ -6,7 +6,7 @@ use sengen_egui::{ノード, ボタン, 文字表示, 格子, 画素, 論理画�
 use super::table;
 use crate::command::{キーの設定の操作, 応答};
 use crate::state::アプリの状態;
-use crate::view::styles;
+use crate::styles;
 use crate::viewer_settings::{キーで行う操作, 操作のキー};
 
 /// 格子の列の数。

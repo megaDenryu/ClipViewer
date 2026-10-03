@@ -5,7 +5,7 @@ use sengen_egui::{ノード, ボタン, 子, 文字表示, 横並び};
 use crate::command::{ライブラリの操作, 応答};
 use crate::state::library::並びを捨てる理由;
 use crate::state::アプリの状態;
-use crate::view::styles;
+use crate::styles;
 
 fn ライブラリ(操作: ライブラリの操作) -> 応答 {
     応答::ライブラリ(操作)

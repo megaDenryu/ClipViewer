@@ -7,7 +7,8 @@ use sengen_egui::{
 
 use super::{編集の写像, 編集の応答};
 use crate::command::{クリップの編集, 応答};
-use crate::view::{styles, text};
+use crate::styles;
+use crate::view::text;
 
 const トリガーの一覧: [トリガー; 4] = [
     トリガー::自動進行,

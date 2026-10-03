@@ -3,10 +3,11 @@
 use sengen_egui::{ノード, ボタン, 子, 文字表示, 横並び};
 
 use crate::command::{ライブラリの操作, 応答};
+use crate::library_common::list::並べ替え方;
 use crate::library_common::view::絞り込みと並べ替えの材料;
-use crate::state::library::{並べ替え方, 最後に読んだ一覧};
+use crate::state::library::最後に読んだ一覧;
 use crate::state::アプリの状態;
-use crate::view::styles;
+use crate::styles;
 
 fn ライブラリ(操作: ライブラリの操作) -> 応答 {
     応答::ライブラリ(操作)

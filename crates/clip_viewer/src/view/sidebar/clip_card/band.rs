@@ -9,7 +9,7 @@ use sengen_egui::{
 use super::band_response::区間の帯の操作から応答を作る;
 use crate::command::応答;
 use crate::state::{カードの区間の帯に描く値, 区間の帯の種類};
-use crate::view::styles;
+use crate::styles;
 
 fn 帯の値へ写す(秒: 動画上の秒) -> 帯の値 {
     帯の値::倍精度の小数から生成する(秒.秒数())

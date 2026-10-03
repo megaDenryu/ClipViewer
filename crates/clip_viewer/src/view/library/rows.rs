@@ -8,8 +8,8 @@ use sengen_egui::ノード;
 
 use super::row_source::行の材料;
 use crate::command::{ライブラリの操作, 応答};
+use crate::library_common::list::見えている行の範囲;
 use crate::library_common::view::一覧の行の並び as 共有の行の並び;
-use crate::state::library::見えている行の範囲;
 use crate::state::アプリの状態;
 
 pub(super) fn 一覧の行の並び(
