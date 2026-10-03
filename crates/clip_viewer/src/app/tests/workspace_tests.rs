@@ -5,9 +5,8 @@
 
 use std::time::{Duration, Instant};
 
-use super::super::front_workspace::前に出ている作業場;
 use super::super::launch_requests::起動の頼みの届き方;
-use super::super::workspace::作業場の応答;
+use super::super::workspace_response::作業場の応答;
 use super::super::クリップビューアー;
 use super::workspace_test_snapshot::スタックの作業場の写し;
 use super::workspace_test_support::{
@@ -16,6 +15,7 @@ use super::workspace_test_support::{
 use crate::command::主ボタンの様子;
 use crate::overlay::test_support::五秒の重ね合わせ;
 use crate::overlay::{重ね合わせの作業場の応答, 重ね合わせの操作};
+use clip_domain::音量;
 
 fn 重ね合わせの応答を適用する(
     ビューアー: &mut クリップビューアー,
@@ -67,19 +67,17 @@ fn 重ね合わせの作業場は控えておき_再び移ると同じ重ね合�
     );
     let 始め = Instant::now();
     let 作業場 = 前の重ね合わせの作業場(&mut ビューアー).expect("重ね合わせが前");
-    作業場.フレームを進める(始め);
-    作業場.フレームを進める(始め + Duration::from_secs(2));
+    作業場.フレームを進める(始め, 音量::起動したときの音量);
+    作業場.フレームを進める(始め + Duration::from_secs(2), 音量::起動したときの音量);
     assert!(作業場.状態().再生しているか());
     let 控える前の位置と長さ = 作業場.状態().再生の位置と長さ();
 
     ビューアー.スタックの作業場を前に出す();
-    let 前に出ている作業場::スタックが前 {
-        控えた重ね合わせ: Some(控えた),
-    } = &ビューアー.前に出ている作業場
-    else {
-        panic!("重ね合わせの作業場を控えているはず");
-    };
-    assert!(!控えた.状態().再生しているか());
+    let 控えた = ビューアー
+        .前に出ている作業場
+        .控えた重ね合わせ()
+        .expect("重ね合わせの作業場を控えているはず");
+    assert!(!控えた.作業場().状態().再生しているか());
 
     ビューアー.重ね合わせの作業場へ移る();
     let 作業場 = 前の重ね合わせの作業場(&mut ビューアー).expect("重ね合わせが前");
@@ -96,10 +94,6 @@ fn 重ね合わせの作業場の中の操作はスタックの作業場が前�
         &mut ビューアー,
         重ね合わせの作業場の応答::操作(重ね合わせの操作::再生を切り替える),
     );
-    assert!(matches!(
-        ビューアー.前に出ている作業場,
-        前に出ている作業場::スタックが前 {
-            控えた重ね合わせ: None
-        }
-    ));
+    assert!(!ビューアー.前に出ている作業場.重ね合わせが前か());
+    assert!(ビューアー.前に出ている作業場.控えた重ね合わせ().is_none());
 }

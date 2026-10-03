@@ -3,6 +3,8 @@
 #![allow(clippy::expect_used)]
 
 use super::screen_press_support::{描いたか, 文字を押して集める};
+use clip_domain::置いたクリップの音の変更;
+
 use crate::overlay::command::{重ね合わせの作業場の応答, 重ね合わせの操作};
 use crate::overlay::sound_test_support::装置の無い作業場;
 use crate::overlay::state::今のスタックから並べる状況;
@@ -25,8 +27,8 @@ fn 開いている間は置いたクリップの名前と消音を出し_押す�
     };
     assert!(matches!(
         操作,
-        重ね合わせの操作::置いたクリップの消音を設定する {
-            消音するか: true,
+        重ね合わせの操作::置いたクリップの音を変える {
+            変更: 置いたクリップの音の変更::消音を設定する(true),
             ..
         }
     ));

@@ -9,6 +9,7 @@ use clip_domain::{
 use eframe::egui;
 use video_source::{メモリの上限, 動画の読み手};
 
+use super::frame_targets::このフレームで映すもの;
 use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の供給を作れたか;
 use super::supply::重ね合わせの映像の供給;
@@ -67,8 +68,8 @@ impl 試験の重ね合わせ {
             時刻: 時刻::作成する(秒).expect("時刻"),
             全体の末尾: 末尾での振る舞い::止まる,
         };
-        self.映像
-            .行ごとのコマを載せる(&self.重ね合わせ, 条件, Instant::now());
+        let 映すもの = このフレームで映すもの::求める(&self.重ね合わせ, 条件);
+        self.映像.行ごとのコマを載せる(&映すもの, Instant::now());
     }
 
     pub(super) fn 供給(&self) -> &重ね合わせの映像の供給 {

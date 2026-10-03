@@ -10,7 +10,7 @@ use clip_domain::{
 };
 use video_source::{FFmpegの置き場所の設定, FFmpegを置いたフォルダ};
 
-use super::super::workspace::作業場の応答;
+use super::super::workspace_response::作業場の応答;
 use super::launch_requests_test_support::試験のビューアー;
 use super::workspace_test_support::{
     スタックの応答を適用する, 前の重ね合わせの作業場

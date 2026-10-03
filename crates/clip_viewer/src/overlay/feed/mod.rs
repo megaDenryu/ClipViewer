@@ -4,6 +4,7 @@
 //! `読み込んだ動画` を使わない。音の側(重ね合わせの音の供給)も同じ形で、動画ごとの動画の音の供給元と行ごとの音の流し読みを
 //! スタックの作業場の `audio_feed` と共有する。参照: _doc/設計/同時再生.md 3-3・5-1・5-2・5-3
 
+mod frame_targets;
 mod prefetch;
 mod row_request;
 mod show_condition;
@@ -27,6 +28,7 @@ mod with_ffmpeg_support;
 #[cfg(test)]
 mod with_ffmpeg_tests;
 
+pub(crate) use frame_targets::このフレームで映すもの;
 pub(crate) use show_condition::映すものを求める条件;
 pub(crate) use sound_supply::重ね合わせの音の供給;
 pub(crate) use status::重ね合わせの映像の供給を作れたか;

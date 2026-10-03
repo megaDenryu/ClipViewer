@@ -6,6 +6,7 @@ use std::process::Command;
 use std::time::Instant;
 
 use audio_output::{再生の指示, 行ごとの再生の指示, 音声出力のエラー};
+use audio_pcm::音の出どころ;
 use clip_domain::{
     入力された動画パス, 正規化した動画パス, 置いたクリップの識別子, 行の番号
 };
@@ -81,4 +82,12 @@ impl Drop for 音付きの試験動画 {
     fn drop(&mut self) {
         let _ = std::fs::remove_file(self.0.文字列());
     }
+}
+
+/// 行の指示の区間の出どころが溜めた音か。
+pub(crate) fn 溜めた音か(指示: &再生の指示) -> bool {
+    指示
+        .区間
+        .as_ref()
+        .is_some_and(|区間| matches!(区間.出どころ, Some(音の出どころ::溜めた音(_))))
 }

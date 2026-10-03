@@ -8,8 +8,8 @@ use clip_domain::{
 };
 use sengen_egui::{キー, キーの組};
 
-use super::super::front_workspace::前に出ている作業場;
-use super::super::workspace::作業場の応答;
+use super::super::overlay_side::重ね合わせの側;
+use super::super::workspace_response::作業場の応答;
 use super::super::クリップビューアー;
 use super::launch_requests_test_support::試験のビューアー;
 use crate::command::{
@@ -88,8 +88,8 @@ pub(in crate::app) fn スタックの作業場の値を既定から変えて再�
 pub(in crate::app) fn 前の重ね合わせの作業場(
     ビューアー: &mut クリップビューアー,
 ) -> Option<&mut 重ね合わせの作業場> {
-    match &mut ビューアー.前に出ている作業場 {
-        前に出ている作業場::重ね合わせが前(作業場) => Some(作業場),
-        前に出ている作業場::スタックが前 { .. } => None,
-    }
+    ビューアー
+        .前に出ている作業場
+        .前の重ね合わせを書き換える()
+        .map(重ね合わせの側::作業場を書き換える)
 }

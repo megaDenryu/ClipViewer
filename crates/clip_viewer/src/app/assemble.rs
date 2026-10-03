@@ -6,6 +6,7 @@ use video_source::{FFmpegの置き場所の設定, FFmpegを置いたフォル�
 
 use super::front_workspace::前に出ている作業場;
 use super::launch_preparation::起動の準備;
+use super::overlay_side::{二本目の流れの開き方, 重ね合わせの側の作り方};
 use super::sound_sender::音の送り手;
 use super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
 use super::クリップビューアー;
@@ -71,9 +72,12 @@ impl クリップビューアー {
             音の送り手,
             起動の受け口: None,
             設定の保存係,
-            前に出ている作業場: 前に出ている作業場::起動時(),
-            画面描画の共有状態: 画面描画の共有状態.clone(),
-            重ね合わせの音の送り手: None,
+            前に出ている作業場: 前に出ている作業場::起動時(
+                重ね合わせの側の作り方 {
+                    画面描画の共有状態: 画面描画の共有状態.clone(),
+                    流れの開き方: 二本目の流れの開き方::既定の装置を開く,
+                },
+            ),
         };
         ビューアー.起動の受け口で受け取り始めて頼みを当てる(
             準備.受け口,

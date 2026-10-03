@@ -3,11 +3,11 @@
 
 use std::time::Instant;
 
-use clip_domain::{使う動画の表, 動画の番号, 重ね合わせ};
+use clip_domain::{使う動画の表, 動画の番号};
 use eframe::egui;
 use video_source::{メモリの上限, 動画の情報, 動画の読み手};
 
-use super::show_condition::映すものを求める条件;
+use super::frame_targets::このフレームで映すもの;
 use super::supply::重ね合わせの映像の供給;
 use super::supply_failure::映像の供給を作れない理由;
 
@@ -44,15 +44,14 @@ impl 重ね合わせの映像の供給を作れたか {
         }
     }
 
-    /// 供給を作れていれば、条件の時刻に行ごとに映すコマを載せる。作れていなければ何もしない。
+    /// 供給を作れていれば、このフレームで映すものから行ごとに映すコマを載せる。作れていなければ何もしない。
     pub(crate) fn 行ごとのコマを載せる(
         &mut self,
-        重ね合わせ: &重ね合わせ,
-        条件: 映すものを求める条件,
+        映すもの: &このフレームで映すもの<'_>,
         今: Instant,
     ) {
         if let Self::作れた(供給) = self {
-            供給.行ごとのコマを載せる(重ね合わせ, 条件, 今);
+            供給.行ごとのコマを載せる(映すもの, 今);
         }
     }
 

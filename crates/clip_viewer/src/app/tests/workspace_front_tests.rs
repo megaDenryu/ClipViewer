@@ -7,7 +7,6 @@ use std::time::Duration;
 
 use eframe::egui;
 
-use super::super::front_workspace::前に出ている作業場;
 use super::super::launch_requests::起動の頼みの届き方;
 use super::super::クリップビューアー;
 use super::launch_requests_test_support::{試験のビューアー, 通知の文};
@@ -19,10 +18,7 @@ use crate::state::library::ライブラリのダイアログ;
 use crate::state::閉じる要求への答え;
 
 fn 重ね合わせが前か(ビューアー: &クリップビューアー) -> bool {
-    matches!(
-        ビューアー.前に出ている作業場,
-        前に出ている作業場::重ね合わせが前(_)
-    )
+    ビューアー.前に出ている作業場.重ね合わせが前か()
 }
 
 #[test]

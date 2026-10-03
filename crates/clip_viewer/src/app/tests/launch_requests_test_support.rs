@@ -6,7 +6,9 @@ use eframe::egui;
 use video_source::{FFmpegが見つからないエラー, 実行ファイルの検索パス};
 
 use super::super::front_workspace::前に出ている作業場;
-use super::super::overlay_sound_sender::重ね合わせの音の送り手;
+use super::super::overlay_side::{
+    二本目の流れの開き方, 重ね合わせの側の作り方
+};
 use super::super::sound_sender::音の送り手;
 use super::super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
 use super::super::クリップビューアー;
@@ -44,11 +46,12 @@ pub(in crate::app) fn 試験のビューアー() -> クリップビューアー 
             設定の書き方::書かない,
             見る側の設定::既定,
         ),
-        前に出ている作業場: 前に出ている作業場::起動時(),
-        画面描画の共有状態: 本体,
-        重ね合わせの音の送り手: Some(重ね合わせの音の送り手::装置なし(
-            audio_output::音声出力のエラー::装置が無い,
-        )),
+        前に出ている作業場: 前に出ている作業場::起動時(
+            重ね合わせの側の作り方 {
+                画面描画の共有状態: 本体,
+                流れの開き方: 二本目の流れの開き方::試験では開かない,
+            },
+        ),
     }
 }
 
