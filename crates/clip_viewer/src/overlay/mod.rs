@@ -16,11 +16,7 @@ mod arrange_tests;
 #[cfg(test)]
 mod arrange_unplaceable_tests;
 #[cfg(test)]
-mod history_library_tests;
-#[cfg(test)]
 mod history_tests;
-#[cfg(test)]
-mod history_timeline_tests;
 #[cfg(test)]
 mod library_continue_tests;
 #[cfg(test)]

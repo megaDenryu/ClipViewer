@@ -2,28 +2,21 @@
 //! 再生の位置を長さへ収めることを、作業場の口から確かめる。
 #![allow(clippy::expect_used)]
 
-use std::time::Instant;
+use clip_domain::重ね合わせ上の秒;
 
-use clip_domain::{重ね合わせ上の秒, 音量};
-
-use super::command::{
-    タイムラインの操作, 塊の操作, 編集の履歴の操作, 重ね合わせの操作
+use super::{一フレーム進める, 履歴の操作を当てる};
+use crate::overlay::command::{
+    タイムラインの操作, 塊の操作, 編集の履歴の操作
 };
-use super::state::grab::位置の線の段階;
-use super::timeline_test_support::{
+use crate::overlay::state::grab::位置の線の段階;
+use crate::overlay::timeline_test_support::{
     タイムラインの操作を当てる, 二行を開いた作業場, 塊の動き, 塊の操作を当てる, 塊を掴む,
     置いてある行と始まり,
 };
-use super::workspace::重ね合わせの作業場;
+use crate::overlay::workspace::重ね合わせの作業場;
 
 fn 取り消す(作業場: &mut 重ね合わせの作業場) {
-    作業場.操作を適用する(重ね合わせの操作::編集の履歴(
-        編集の履歴の操作::編集を取り消す,
-    ));
-}
-
-fn 一フレーム進める(作業場: &mut 重ね合わせの作業場) {
-    let _ = 作業場.フレームを進める(Instant::now(), 音量::範囲へ収めて作る(1.0));
+    履歴の操作を当てる(作業場, 編集の履歴の操作::編集を取り消す);
 }
 
 fn 位置と長さ(作業場: &重ね合わせの作業場) -> (f64, f64) {

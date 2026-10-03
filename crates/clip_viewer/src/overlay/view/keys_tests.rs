@@ -13,6 +13,7 @@ use crate::overlay::command::{
 };
 use crate::overlay::library_test_ops::ライブラリの操作を当てる;
 use crate::overlay::library_test_support::一時のライブラリ;
+use crate::overlay::placement_test_support::開いた作業場;
 use crate::overlay::test_support::五秒の重ね合わせ;
 use crate::overlay::workspace::重ね合わせの作業場;
 
@@ -70,10 +71,7 @@ fn 押した組と応答() -> [(egui::Key, egui::Modifiers, 重ね合わせの�
 
 #[test]
 fn space_ctrl_z_ctrl_y_f11はそれぞれの応答を発する() {
-    let 一時 = 一時のライブラリ::作る("キーの応答");
-    let 組 = 一時.錠を試す();
-    let mut 作業場 = 一時.作業場を作る(組.重ね合わせ);
-    作業場.重ね合わせを開く(五秒の重ね合わせ(), None);
+    let 作業場 = 開いた作業場();
     for (キー, 修飾キー, 応答) in 押した組と応答() {
         assert_eq!(
             キーを押して集める(&作業場, キー, 修飾キー),
@@ -81,7 +79,6 @@ fn space_ctrl_z_ctrl_y_f11はそれぞれの応答を発する() {
             "{キー:?}"
         );
     }
-    drop((作業場, 組.スタック));
 }
 
 #[test]

@@ -2,7 +2,7 @@
 
 #[test]
 fn ウインドウのアイコンの画像は256画素四方の画素へ直せる() {
-    let Some(アイコン) = super::ウインドウのアイコン() else {
+    let Some(アイコン) = crate::window_options::ウインドウのアイコン() else {
         panic!("ウインドウのアイコンの画像を読めない");
     };
     assert_eq!((アイコン.width, アイコン.height), (256, 256));

@@ -2,14 +2,17 @@
 //! egui が知らせたウインドウの様子(全画面・最大化・大きさ・画面の大きさ)を配線へ渡し、配線が決めたウインドウへの指示の並びを egui のウインドウの命令へ写す。ウインドウを閉じる要求は、ライブラリの保存を確かめてから通す
 //! (書けなければ閉じるのをやめて確かめるダイアログを出す。ウインドウへの指示の判断は `app/close.rs`。参照: _doc/設計/ライブラリ.md 判断5)。
 //! `cargo xtask frame-time` が起動したときだけ、フレームの時間の計測(`app/frame_time_measure.rs`)を持ち、毎フレームの最後に eframe が知らせた1フレームの時間を渡す。
-//! 参照: _doc/設計/画面.md、同時再生.md 5-4
+//! egui のウインドウの様子と命令への写しは `screen_shell/window_io.rs` に置く。参照: _doc/設計/画面.md、同時再生.md 5-4
 
-use std::time::{Duration, Instant};
+use std::time::Instant;
 
 use eframe::egui;
 
-use crate::viewer_settings::{ウインドウの大きさ, 画面の大きさ};
-use crate::{app, state};
+mod window_io;
+
+use window_io::{ウインドウの様子を読む, 指示を送る};
+
+use crate::app;
 
 /// 画面の殻とは、eframe が毎フレーム呼び出す所であり、クリップビューアーの手順を順に呼ぶだけのもののことである。
 /// フレームの時間の計測は、`cargo xtask frame-time` が起動したときだけある。
@@ -19,10 +22,12 @@ pub(crate) struct 画面の殻 {
 }
 
 impl 画面の殻 {
+    /// 計測の頼みがあれば(`cargo xtask frame-time` が起動したとき)、フレームの時間の計測を持つ。
     pub(crate) fn 作成する(
         ビューアー: app::クリップビューアー,
-        計測: Option<app::フレームの時間の計測>,
+        計測の頼み: Option<crate::frame_time::フレームの時間を測る頼み>,
     ) -> Self {
+        let 計測 = 計測の頼み.map(app::フレームの時間の計測::頼みから始める);
         Self {
             ビューアー, 計測
         }
@@ -58,70 +63,11 @@ impl eframe::App for 画面の殻 {
         {
             指示を送る(画面描画の共有状態, 指示);
         }
-        if let Some(計測) = &mut self.計測 {
-            let 前のフレームの時間 = 枠
-                .info()
-                .cpu_usage
-                .and_then(|秒| Duration::try_from_secs_f32(秒).ok());
-            if 計測.フレームを数える(&mut self.ビューアー, 今, 前のフレームの時間)
+        if let Some(計測) = &mut self.計測
+            && 計測.フレームを数える(&mut self.ビューアー, 今, 枠.info().cpu_usage)
                 == app::計測の続き::ウインドウを閉じる
-            {
-                画面描画の共有状態.send_viewport_cmd(egui::ViewportCommand::Close);
-            }
+        {
+            指示を送る(画面描画の共有状態, app::ウインドウへの指示::閉じる);
         }
-    }
-}
-
-/// egui が知らせたウインドウの様子を読む。egui がまだ知らせていない項目は、全画面でない・最大化していない・大きさが分からないとみなす。
-fn ウインドウの様子を読む(
-    画面描画の共有状態: &egui::Context,
-) -> state::ウインドウの様子 {
-    画面描画の共有状態.input(|入力| {
-        let ウインドウ = 入力.viewport();
-        let 全画面か = match ウインドウ.fullscreen {
-            Some(true) => state::全画面の様子::全画面,
-            Some(false) | None => state::全画面の様子::全画面でない,
-        };
-        let 形 = match (ウインドウ.minimized, ウインドウ.maximized) {
-            (Some(true), _) => state::ウインドウの形::最小化している,
-            (_, Some(true)) => state::ウインドウの形::最大化している,
-            _ => state::ウインドウの形::普通(ウインドウ.inner_rect.and_then(|矩形| {
-                ウインドウの大きさ::幅と高さから作る(
-                    f64::from(矩形.width()),
-                    f64::from(矩形.height()),
-                )
-            })),
-        };
-        let 画面 = ウインドウ.monitor_size.and_then(|大きさ| {
-            画面の大きさ::幅と高さから作る(f64::from(大きさ.x), f64::from(大きさ.y))
-        });
-        state::ウインドウの様子 {
-            全画面: 全画面か,
-            形,
-            画面,
-        }
-    })
-}
-
-/// 配線が決めたウインドウへの指示を、egui のウインドウの命令へ写して送る。
-fn 指示を送る(
-    画面描画の共有状態: &egui::Context, 指示: app::ウインドウへの指示
-) {
-    let 送る = |命令| 画面描画の共有状態.send_viewport_cmd(命令);
-    match 指示 {
-        app::ウインドウへの指示::閉じるのを取り消す => {
-            送る(egui::ViewportCommand::CancelClose)
-        }
-        app::ウインドウへの指示::閉じる => 送る(egui::ViewportCommand::Close),
-        app::ウインドウへの指示::前に出す => {
-            送る(egui::ViewportCommand::Minimized(false));
-            送る(egui::ViewportCommand::Focus);
-        }
-        app::ウインドウへの指示::全画面にする(様子) => 送る(
-            egui::ViewportCommand::Fullscreen(様子 == state::全画面の様子::全画面),
-        ),
-        app::ウインドウへの指示::大きさを変える(大きさ) => 送る(
-            egui::ViewportCommand::InnerSize(大きさ.論理画素の組().eguiへ渡す値()),
-        ),
     }
 }

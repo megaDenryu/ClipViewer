@@ -6,12 +6,13 @@ use std::time::Instant;
 
 use clip_domain::重ねる画面の縦横比;
 
-use super::command::{編集の履歴の操作, 重ね合わせの操作};
-use super::library_test_ops::{
+use super::履歴の操作を当てる;
+use crate::overlay::command::編集の履歴の操作;
+use crate::overlay::library_test_ops::{
     名前を付けて登録する, 書き終えるまで待って進める, 正方形, 縦横比を正方形にする,
 };
-use super::library_test_support::一時のライブラリ;
-use super::test_support::五秒の重ね合わせ;
+use crate::overlay::library_test_support::一時のライブラリ;
+use crate::overlay::test_support::五秒の重ね合わせ;
 
 #[test]
 fn 登録の前の編集も登録の後に取り消せ_取り消した重ね合わせを保存する() {
@@ -23,9 +24,7 @@ fn 登録の前の編集も登録の後に取り消せ_取り消した重ね合�
     名前を付けて登録する(&mut 作業場, "ふたり");
     書き終えるまで待って進める(&mut 作業場, Instant::now());
     assert_eq!(一時.保存した重ね合わせ()[0].重ね合わせ().縦横比(), 正方形());
-    作業場.操作を適用する(重ね合わせの操作::編集の履歴(
-        編集の履歴の操作::編集を取り消す,
-    ));
+    履歴の操作を当てる(&mut 作業場, 編集の履歴の操作::編集を取り消す);
     作業場.控える前に再生を止める();
     書き終えるまで待って進める(&mut 作業場, Instant::now());
     assert_eq!(
