@@ -1,12 +1,17 @@
 //! タイムラインの行の並び。行の数の上限と、行の中の時間と、識別子が重ならないことを守る型と、その中身を読む口。
-//! 置く操作は子の `place.rs`、動かす・映す矩形を変える・取り除く操作は子の `edit.rs` に置き、私有の行の並びに子から触れる。
+//! 置く操作は子の `place.rs`、動かす・映す矩形を変える・取り除く操作は子の `edit.rs`、空の行を消す・足す操作は子の `empty_row.rs`、
+//! 塊のドラッグの行き先を求める口は子の `destination.rs`(ぶつかった所で止める規則は `collision.rs`)に置き、私有の行の並びに子から触れる。
 //! 行(`row.rs`)と置いたクリップ(`placed.rs`)の中身を変える口はこのモジュールの中にだけ開き、ほかから不変条件を破れなくする。
 
+mod collision;
+mod destination;
 mod edit;
+mod empty_row;
 mod place;
 mod placed;
 mod row;
 
+pub use destination::置いたクリップの行き先;
 pub use placed::置いたクリップ;
 pub use row::{タイムラインの行, 行の番号};
 
