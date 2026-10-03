@@ -7,33 +7,34 @@ use std::time::Instant;
 
 use super::measurement::一回の測定;
 use super::one_stream::一本の読み方;
-use super::stream_count::同時に読む本数;
+use super::stream_count::同時に起動するffmpegの数;
 use crate::ffmpeg_location::FFmpegの置き場所;
 
 /// 標準出力を読む1回の大きさ。1コマ(1280×720 で約3.7MB)より小さくてよく、読む回数を抑える大きさにする。
 const 読む塊のバイト数: usize = 1 << 20;
 
-/// 同時の読み出しとは、1本の読み方と、それを n 本起動する ffmpeg の場所の組のことである。
-pub struct 同時の読み出し<'a> {
-    pub 場所: &'a FFmpegの置き場所,
+/// 動画の同時読み出しとは、1本の読み方と、それを n 本起動する ffmpeg の場所の組のことである。
+pub struct 動画の同時読み出し<'a> {
+    pub ffmpegの置き場所: &'a FFmpegの置き場所,
     pub 読み方: 一本の読み方<'a>,
 }
 
-impl 同時の読み出し<'_> {
+impl 動画の同時読み出し<'_> {
     /// n 本を同時に起動して読み切る。読み切る時間は、1本目を起動する直前から、すべてが終わるまでである。
     /// どれかが失敗するか、本ごとに読んだコマ数が違えば、理由を付けて失敗にする。
     pub fn 同時に読み切る(
-        &self, 本数: 同時に読む本数
+        &self,
+        ffmpegの数: 同時に起動するffmpegの数,
     ) -> Result<一回の測定, String> {
         let 引数 = self.読み方.引数を並べる();
         let 始め = Instant::now();
-        let プロセスの並び = (0..本数.値())
-            .map(|_| self.起動する(&引数))
+        let プロセスの並び = (0..ffmpegの数.値())
+            .map(|_| self.ffmpegを起動する(&引数))
             .collect::<Result<Vec<Child>, String>>()?;
         let バイト数の並び = std::thread::scope(|範囲| {
             let 読み手の並び: Vec<_> = プロセスの並び
                 .into_iter()
-                .map(|プロセス| 範囲.spawn(move || 終わりまで読む(プロセス)))
+                .map(|プロセス| 範囲.spawn(move || 標準出力を終わりまで読む(プロセス)))
                 .collect();
             読み手の並び
                 .into_iter()
@@ -46,11 +47,11 @@ impl 同時の読み出し<'_> {
         })?;
         let 読み切る時間 = 始め.elapsed();
         let 一本あたりのコマ数 = self.一本あたりのコマ数を求める(&バイト数の並び)?;
-        一回の測定::作る(本数, 読み切る時間, 一本あたりのコマ数)
+        一回の測定::作る(ffmpegの数, 読み切る時間, 一本あたりのコマ数)
     }
 
-    fn 起動する(&self, 引数: &[OsString]) -> Result<Child, String> {
-        self.場所
+    fn ffmpegを起動する(&self, 引数: &[OsString]) -> Result<Child, String> {
+        self.ffmpegの置き場所
             .ffmpegの命令()
             .args(引数)
             .stdin(Stdio::null())
@@ -77,7 +78,7 @@ impl 同時の読み出し<'_> {
 }
 
 /// 標準出力を終わりまで読んで捨て、読んだバイト数を返す。ffmpeg が失敗して終わったら失敗にする。
-fn 終わりまで読む(mut プロセス: Child) -> Result<u64, String> {
+fn 標準出力を終わりまで読む(mut プロセス: Child) -> Result<u64, String> {
     let mut 読んだバイト数 = 0_u64;
     if let Some(mut 標準出力) = プロセス.stdout.take() {
         let mut 塊 = vec![0_u8; 読む塊のバイト数];

@@ -77,8 +77,10 @@ pub struct 動画の形 {
 
 impl 動画の形 {
     /// ffprobe で動画の最初の映像の流れを調べる。
-    pub fn 調べる(場所: &FFmpegの置き場所, 動画: &Path) -> Result<Self, String> {
-        let 出力 = 場所
+    pub fn 調べる(
+        ffmpegの置き場所: &FFmpegの置き場所, 動画: &Path
+    ) -> Result<Self, String> {
+        let 出力 = ffmpegの置き場所
             .ffprobeの命令()
             .args(["-v", "error", "-select_streams", "v:0", "-show_entries"])
             .args(["stream=width,height,avg_frame_rate", "-of", "csv=p=0"])
@@ -98,27 +100,28 @@ impl 動画の形 {
     /// ffprobe の `幅,高さ,分子/分母` の1行を読む。読めない出力は理由を付けて失敗にする。
     pub fn ffprobeの出力から読む(出力: &str) -> Result<Self, String> {
         let 行 = 出力.lines().next().unwrap_or_default().trim();
-        let 失敗 = || format!("ffprobe の出力「{行}」から幅・高さ・コマの速さを読めない");
+        let 読めないと伝える =
+            || format!("ffprobe の出力「{行}」から幅・高さ・コマの速さを読めない");
         let 欄: Vec<&str> = 行.split(',').collect();
         let [幅, 高さ, 速さ] = 欄.as_slice() else {
-            return Err(失敗());
+            return Err(読めないと伝える());
         };
-        let (分子, 分母) = 速さ.split_once('/').ok_or_else(失敗)?;
-        let 一以上 = |表記: &str| {
+        let (分子, 分母) = 速さ.split_once('/').ok_or_else(読めないと伝える)?;
+        let 一以上の整数として読む = |表記: &str| {
             表記
                 .parse::<u32>()
                 .ok()
                 .filter(|値| *値 > 0)
-                .ok_or_else(失敗)
+                .ok_or_else(読めないと伝える)
         };
         Ok(Self {
             元の寸法: 画素の寸法 {
-                幅: 一以上(幅)?,
-                高さ: 一以上(高さ)?,
+                幅: 一以上の整数として読む(幅)?,
+                高さ: 一以上の整数として読む(高さ)?,
             },
             コマの速さ: コマの速さ {
-                分子: 一以上(分子)?,
-                分母: 一以上(分母)?,
+                分子: 一以上の整数として読む(分子)?,
+                分母: 一以上の整数として読む(分母)?,
             },
         })
     }

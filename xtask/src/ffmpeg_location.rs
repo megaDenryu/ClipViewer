@@ -18,7 +18,7 @@ impl FFmpegの置き場所 {
         指定
             .into_iter()
             .chain(std::env::split_paths(&検索パス))
-            .find(|フォルダ| 両方そろうか(フォルダ))
+            .find(|フォルダ| ffmpegとffprobeがそろうか(フォルダ))
             .map(Self)
     }
 
@@ -57,7 +57,7 @@ fn 実行ファイルのパス(フォルダ: &Path, 名前: &str) -> PathBuf {
     フォルダ.join(format!("{名前}{}", std::env::consts::EXE_SUFFIX))
 }
 
-fn 両方そろうか(フォルダ: &Path) -> bool {
+fn ffmpegとffprobeがそろうか(フォルダ: &Path) -> bool {
     ["ffmpeg", "ffprobe"]
         .iter()
         .all(|名前| 実行ファイルのパス(フォルダ, 名前).is_file())

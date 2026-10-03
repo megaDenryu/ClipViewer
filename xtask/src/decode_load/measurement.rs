@@ -2,14 +2,14 @@
 
 use std::time::Duration;
 
-use super::stream_count::同時に読む本数;
+use super::stream_count::同時に起動するffmpegの数;
 use super::video_shape::コマの速さ;
 
-/// コマ毎秒とは、1秒あたりに読み出したコマの数のことである。
+/// 読み出しの速さとは、1秒あたりに読み出したコマの数のことである。
 #[derive(Debug, Clone, Copy, PartialEq, PartialOrd)]
-pub struct コマ毎秒(f64);
+pub struct 読み出しの速さ(f64);
 
-impl コマ毎秒 {
+impl 読み出しの速さ {
     /// 1秒あたりのコマの数。
     pub fn 値(self) -> f64 {
         self.0
@@ -21,11 +21,11 @@ impl コマ毎秒 {
     }
 }
 
-/// 一回の測定とは、同じ動画を n 本の ffmpeg で同時に読み切ったときの、本数と読み切る時間と1本が読んだコマ数の組のことである。
+/// 一回の測定とは、同じ動画を n 本の ffmpeg で同時に読み切ったときの、ffmpegの数と読み切る時間と1本が読んだコマ数の組のことである。
 /// 読み切る時間は、すべての ffmpeg を起動する直前から、すべてが終わるまでの時間である。
 #[derive(Debug, Clone, Copy, PartialEq)]
 pub struct 一回の測定 {
-    本数: 同時に読む本数,
+    ffmpegの数: 同時に起動するffmpegの数,
     読み切る時間: Duration,
     一本あたりのコマ数: u32,
 }
@@ -33,26 +33,26 @@ pub struct 一回の測定 {
 impl 一回の測定 {
     /// 測った値から作る。時間かコマ数が0なら速さを求められないため、理由を付けて失敗にする。
     pub fn 作る(
-        本数: 同時に読む本数,
+        ffmpegの数: 同時に起動するffmpegの数,
         読み切る時間: Duration,
         一本あたりのコマ数: u32,
     ) -> Result<Self, String> {
         if 読み切る時間.is_zero() || 一本あたりのコマ数 == 0 {
             return Err(format!(
                 "{}本の測定で速さを求められない(時間 {読み切る時間:?}、1本あたり {一本あたりのコマ数}コマ)",
-                本数.値()
+                ffmpegの数.値()
             ));
         }
         Ok(Self {
-            本数,
+            ffmpegの数,
             読み切る時間,
             一本あたりのコマ数,
         })
     }
 
-    /// 同時に読んだ本数。
-    pub fn 本数(&self) -> 同時に読む本数 {
-        self.本数
+    /// 同時に読んだffmpegの数。
+    pub fn ffmpegの数(&self) -> 同時に起動するffmpegの数 {
+        self.ffmpegの数
     }
 
     /// すべてを読み切るまでの時間。
@@ -66,13 +66,13 @@ impl 一回の測定 {
     }
 
     /// n 本が読んだコマの合計を、読み切る時間で割った速さ。
-    pub fn 合計の速さ(&self) -> コマ毎秒 {
-        let 合計 = f64::from(self.一本あたりのコマ数) * f64::from(self.本数.値());
-        コマ毎秒(合計 / self.読み切る時間.as_secs_f64())
+    pub fn 合計の速さ(&self) -> 読み出しの速さ {
+        let 合計 = f64::from(self.一本あたりのコマ数) * f64::from(self.ffmpegの数.値());
+        読み出しの速さ(合計 / self.読み切る時間.as_secs_f64())
     }
 
-    /// 1本あたりの速さ。合計の速さを本数で割ったものである。
-    pub fn 一本あたりの速さ(&self) -> コマ毎秒 {
-        コマ毎秒(self.合計の速さ().0 / f64::from(self.本数.値()))
+    /// 1本あたりの速さ。合計の速さをffmpegの数で割ったものである。
+    pub fn 一本あたりの速さ(&self) -> 読み出しの速さ {
+        読み出しの速さ(self.合計の速さ().0 / f64::from(self.ffmpegの数.値()))
     }
 }

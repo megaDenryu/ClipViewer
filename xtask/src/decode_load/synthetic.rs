@@ -14,7 +14,9 @@ pub struct 合成画像の動画 {
 
 impl 合成画像の動画 {
     /// OS の一時フォルダの下に、このプロセスだけが使うフォルダを作り、指定の秒数の動画を符号化する。
-    pub fn 作る(場所: &FFmpegの置き場所, 長さ: 読む秒数) -> Result<Self, String> {
+    pub fn 作る(
+        ffmpegの置き場所: &FFmpegの置き場所, 長さ: 読む秒数
+    ) -> Result<Self, String> {
         let 一時フォルダ =
             std::env::temp_dir().join(format!("clipviewer-decode-load-{}", std::process::id()));
         std::fs::create_dir_all(&一時フォルダ).map_err(|原因| {
@@ -30,7 +32,7 @@ impl 合成画像の動画 {
             作ったもの.動画.display()
         );
         let 入力 = format!("testsrc2=size=1920x1080:rate=30:duration={}", 長さ.値());
-        let 終了状態 = 場所
+        let 終了状態 = ffmpegの置き場所
             .ffmpegの命令()
             .args([
                 "-hide_banner",
