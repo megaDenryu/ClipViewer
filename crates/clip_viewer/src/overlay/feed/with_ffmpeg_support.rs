@@ -14,6 +14,7 @@ use super::show_condition::映すものを求める条件;
 use super::status::重ね合わせの映像の供給を作れたか;
 use super::supply::重ね合わせの映像の供給;
 use crate::overlay::test_support::{置き方, 置き方を並べた重ね合わせ};
+use crate::stream_rules::流し読みの開き直し;
 use crate::video_feed::with_ffmpeg_support::{実行ファイルを探す, 試験動画を作る};
 use crate::video_feed::コマの載せ先;
 
@@ -69,7 +70,11 @@ impl 試験の重ね合わせ {
             全体の末尾: 末尾での振る舞い::止まる,
         };
         let 映すもの = このフレームで映すもの::求める(&self.重ね合わせ, 条件);
-        self.映像.行ごとのコマを載せる(&映すもの, Instant::now());
+        self.映像.行ごとのコマを載せる(
+            &映すもの,
+            流し読みの開き直し::してよい,
+            Instant::now(),
+        );
     }
 
     pub(super) fn 供給(&self) -> &重ね合わせの映像の供給 {

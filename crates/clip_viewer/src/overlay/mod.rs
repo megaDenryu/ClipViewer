@@ -36,6 +36,8 @@ pub(crate) mod test_support;
 #[cfg(test)]
 mod tests;
 #[cfg(test)]
+mod timeline_continuation_sound_tests;
+#[cfg(test)]
 mod timeline_drag_discard_tests;
 #[cfg(test)]
 mod timeline_drag_tests;
@@ -48,9 +50,15 @@ mod timeline_select_tests;
 #[cfg(test)]
 pub(crate) mod timeline_test_support;
 #[cfg(test)]
+mod with_ffmpeg_continuation_support;
+#[cfg(test)]
+mod with_ffmpeg_continuation_tests;
+#[cfg(test)]
 mod with_ffmpeg_feed_tests;
 #[cfg(test)]
 mod with_ffmpeg_place_tests;
+#[cfg(test)]
+mod with_ffmpeg_seek_sound_tests;
 #[cfg(test)]
 mod with_ffmpeg_seek_tests;
 #[cfg(test)]

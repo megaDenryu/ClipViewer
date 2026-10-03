@@ -3,6 +3,7 @@
 
 use crate::duration::{時間の値エラー, 時間の長さ};
 use crate::overlay::basis::重ね合わせ上の秒;
+use crate::overlay::rows::行の番号;
 
 /// 時刻をずらす量とは、重ね合わせ上の時刻を後ろ(遅い方)か前(早い方)へずらす長さのことである。
 #[derive(Debug, Clone, Copy, PartialEq)]
@@ -47,9 +48,22 @@ impl 行の差 {
     pub fn 手前へ動かした行の数から作成する(行の数: i32) -> Self {
         Self(行の数)
     }
+}
 
-    /// 手前へ動かした行の数(奥へは負)。行の番号へ当てるときに使う。
-    pub fn 手前へ動かした行の数(self) -> i32 {
-        self.0
+impl 行の番号 {
+    /// 行の差だけ動かし、0番から最も手前の行までへ収めた行の番号。
+    pub(in crate::overlay) fn 行の差だけ動かして収める(
+        self,
+        差: 行の差,
+        最も手前: 行の番号,
+    ) -> 行の番号 {
+        // 注意: i32 の大きさの数は usize に収まる(このクレートは32ビット以上の計算機だけを相手にする)。
+        let 大きさ = usize::try_from(差.0.unsigned_abs()).unwrap_or(usize::MAX);
+        let 動かした = if 差.0 < 0 {
+            self.番号().saturating_sub(大きさ)
+        } else {
+            self.番号().saturating_add(大きさ)
+        };
+        行の番号::番号から作成する(動かした.min(最も手前.番号()))
     }
 }

@@ -9,10 +9,12 @@ mod edit;
 mod empty_row;
 mod place;
 mod placed;
+mod query;
 mod row;
 
 pub use destination::置いたクリップの行き先;
 pub use placed::置いたクリップ;
+pub use query::上から数えた行の順番;
 pub use row::{タイムラインの行, 行の番号};
 
 use super::basis::重ね合わせ上の秒;

@@ -50,6 +50,11 @@ impl 時間の長さ {
         self.0
     }
 
+    /// 別の長さと比べる。時間の長さは有限で非負のため、全順序で比べられる。
+    pub fn 比べる(&self, 他方: &Self) -> std::cmp::Ordering {
+        self.0.total_cmp(&他方.0)
+    }
+
     /// 長さが0秒か。
     pub fn ゼロか(self) -> bool {
         self.0 <= 0.0

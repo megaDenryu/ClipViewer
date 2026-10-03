@@ -1,8 +1,10 @@
 //! 開いている重ね合わせ。重ね合わせと、その再生の状況と、映像の供給を作れたかと、開いている重ね合わせの音(`sound/`)を持ち、
 //! 毎フレームこのフレームで映すものを1回だけ求めて映像と音へ渡す。再生と停止・全体ループ・再生の位置を動かす操作は `playback_ops.rs`、画面が読む口は `read.rs` に置く。
 //! 置き方の編集(`state/placement/`)と掴んでいるもの(`state/grab.rs`)も持ち、置き方の操作は `placement_ops.rs`・`placement_drag.rs`、読む口は `placement_read.rs` に置く。
-//! タイムラインの操作(塊のドラッグ・行の選択と削除と追加・再生の位置を動かす)は `timeline_drag.rs`・`timeline_rows.rs`、読む口は `timeline_read.rs` に置く。
+//! タイムラインの操作(塊のドラッグ・行の選択と削除と追加)は `timeline_drag.rs`・`timeline_rows.rs`、読む口は `timeline_read.rs` に、
+//! 位置の線のドラッグと掴んでいるものから決める流し読みの開き直し方・音の様子・安全網は `grab_ops.rs` に置く。
 
+mod grab_ops;
 mod placement_drag;
 mod placement_ops;
 mod placement_read;
@@ -16,7 +18,7 @@ pub(crate) use placement_read::重ねる枠;
 
 use std::time::Instant;
 
-use audio_output::{再生の様子, 行ごとの再生の指示};
+use audio_output::行ごとの再生の指示;
 use clip_domain::{重ね合わせ, 音量};
 
 use crate::overlay::feed::{
@@ -79,14 +81,15 @@ impl 開いている重ね合わせ {
             &self.重ね合わせ,
             self.再生.映すものを求める条件(),
         );
-        self.映像.行ごとのコマを載せる(&映すもの, 今);
-        self.音
-            .行ごとの溜める並びと流し読みを整える(&映すもの, &self.映像, 今);
-        let 様子 = if self.再生.再生しているか() {
-            再生の様子::再生している
-        } else {
-            再生の様子::止めている
-        };
+        let 開き直し = self.流し読みの開き直し();
+        self.映像.行ごとのコマを載せる(&映すもの, 開き直し, 今);
+        self.音.行ごとの溜める並びと流し読みを整える(
+            &映すもの,
+            &self.映像,
+            開き直し,
+            今,
+        );
+        let 様子 = self.音の再生の様子();
         let 指示 = self.音.行ごとの再生の指示を組み立てる(
             &映すもの,
             様子,

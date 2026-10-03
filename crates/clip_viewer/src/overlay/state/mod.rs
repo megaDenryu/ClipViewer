@@ -6,7 +6,7 @@
 
 mod arrange_report;
 mod drawn_rows;
-mod grab;
+pub(crate) mod grab;
 mod notice;
 mod opened;
 mod opening;
