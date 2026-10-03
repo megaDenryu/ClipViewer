@@ -6,8 +6,9 @@ use sengen_egui::{
     割合の差, 範囲枠の掴んだ部分, 範囲枠の操作, 縦横の割合の差
 };
 
-use super::conversion::{クロップを描く部分にする, 範囲枠の操作を変換する};
+use super::conversion::範囲枠の操作を変換する;
 use crate::command::{クロップ枠の掴む所, クロップ枠の操作};
+use crate::output_measure::クロップを描く部分にする;
 
 fn 近い(左: f32, 右: f32) -> bool {
     (左 - 右).abs() < 1e-6

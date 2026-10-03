@@ -41,6 +41,14 @@ impl 重ね合わせの動画を開けたか {
         }
     }
 
+    /// 開けていれば、その動画のコマの供給元を読む。
+    pub(super) fn 開いた供給元を読む(&self) -> Option<&動画のコマの供給元> {
+        match self {
+            Self::開いた(供給元) => Some(供給元),
+            Self::開けない(_) => None,
+        }
+    }
+
     /// 動画を開けなかった理由。開けていれば無い。
     pub(crate) fn 開けない理由(&self) -> Option<&動画を開けない理由> {
         match self {

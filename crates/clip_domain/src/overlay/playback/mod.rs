@@ -4,6 +4,7 @@
 mod at_time;
 mod at_time_result;
 mod clock;
+mod progress;
 mod row_lookup;
 mod span_end;
 
@@ -11,4 +12,5 @@ pub use at_time_result::{
     置いたクリップの再生の中身, 行が映すもの, 行の映し方
 };
 pub use clock::{重ね合わせの再生位置, 重ね合わせの時計を進めた結果};
+pub use progress::重ね合わせの進み具合;
 pub use span_end::置いたクリップの区間の終わりの行き先;

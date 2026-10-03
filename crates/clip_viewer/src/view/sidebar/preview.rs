@@ -9,11 +9,10 @@ use sengen_egui::{
 };
 
 use crate::command::応答;
+use crate::output_measure::クロップを描く部分にする;
+use crate::output_measure::{丸める前の論理画素の寸法, 描く縦横比};
 use crate::state::アプリの状態;
-use crate::view::aspect_fit::{丸める前の論理画素の寸法, 描く縦横比};
-use crate::view::conversion::{
-    クロップを描く部分にする, 範囲枠の操作を変換する
-};
+use crate::view::conversion::範囲枠の操作を変換する;
 use crate::view::styles;
 
 /// プレビューの高さの上限。移植元のプレビューの枠(高さ280・内余白8)の内側の高さである。

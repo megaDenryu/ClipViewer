@@ -12,8 +12,8 @@ use sengen_egui::{
 };
 
 use crate::command::応答;
+use crate::output_measure::{丸める前の論理画素の寸法, 描く縦横比};
 use crate::thumbnail_feed::{サムネイルの見せ方, 途中の段階};
-use crate::view::aspect_fit::{丸める前の論理画素の寸法, 描く縦横比};
 use crate::view::styles;
 
 /// サムネイルの枠の大きさ。16:9 の顔がちょうど収まり、行の高さに入る大きさにする。

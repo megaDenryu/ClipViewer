@@ -11,7 +11,7 @@ use super::library_check::終えるまで待って当てる;
 use super::library_support::試験のライブラリ;
 use super::{クリップを作る, 編集する};
 use crate::command::クリップの編集;
-use crate::state::library::{保存の段階, 開いているスタック};
+use crate::state::library::保存の段階;
 use crate::state::アプリの状態;
 
 /// 甲のクリップを登録済みにし、スタックのファイルを排他で開いたまま甲の名前を変えて、落ち着いた後の保存を失敗させる。
@@ -40,10 +40,5 @@ pub(super) fn 保存に失敗した状態(
 }
 
 pub(super) fn 段階(状態: &アプリの状態) -> Option<保存の段階<'_>> {
-    match &状態.ライブラリ.開いている {
-        開いているスタック::登録済み(登録済み) => {
-            Some(登録済み.保存の様子().段階(状態.並び.一覧()))
-        }
-        開いているスタック::未登録 => None,
-    }
+    状態.開いているスタックの保存の段階()
 }
