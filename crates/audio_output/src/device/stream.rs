@@ -5,12 +5,12 @@ use std::sync::Arc;
 
 use audio_pcm::サンプリング周波数;
 use cpal::traits::{DeviceTrait, HostTrait, StreamTrait};
-use cpal::{ErrorKind, FromSample, SampleFormat, SizedSample};
+use cpal::{FromSample, SampleFormat, SizedSample};
 
 use super::callback::音を埋める係;
 use super::error::音声出力のエラー;
 use super::filling::時刻を渡して埋めさせる共有;
-use super::shared::装置の知らせ;
+use super::notice::装置の知らせ;
 
 /// 選んだ装置とは、既定の出力装置と、その既定の設定と、設定のサンプリング周波数の組のことである。
 /// 流れを始める前に周波数を読めるよう、選ぶことと始めることを分ける(共有は周波数を知って作るため)。
@@ -21,9 +21,11 @@ pub(crate) struct 選んだ装置 {
 }
 
 /// 開いた流れとは、鳴らし始めた cpal の流れと、その流れの装置の知らせの組のことである。落とすと流れが止まる。
+/// 注意: `_流れ` を `知らせ` より前に宣言する。Rust は宣言の順に落とすため、先に流れを止めて cpal の関数が持つ参照を手放させてから、
+/// 知らせの最後の参照をここ(画面のスレッド)で捨てる。順を逆にすると、最後の参照を cpal のスレッドで捨てうる。
 pub(crate) struct 開いた流れ {
-    知らせ: Arc<装置の知らせ>,
     _流れ: cpal::Stream,
+    知らせ: Arc<装置の知らせ>,
 }
 
 impl 選んだ装置 {
@@ -69,8 +71,8 @@ impl 選んだ装置 {
         .map_err(音声出力のエラー::流れを作れない)?;
         流れ.play().map_err(音声出力のエラー::始められない)?;
         Ok(開いた流れ {
-            知らせ,
             _流れ: 流れ,
+            知らせ,
         })
     }
 }
@@ -79,6 +81,11 @@ impl 開いた流れ {
     /// 出力の途中で装置が使えなくなった理由。使えていれば無い。
     pub(crate) fn 使えなくなった理由(&self) -> Option<音声出力のエラー> {
         self.知らせ.使えなくなった理由()
+    }
+
+    /// cpal が音の途切れを知らせた回数。Windows(WASAPI)の出力の流れでは cpal が知らせないため常に0である。
+    pub(crate) fn 途切れを知らされた回数(&self) -> u64 {
+        self.知らせ.途切れを知らされた回数()
     }
 }
 
@@ -92,17 +99,7 @@ fn 流れを作る<標本の形式: SizedSample + FromSample<f64>, 共有: 時�
     装置.build_output_stream(
         設定,
         move |並び: &mut [標本の形式], _| 係.装置の並びを埋める(並び),
-        move |不具合| 装置の不具合を覚える(&知らせ, &不具合),
+        move |不具合| 知らせ.不具合を覚える(&不具合),
         None,
     )
-}
-
-/// 装置の不具合を覚える。経路の切り替え・音の途切れ・優先度の不許可は流れが続くため、使えなくなったとはみなさない。
-fn 装置の不具合を覚える(知らせ: &装置の知らせ, 不具合: &cpal::Error) {
-    match 不具合.kind() {
-        ErrorKind::DeviceChanged | ErrorKind::Xrun | ErrorKind::RealtimeDenied => {}
-        _ => 知らせ.使えなくなったと覚える(音声出力のエラー::使えなくなった(
-            不具合.clone(),
-        )),
-    }
 }

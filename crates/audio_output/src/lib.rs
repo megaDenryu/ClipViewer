@@ -9,6 +9,7 @@
 #![warn(missing_docs)]
 
 mod device;
+mod draft_size;
 mod drift;
 mod instruction;
 mod mixer;
