@@ -1,18 +1,16 @@
 //! 重ね合わせの作業場のヘッダーの試験。「スタックへ戻る」がスタックの作業場へ戻る応答を発し、保存できない案内を出すことと、
 //! 「今のスタックから並べ直す」は重ね合わせを開いている間だけ出て、並べられるときだけ並べる応答を発することを確かめる。
 
-use eframe::egui;
-
 use super::header::保存できない案内;
 use super::screen_press_support::{描いたか, 文字を押して集める};
 use crate::overlay::command::重ね合わせの作業場の応答;
+use crate::overlay::sound_test_support::装置の無い作業場;
 use crate::overlay::state::今のスタックから並べる状況;
 use crate::overlay::test_support::五秒の重ね合わせ;
-use crate::overlay::workspace::重ね合わせの作業場;
 
 #[test]
 fn ヘッダーのスタックへ戻るはスタックの作業場へ戻る応答を発し_保存できない案内を出す() {
-    let 作業場 = 重ね合わせの作業場::開いていない作業場(egui::Context::default());
+    let 作業場 = 装置の無い作業場();
     assert!(描いたか(
         &作業場,
         今のスタックから並べる状況::並べられる,
@@ -30,8 +28,7 @@ fn ヘッダーのスタックへ戻るはスタックの作業場へ戻る応�
 
 #[test]
 fn 今のスタックから並べ直すは開いている間だけ出て_並べられるときだけ並べる応答を発する() {
-    let mut 作業場 =
-        重ね合わせの作業場::開いていない作業場(egui::Context::default());
+    let mut 作業場 = 装置の無い作業場();
     let 並べ直す = "今のスタックから並べ直す";
     assert!(!描いたか(
         &作業場,

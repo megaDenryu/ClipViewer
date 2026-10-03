@@ -3,9 +3,9 @@
 
 use std::time::Instant;
 
-use clip_domain::{使う動画の表, 重ね合わせ};
+use clip_domain::{使う動画の表, 動画の番号, 重ね合わせ};
 use eframe::egui;
-use video_source::{メモリの上限, 動画の読み手};
+use video_source::{メモリの上限, 動画の情報, 動画の読み手};
 
 use super::show_condition::映すものを求める条件;
 use super::supply::重ね合わせの映像の供給;
@@ -61,6 +61,24 @@ impl 重ね合わせの映像の供給を作れたか {
         match self {
             Self::作れた(供給) => 供給.描き直しを続ける必要があるか(),
             Self::作れない(_) => false,
+        }
+    }
+
+    /// 動画の番号の動画を開けていれば、その動画の情報。供給を作れていなければ無い。
+    pub(crate) fn 開いた動画の情報(
+        &self, 番号: 動画の番号
+    ) -> Option<&動画の情報> {
+        match self {
+            Self::作れた(供給) => 供給.開いた動画の情報(番号),
+            Self::作れない(_) => None,
+        }
+    }
+
+    /// 動画の番号の動画の映像の先読みが落ち着いたか。供給を作れていなければ落ち着いたとみなす。
+    pub(crate) fn 先読みが落ち着いたか(&self, 番号: 動画の番号) -> bool {
+        match self {
+            Self::作れた(供給) => 供給.先読みが落ち着いたか(番号),
+            Self::作れない(_) => true,
         }
     }
 

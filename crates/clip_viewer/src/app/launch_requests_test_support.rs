@@ -1,4 +1,4 @@
-//! 起動の頼みの試験の道具。FFmpeg も音声出力装置も無いクリップビューアーを作ることと、
+//! 起動の頼みの試験の道具。FFmpeg も音声出力装置も無いクリップビューアー(2本目の流れも開けなかったものとして持ち、装置を開かない)を作ることと、
 //! 通知に出ている最新の文面を読み出すことを受け持つ。
 #![allow(clippy::expect_used)]
 
@@ -6,6 +6,7 @@ use eframe::egui;
 use video_source::{FFmpegが見つからないエラー, 実行ファイルの検索パス};
 
 use super::front_workspace::前に出ている作業場;
+use super::overlay_sound_sender::重ね合わせの音の送り手;
 use super::sound_sender::音の送り手;
 use super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
 use super::クリップビューアー;
@@ -45,6 +46,9 @@ pub(super) fn 試験のビューアー() -> クリップビューアー {
         ),
         前に出ている作業場: 前に出ている作業場::起動時(),
         画面描画の共有状態: 本体,
+        重ね合わせの音の送り手: Some(重ね合わせの音の送り手::装置なし(
+            audio_output::音声出力のエラー::装置が無い,
+        )),
     }
 }
 

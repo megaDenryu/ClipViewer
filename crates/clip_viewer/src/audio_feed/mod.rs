@@ -10,6 +10,8 @@ mod supply;
 mod supply_stream;
 mod video_sound;
 
+pub(crate) use source::動画の音の供給元;
+pub(crate) use stream_pair::開き直しをまたぐ音の流し読み;
 pub(crate) use supply::音の供給;
 pub(crate) use supply_stream::音の鳴らし方;
-pub(crate) use video_sound::動画の音;
+pub(crate) use video_sound::{動画の音, 音を鳴らせない理由};

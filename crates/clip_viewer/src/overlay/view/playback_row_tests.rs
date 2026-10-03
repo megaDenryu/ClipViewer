@@ -2,18 +2,15 @@
 //! 「今のスタックから並べる」を出さないことを確かめる。
 #![allow(clippy::expect_used)]
 
-use eframe::egui;
-
 use super::screen_press_support::{描いたか, 文字を押して集める};
 use crate::overlay::command::{重ね合わせの作業場の応答, 重ね合わせの操作};
+use crate::overlay::sound_test_support::装置の無い作業場;
 use crate::overlay::state::今のスタックから並べる状況;
 use crate::overlay::test_support::五秒の重ね合わせ;
-use crate::overlay::workspace::重ね合わせの作業場;
 
 #[test]
 fn 開いている間は再生と全体ループを押せ_開いた重ね合わせでは今のスタックから並べるを出さない() {
-    let mut 作業場 =
-        重ね合わせの作業場::開いていない作業場(egui::Context::default());
+    let mut 作業場 = 装置の無い作業場();
     作業場.重ね合わせを開く(五秒の重ね合わせ(), None);
     let 押せる = 今のスタックから並べる状況::並べられる;
     assert_eq!(
@@ -44,7 +41,7 @@ fn 開いている間は再生と全体ループを押せ_開いた重ね合わ�
 
 #[test]
 fn 開いていない間は全体ループを押しても応答を発しない() {
-    let 作業場 = 重ね合わせの作業場::開いていない作業場(egui::Context::default());
+    let 作業場 = 装置の無い作業場();
     assert!(
         文字を押して集める(
             &作業場,
