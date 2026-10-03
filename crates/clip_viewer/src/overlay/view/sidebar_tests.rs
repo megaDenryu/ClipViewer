@@ -2,65 +2,22 @@
 //! 選んでいる置いたクリップの設定に名前と区間と繰り返しの回数と「取り除く」を出すことを、egui に描かせて押して確かめる。
 #![allow(clippy::expect_used)]
 
-use clip_domain::{クリップ名, クリップ識別子};
-use eframe::egui;
+use clip_domain::クリップ識別子;
 
-use super::screen_press_support::試験の全体の音量;
 use super::sidebar::置くクリップの見出し;
 use super::sidebar_placed::選んでいないときの文;
-use super::test_support::{押して集める, 描いた文字の範囲, 描いて集める};
+use super::sidebar_test_support::{
+    サイドバーを描いて文字を押す, 乙だけの置くクリップの一覧を作る
+};
 use crate::overlay::command::{
     置き方の操作, 重ね合わせの作業場の応答, 重ね合わせの操作
 };
 use crate::overlay::placement_test_support::{
-    置いたクリップの識別子を作る, 置き方の操作を当てる
+    置いたクリップの識別子を作る, 置き方の操作を当てる, 開いた作業場,
 };
-use crate::overlay::sound_test_support::装置の無い作業場を作る;
 use crate::overlay::state::placement::{
-    動画が違うため置けない文, 置くクリップ, 置くクリップの一覧, 置くクリップの動画,
+    動画が違うため置けない文, 置くクリップの動画
 };
-use crate::overlay::state::今のスタックから並べる状況;
-use crate::overlay::test_support::五秒の重ね合わせ;
-use crate::overlay::workspace::重ね合わせの作業場;
-
-fn 乙だけの置くクリップの一覧を作る(
-    動画: 置くクリップの動画,
-) -> 置くクリップの一覧 {
-    置くクリップの一覧 {
-        並び: vec![置くクリップ {
-            識別子: クリップ識別子::文字列から作成する("乙".to_string()).expect("識別子"),
-            名前: クリップ名::作成する("乙".to_string()),
-        }],
-        動画,
-    }
-}
-
-/// 置くクリップの一覧を渡して作業場の画面を1回描いてから、その文字の真ん中を押して発した応答を返す。描いていなければ無い。
-fn サイドバーを描いて文字を押す(
-    作業場: &重ね合わせの作業場,
-    一覧: &置くクリップの一覧,
-    文字: &str,
-) -> Option<Vec<重ね合わせの作業場の応答>> {
-    let 画面描画の共有状態 = egui::Context::default();
-    let 木 = || {
-        super::画面(
-            作業場.状態(),
-            今のスタックから並べる状況::並べられる,
-            Some(一覧),
-            試験の全体の音量,
-            None,
-        )
-    };
-    let (_, 出力) = 描いて集める(&画面描画の共有状態, Vec::new(), &木);
-    let 位置 = 描いた文字の範囲(&出力, 文字)?.center();
-    Some(押して集める(&画面描画の共有状態, 位置, &木))
-}
-
-fn 開いた作業場() -> 重ね合わせの作業場 {
-    let mut 作業場 = 装置の無い作業場を作る();
-    作業場.重ね合わせを開く(五秒の重ね合わせ(), None);
-    作業場
-}
 
 #[test]
 fn 置くは動画が同じときだけ押せ_違うときは理由を出す() {

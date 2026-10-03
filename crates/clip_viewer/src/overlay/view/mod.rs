@@ -9,6 +9,7 @@ mod header;
 mod invisible;
 mod keys;
 mod not_open;
+mod output_area;
 mod placed_sound;
 mod playback_row;
 mod rearrange_dialog;
@@ -18,6 +19,8 @@ mod sidebar_placed;
 
 #[cfg(test)]
 mod frame_conversion_tests;
+#[cfg(test)]
+mod frame_test_support;
 #[cfg(test)]
 mod frame_tests;
 #[cfg(test)]
@@ -33,6 +36,8 @@ mod screen_press_support;
 #[cfg(test)]
 mod screen_tests;
 #[cfg(test)]
+mod sidebar_test_support;
+#[cfg(test)]
 mod sidebar_tests;
 #[cfg(test)]
 mod sidebar_width_tests;
@@ -47,7 +52,7 @@ pub(crate) use keys::重ね合わせの作業場が受け取るキーの組;
 use std::time::Duration;
 
 use sengen_egui::{
-    ノード, パネル, パネルの位置, 一定時間で消える通知の並び, 子, 文字表示, 無し, 縦積み,
+    ノード, パネル, パネルの位置, 一定時間で消える通知の並び, 子, 無し, 縦積み
 };
 
 use super::command::重ね合わせの作業場の応答;
@@ -90,30 +95,10 @@ pub(crate) fn 画面(
         パネル(
             "重ね合わせの出力",
             パネルの位置::中央,
-            子![出力の区画(状態, 並べられるか)]
+            子![output_area::出力の区画(状態, 並べられるか)]
         ),
         一定時間で消える通知の並び("重ね合わせの作業場の知らせ", 状態.並べる知らせ()),
         rearrange_dialog::並べ直す前の確かめのダイアログ(状態),
     ])
     .into()
-}
-
-/// 出力の区画。置かなかったクリップの報告と音の様子(音を鳴らせない理由)があれば上に出し、重ね合わせを開いていれば重ねる画面を、開いていなければ案内と「今のスタックから並べる」を出す。
-fn 出力の区画(
-    状態: &重ね合わせの作業場の状態,
-    並べられるか: 今のスタックから並べる状況,
-) -> ノード<重ね合わせの作業場の応答> {
-    let 報告 = 縦積み(
-        状態
-            .置かなかったクリップの報告の文()
-            .into_iter()
-            .chain(状態.音の様子の文の並び())
-            .map(|文| 文字表示(文).into())
-            .collect(),
-    );
-    let 中身 = match 状態.開いている重ね合わせ() {
-        Some(開いている) => screen::重ねる画面(開いている),
-        None => not_open::開いていない間の案内(並べられるか),
-    };
-    縦積み(子![報告, 中身]).into()
 }

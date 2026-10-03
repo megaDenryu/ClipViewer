@@ -6,6 +6,7 @@
 mod drag;
 mod drag_motion;
 mod edit;
+mod fresh;
 mod place_from_stack;
 mod place_source;
 mod rearrange_confirm;
