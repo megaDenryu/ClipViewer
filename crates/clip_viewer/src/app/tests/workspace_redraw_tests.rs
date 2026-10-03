@@ -6,8 +6,8 @@ use std::time::Duration;
 
 use eframe::egui;
 
+use super::super::クリップビューアー;
 use super::workspace_test_support::スタックの作業場の値を既定から変えて再生しているビューアー;
-use super::クリップビューアー;
 
 /// クリップビューアーの画面を2フレーム描き、2フレーム目が egui に頼んだ描き直しまでの時間を返す。
 fn 画面を描いて描き直すまでの時間を読む(

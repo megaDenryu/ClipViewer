@@ -3,7 +3,7 @@
 
 use std::time::{Duration, Instant};
 
-use super::settings_watch::{落ち着くまでの時間, 設定の変化の見張り};
+use super::super::settings_watch::{落ち着くまでの時間, 設定の変化の見張り};
 use crate::state::音量;
 use crate::viewer_settings::見る側の設定;
 

@@ -17,39 +17,7 @@ mod window;
 mod workspace;
 
 #[cfg(test)]
-mod close_tests;
-#[cfg(test)]
-mod launch_plan_tests;
-#[cfg(test)]
-mod launch_requests_test_support;
-#[cfg(test)]
-mod launch_requests_tests;
-#[cfg(test)]
-mod launch_window_tests;
-#[cfg(test)]
-mod settings_watch_tests;
-#[cfg(test)]
-mod viewer_settings_save_tests;
-#[cfg(test)]
-mod workspace_drop_tests;
-#[cfg(test)]
-mod workspace_front_tests;
-#[cfg(test)]
-mod workspace_keys_tests;
-#[cfg(test)]
-mod workspace_keys_with_ffmpeg_tests;
-#[cfg(test)]
-mod workspace_redraw_tests;
-#[cfg(test)]
-mod workspace_test_frames;
-#[cfg(test)]
-mod workspace_test_keys;
-#[cfg(test)]
-mod workspace_test_snapshot;
-#[cfg(test)]
-mod workspace_test_support;
-#[cfg(test)]
-mod workspace_tests;
+mod tests;
 
 pub(crate) use close::ウインドウへの指示;
 pub(crate) use environment::起動時の環境;

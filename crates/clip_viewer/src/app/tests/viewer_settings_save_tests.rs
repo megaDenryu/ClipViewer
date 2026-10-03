@@ -5,9 +5,9 @@
 use std::path::PathBuf;
 use std::time::Instant;
 
+use super::super::settings_watch::落ち着くまでの時間;
+use super::super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
 use super::launch_requests_test_support::試験のビューアー;
-use super::settings_watch::落ち着くまでの時間;
-use super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
 use crate::command::再生の操作;
 use crate::persistence::アプリの設定の保管場所;
 use crate::viewer_settings::見る側の設定;

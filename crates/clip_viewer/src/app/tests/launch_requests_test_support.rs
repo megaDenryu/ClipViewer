@@ -5,11 +5,11 @@
 use eframe::egui;
 use video_source::{FFmpegが見つからないエラー, 実行ファイルの検索パス};
 
-use super::front_workspace::前に出ている作業場;
-use super::overlay_sound_sender::重ね合わせの音の送り手;
-use super::sound_sender::音の送り手;
-use super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
-use super::クリップビューアー;
+use super::super::front_workspace::前に出ている作業場;
+use super::super::overlay_sound_sender::重ね合わせの音の送り手;
+use super::super::sound_sender::音の送り手;
+use super::super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
+use super::super::クリップビューアー;
 use crate::command::操作の適用係;
 use crate::persistence::アプリの設定の保管場所;
 use crate::state::{
@@ -19,7 +19,7 @@ use crate::thumbnail_feed::一覧のサムネイル;
 use crate::viewer_settings::見る側の設定;
 
 /// FFmpeg も音声出力装置も無く、動画を開いていないクリップビューアー。
-pub(super) fn 試験のビューアー() -> クリップビューアー {
+pub(in crate::app) fn 試験のビューアー() -> クリップビューアー {
     let ffmpegの状況 = FFmpegの状況::見つからない {
         理由: FFmpegが見つからないエラー {
             見つからない道具: Vec::new(),
@@ -53,7 +53,7 @@ pub(super) fn 試験のビューアー() -> クリップビューアー {
 }
 
 /// 通知に出ている最新の文面。まだ出していなければ空の文字列。
-pub(super) fn 通知の文(ビューアー: &クリップビューアー) -> String {
+pub(in crate::app) fn 通知の文(ビューアー: &クリップビューアー) -> String {
     ビューアー
         .状態
         .通知

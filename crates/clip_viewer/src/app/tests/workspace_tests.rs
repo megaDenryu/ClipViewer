@@ -5,14 +5,14 @@
 
 use std::time::{Duration, Instant};
 
-use super::front_workspace::前に出ている作業場;
-use super::launch_requests::起動の頼みの届き方;
-use super::workspace::作業場の応答;
+use super::super::front_workspace::前に出ている作業場;
+use super::super::launch_requests::起動の頼みの届き方;
+use super::super::workspace::作業場の応答;
+use super::super::クリップビューアー;
 use super::workspace_test_snapshot::スタックの作業場の写し;
 use super::workspace_test_support::{
     スタックの作業場の値を既定から変えて再生しているビューアー, 前の重ね合わせの作業場,
 };
-use super::クリップビューアー;
 use crate::command::主ボタンの様子;
 use crate::overlay::test_support::五秒の重ね合わせ;
 use crate::overlay::{重ね合わせの作業場の応答, 重ね合わせの操作};

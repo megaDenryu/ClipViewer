@@ -1,8 +1,8 @@
 //! ウインドウへの指示の並びの試験。閉じる要求への答えと、変更を捨てて閉じると決めたかと、起動の頼みが届いたかと、全画面の頼みから、
 //! 起動の部分がウインドウへ送る指示の並びを決める。
 
-use super::close::ウインドウへの指示;
-use super::launch_requests::起動の頼みの届き方::{届いた, 届いていない};
+use super::super::close::ウインドウへの指示;
+use super::super::launch_requests::起動の頼みの届き方::{届いた, 届いていない};
 use crate::state::{ウインドウへの頼み, 全画面の様子, 閉じる要求への答え};
 use crate::viewer_settings::ウインドウの大きさ;
 

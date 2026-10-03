@@ -10,11 +10,11 @@ use clip_domain::{
 };
 use video_source::{FFmpegの置き場所の設定, FFmpegを置いたフォルダ};
 
-use super::super::launch_requests_test_support::試験のビューアー;
-use super::super::workspace_test_support::{
+use super::super::workspace::作業場の応答;
+use super::launch_requests_test_support::試験のビューアー;
+use super::workspace_test_support::{
     スタックの応答を適用する, 前の重ね合わせの作業場
 };
-use super::作業場の応答;
 use crate::command::{主ボタンの様子, 応答};
 use crate::overlay::重ね合わせの作業場の応答;
 use crate::state::library::開いたときの添え書き;

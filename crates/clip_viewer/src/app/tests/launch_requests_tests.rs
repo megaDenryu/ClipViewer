@@ -7,7 +7,7 @@ use std::time::Duration;
 
 use eframe::egui;
 
-use super::launch_requests::起動の頼みの届き方;
+use super::super::launch_requests::起動の頼みの届き方;
 use super::launch_requests_test_support::{試験のビューアー, 通知の文};
 use crate::launch::{
     受け口の案内ファイル, 起動の受け口, 起動の頼み, 起動の頼みの送り手

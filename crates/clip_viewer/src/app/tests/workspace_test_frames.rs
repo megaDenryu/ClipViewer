@@ -4,11 +4,11 @@ use std::time::Instant;
 
 use eframe::egui;
 
-use super::クリップビューアー;
+use super::super::クリップビューアー;
 use crate::command::主ボタンの様子;
 
 /// 新しい egui の本体で、何も押さずに1フレーム進めてから、キーを1つ押した入力で1フレーム進める。
-pub(super) fn キーを押して適用する(
+pub(in crate::app) fn キーを押して適用する(
     ビューアー: &mut クリップビューアー,
     キー: egui::Key,
     修飾キー: egui::Modifiers,
@@ -24,7 +24,7 @@ pub(super) fn キーを押して適用する(
 }
 
 /// ウインドウへファイルを1つ落とした入力で1フレーム進める。
-pub(super) fn ファイルを落として一フレーム進める(
+pub(in crate::app) fn ファイルを落として一フレーム進める(
     ビューアー: &mut クリップビューアー,
     パス: std::path::PathBuf,
 ) {
@@ -39,8 +39,8 @@ pub(super) fn ファイルを落として一フレーム進める(
 }
 
 /// 何も押さずに1フレーム進める。毎フレームの手順が状態へ当てる値(操作の区切り等)を、キーを押す前にそろえるために使う。
-pub(super) fn 何も押さずに一フレーム進める(
-    ビューアー: &mut クリップビューアー
+pub(in crate::app) fn 何も押さずに一フレーム進める(
+    ビューアー: &mut クリップビューアー,
 ) {
     一フレーム進める(
         ビューアー,

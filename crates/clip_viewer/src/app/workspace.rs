@@ -15,13 +15,6 @@ use crate::command::{再生の操作, 応答};
 use crate::overlay::重ね合わせの作業場の応答;
 use crate::view;
 
-#[cfg(test)]
-mod overlay_notice_tests;
-#[cfg(test)]
-mod overlay_tests;
-#[cfg(test)]
-mod overlay_with_ffmpeg_tests;
-
 /// 作業場の応答とは、前に出ている作業場の画面が発した応答を、どちらの作業場の画面が発したかで分けたもののことである。
 /// スタックの応答はスタックの作業場の画面が発する `command::応答`、重ね合わせの応答は重ね合わせの作業場の画面が発する `重ね合わせの作業場の応答` である。
 #[derive(Debug, Clone, PartialEq)]

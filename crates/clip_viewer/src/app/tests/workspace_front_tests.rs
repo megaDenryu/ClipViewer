@@ -7,11 +7,11 @@ use std::time::Duration;
 
 use eframe::egui;
 
-use super::front_workspace::前に出ている作業場;
-use super::launch_requests::起動の頼みの届き方;
+use super::super::front_workspace::前に出ている作業場;
+use super::super::launch_requests::起動の頼みの届き方;
+use super::super::クリップビューアー;
 use super::launch_requests_test_support::{試験のビューアー, 通知の文};
 use super::workspace_test_support::スタックの作業場の値を既定から変えて再生しているビューアー;
-use super::クリップビューアー;
 use crate::launch::{
     受け口の案内ファイル, 起動の受け口, 起動の頼み, 起動の頼みの送り手
 };

@@ -8,16 +8,16 @@ use eframe::egui;
 
 use super::super::close::ウインドウへの指示;
 use super::super::launch_requests::起動の頼みの届き方;
-use super::super::launch_requests_test_support::試験のビューアー;
-use super::super::workspace_test_frames::{
+use super::super::workspace::作業場の応答;
+use super::launch_requests_test_support::試験のビューアー;
+use super::workspace_test_frames::{
     キーを押して適用する, 何も押さずに一フレーム進める
 };
-use super::super::workspace_test_snapshot::スタックの作業場の写し;
-use super::super::workspace_test_support::{
+use super::workspace_test_snapshot::スタックの作業場の写し;
+use super::workspace_test_support::{
     スタックの作業場の値を既定から変えて再生しているビューアー, スタックの応答を適用する,
     前の重ね合わせの作業場,
 };
-use super::作業場の応答;
 use crate::command::応答;
 use crate::overlay::重ね合わせの作業場の応答;
 use crate::state::全画面の様子;

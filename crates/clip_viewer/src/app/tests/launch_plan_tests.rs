@@ -8,9 +8,9 @@ use std::path::{Path, PathBuf};
 use eframe::egui;
 use video_source::実行ファイルの検索パス;
 
-use super::environment::起動時の環境;
-use super::launch_plan::起動の手順;
-use super::launch_preparation::起動の準備;
+use super::super::environment::起動時の環境;
+use super::super::launch_plan::起動の手順;
+use super::super::launch_preparation::起動の準備;
 use crate::launch::起動の頼み;
 
 fn 一時フォルダ(名前: &str) -> PathBuf {
