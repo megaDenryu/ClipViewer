@@ -4,6 +4,7 @@
 //! 「ライブラリに保存する」は、続ける操作を持たせた名前を付けて登録するダイアログを開く。
 
 use crate::command::applier::操作の適用係;
+use crate::library_common::続ける操作を持つダイアログ;
 use crate::state::library::登録の後にすること;
 use crate::state::アプリの状態;
 

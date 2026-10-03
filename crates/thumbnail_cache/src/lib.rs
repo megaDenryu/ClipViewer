@@ -12,14 +12,16 @@ mod clock;
 mod error;
 mod folder;
 mod format_version;
+mod place;
 mod prune;
 mod summary;
 #[cfg(test)]
 mod summary_tests;
 
-pub use cache::{キャッシュの置き場所, サムネイルのキャッシュ};
+pub use cache::サムネイルのキャッシュ;
 pub use capacity::キャッシュの容量;
 pub use clock::キャッシュの時計;
 pub use error::キャッシュの読み書きエラー;
 pub use folder::キャッシュのフォルダ;
+pub use place::キャッシュの置き場所;
 pub use summary::撮り方の要約値;

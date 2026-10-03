@@ -10,9 +10,8 @@ use super::file_drop_support::{
 use super::library_support::試験のライブラリ;
 use super::{クリップを作る, 編集する};
 use crate::command::{クリップの編集, ライブラリの操作, 応答};
-use crate::state::library::{
-    ライブラリのダイアログ, 入力中の名前, 登録の後にすること
-};
+use crate::library_common::save::入力中の名前;
+use crate::state::library::{ライブラリのダイアログ, 登録の後にすること};
 use crate::state::キーの一覧のダイアログ;
 
 #[test]

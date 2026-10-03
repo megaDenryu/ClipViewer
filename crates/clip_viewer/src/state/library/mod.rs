@@ -1,55 +1,56 @@
-//! スタックのライブラリの状態。ライブラリの接続、開いているスタック(未登録か登録済みか)、並べた一覧、開いているダイアログ、アプリの閉じ方を持つ。
+//! スタックのライブラリの状態。ライブラリの接続、開いているスタック(未登録か登録済みか)、並べた一覧、開いているダイアログ、アプリを閉じてよいとの決めを持つ。
 //! 参照: _doc/設計/ライブラリ.md
 
-mod change_watch;
-mod connection;
-mod connection_wait;
 mod dialog;
-mod list_view;
 mod open_stack;
 mod registered_stack;
-mod save_failure;
 mod save_purpose;
-mod save_retry;
-mod save_status;
-mod shown_list;
-mod shown_rows;
-mod usability;
-mod visible_rows;
 
-#[cfg(test)]
-mod change_watch_tests;
-#[cfg(test)]
-mod list_view_tests;
-
-pub(crate) use change_watch::見た結果;
-pub(crate) use connection::{ライブラリの接続, ライブラリを使えない理由};
 pub(crate) use dialog::{
-    ライブラリのダイアログ, 並びを捨てる理由, 入力中の名前, 登録の後にすること,
-    開いたときの添え書き, 関係を終える操作,
+    ライブラリのダイアログ, 並びを捨てる理由, 登録の後にすること, 開いたときの添え書き,
+    関係を終える操作,
 };
-pub(crate) use list_view::{並べ替え方, 絞り込みの語, 見せる行};
 pub(crate) use open_stack::開いているスタック;
 pub(crate) use registered_stack::登録済みのスタック;
 pub(crate) use save_purpose::保存の目的;
-pub(crate) use save_status::保存の段階;
-pub(crate) use shown_list::{並べた一覧, 最後に読んだ一覧};
-pub(crate) use usability::ライブラリの使える様子;
-pub(crate) use visible_rows::見えている行の範囲;
+
+/// ライブラリの接続とは、スタックのライブラリへのライブラリの接続のことである。接続そのもの(一覧から開く前に書き込みを終えてから読むことを含む)は、
+/// 2つの作業場が共有する `library_common::save::保存物のライブラリの接続` である。
+pub(crate) type ライブラリの接続 =
+    crate::library_common::save::保存物のライブラリの接続<
+        スタックのライブラリ,
+        保存の目的,
+    >;
+
+/// ライブラリの使える様子とは、スタックのライブラリの使える様子のことである。
+pub(crate) type ライブラリの使える様子<'接続> =
+    crate::library_common::save::保存物のライブラリの使える様子<
+        '接続,
+        スタックのライブラリ,
+    >;
+
+/// 保存の段階とは、開いている登録済みのスタックの保存の段階のことである。
+pub(crate) type 保存の段階<'様子> =
+    crate::library_common::save::保存の段階<'様子, ライブラリの操作エラー>;
+
+/// 並べた一覧とは、スタックのライブラリの一覧を並べた一覧のことである。
+pub(crate) type 並べた一覧 = crate::library_common::list::並べた一覧<ライブラリの一覧>;
+
+/// 最後に読んだ一覧とは、スタックのライブラリの最後に読んだ一覧のことである。
+pub(crate) type 最後に読んだ一覧 =
+    crate::library_common::list::最後に読んだ一覧<ライブラリの一覧>;
 
 use std::time::Duration;
 
+use crate::library_common::list::見えている行の範囲;
+
 use clip_domain::{クリップ, スタックの名前, スタックの識別子};
+use clip_library::{
+    スタックのライブラリ, ライブラリの一覧, ライブラリの操作エラー
+};
 
+use crate::library_common::アプリを閉じてよいとの決め;
 use crate::thumbnail_feed::一覧のサムネイル;
-
-/// アプリの閉じ方とは、ウインドウを閉じる要求を受けたときに保存を確かめてから閉じるか、利用者が変更を捨てると決めたので確かめずに閉じるかの区別のことである。
-#[derive(Debug, Clone, Copy, PartialEq, Eq, Default)]
-pub(crate) enum アプリの閉じ方 {
-    #[default]
-    確かめてから閉じる,
-    確かめずに閉じる,
-}
 
 /// ライブラリの状態とは、スタックのライブラリについて画面が読む値と、ライブラリの接続と、一覧のサムネイルと、前のフレームで一覧に見えていた行の組のことである。
 /// `見えている行` は、画面が発した応答の適用で置き、次のフレームの `サムネイルを進める` が取り出す(画面は状態を書き換えないため)。
@@ -61,23 +62,24 @@ pub(crate) struct ライブラリの状態 {
     pub(crate) 開いている: 開いているスタック,
     pub(crate) 一覧: 並べた一覧,
     pub(crate) ダイアログ: ライブラリのダイアログ,
-    pub(crate) 閉じ方: アプリの閉じ方,
+    pub(crate) 閉じる決め: アプリを閉じてよいとの決め,
     pub(crate) 次に並びを見るまでの時間: Option<Duration>,
-    pub(crate) サムネイル: 一覧のサムネイル,
+    pub(crate) サムネイル: 一覧のサムネイル<スタックの識別子>,
     pub(crate) 見えている行: Option<見えている行の範囲>,
 }
 
 impl ライブラリの状態 {
     /// 接続と一覧のサムネイルから作る。
     pub(crate) fn 接続から作る(
-        接続: ライブラリの接続, サムネイル: 一覧のサムネイル
+        接続: ライブラリの接続,
+        サムネイル: 一覧のサムネイル<スタックの識別子>,
     ) -> Self {
         Self {
             接続,
             開いている: 開いているスタック::default(),
             一覧: 並べた一覧::default(),
             ダイアログ: ライブラリのダイアログ::default(),
-            閉じ方: アプリの閉じ方::default(),
+            閉じる決め: アプリを閉じてよいとの決め::default(),
             次に並びを見るまでの時間: None,
             サムネイル,
             見えている行: None,

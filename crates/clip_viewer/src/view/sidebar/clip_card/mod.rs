@@ -26,7 +26,7 @@ use sengen_egui::{
 
 use crate::command::{クリップの操作, クリップの編集, 応答};
 use crate::state::カードの区間の帯に描く値;
-use crate::view::styles;
+use crate::styles;
 
 /// このクリップへの編集の応答。
 fn 編集の応答(識別子: &クリップ識別子, 編集: クリップの編集) -> 応答 {

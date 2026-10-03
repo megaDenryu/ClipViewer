@@ -6,10 +6,10 @@ use video_source::{バイト数, 受け付けない理由};
 
 use crate::command::応答;
 use crate::state::アプリの状態;
+use crate::styles;
 use crate::video_feed::{
     コマの出どころ, 依頼の結末, 依頼の進み具合, 行の状態, 読み込んだ動画
 };
-use crate::view::styles;
 
 /// 映像の供給の様子の行。動画が無ければ何も出さない。
 pub(crate) fn 供給の様子(状態: &アプリの状態) -> ノード<応答> {

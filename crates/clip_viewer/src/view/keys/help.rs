@@ -11,7 +11,7 @@ use sengen_egui::{
 use super::help_row;
 use crate::command::{キーの設定の操作, 出力の操作, 応答};
 use crate::state::アプリの状態;
-use crate::view::styles;
+use crate::styles;
 use crate::viewer_settings::キーの割り当て;
 
 /// キーの変え方を知らせる文。

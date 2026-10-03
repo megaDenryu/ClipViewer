@@ -65,7 +65,6 @@ pub(crate) use key_list::キーの一覧のダイアログ;
 pub(crate) use notice::通知;
 pub(crate) use output_settings::{出力の設定, 画面の構え};
 pub(crate) use playback::{シークの様子, 再生の状況};
-pub(crate) use relation_check::確かめた結果;
 pub(crate) use sound_output::音の出力の状況;
 pub(crate) use speed_steps::速度を変える向き;
 pub(crate) use video_clue::動画の手がかり;

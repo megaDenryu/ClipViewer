@@ -16,6 +16,7 @@ mod overlay_format;
 mod overlay_id;
 mod overlay_item;
 mod overlay_name;
+mod overlay_thumbnail;
 mod overlay_v1;
 mod overlay_v1_placed;
 mod overlay_v1_read;

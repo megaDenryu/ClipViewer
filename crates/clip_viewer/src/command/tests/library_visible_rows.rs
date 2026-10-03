@@ -8,7 +8,7 @@ use super::library_check::終えるまで待って当てる;
 use super::library_support::試験のライブラリ;
 use super::thumbnail_place::動画のあるスタックを置く;
 use crate::command::{ライブラリの操作, 応答};
-use crate::state::library::見えている行の範囲;
+use crate::library_common::list::見えている行の範囲;
 use crate::state::{アプリの状態, 画面の構え};
 use crate::view;
 
@@ -20,7 +20,7 @@ fn 画面を描いて集める(
     let mut 集まり = Vec::new();
     let _ = 画面描画の共有状態.run(egui::RawInput::default(), |画面描画の共有状態| {
         egui::CentralPanel::default().show(画面描画の共有状態, |ui| {
-            集まり = view::画面(状態).描画して集める(ui);
+            集まり = view::画面(状態, None).描画して集める(ui);
         });
     });
     集まり

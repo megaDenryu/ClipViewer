@@ -7,7 +7,7 @@ use crate::audio_feed::{
 };
 use crate::command::応答;
 use crate::state::{アプリの状態, 音の出力の状況};
-use crate::view::styles;
+use crate::styles;
 
 /// 音の様子の行。動画が無く、出力装置も使えるなら何も出さない。
 pub(crate) fn 音の様子(状態: &アプリの状態) -> ノード<応答> {

@@ -22,7 +22,7 @@ pub(super) fn 事象を渡して描く(
     let mut 集まり = Vec::new();
     let _ = 画面描画の共有状態.run(入力, |画面描画の共有状態| {
         egui::CentralPanel::default().show(画面描画の共有状態, |ui| {
-            集まり = view::画面(状態).描画して集める(ui);
+            集まり = view::画面(状態, None).描画して集める(ui);
         });
     });
     集まり

@@ -16,7 +16,8 @@ use sengen_egui::{
 use super::screen;
 use crate::command::応答;
 use crate::state::アプリの状態;
-use crate::view::{control, styles};
+use crate::styles;
+use crate::view::control;
 
 /// 出力の上でマウスを止めてから操作の欄を隠すまでの時間。
 const 隠すまでの時間: Duration = Duration::from_millis(2500);

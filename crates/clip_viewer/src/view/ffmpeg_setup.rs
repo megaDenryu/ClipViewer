@@ -6,7 +6,7 @@ use sengen_egui::{
 
 use crate::command::{FFmpegの操作, 応答};
 use crate::state::{FFmpegの状況, アプリの状態};
-use crate::view::styles;
+use crate::styles;
 
 pub(crate) fn ffmpegの置き場所の欄(状態: &アプリの状態) -> ノード<応答> {
     let FFmpegの状況::見つからない {

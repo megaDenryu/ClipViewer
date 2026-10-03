@@ -3,11 +3,15 @@
 #![allow(clippy::expect_used)]
 
 use eframe::egui;
+use thumbnail_cache::{
+    キャッシュの容量, キャッシュの時計, キャッシュの置き場所, サムネイルのキャッシュ,
+};
 use video_source::{FFmpegが見つからないエラー, 実行ファイルの検索パス};
 
+use super::super::close_procedure::アプリを閉じる手順;
 use super::super::front_workspace::前に出ている作業場;
 use super::super::instruction_receiver::二本目の流れを開く手立て;
-use super::super::overlay_side::重ね合わせの側の作り方;
+use super::super::overlay_side_recipe::重ね合わせの側の作り方;
 use super::super::sound_sender::音の送り手;
 use super::super::viewer_settings_save::{見る側の設定の保存係, 設定の書き方};
 use super::super::クリップビューアー;
@@ -44,7 +48,6 @@ pub(in crate::app) fn 試験のビューアーを二本目の流れの手立て�
     let 本体 = egui::Context::default();
     let サムネイル = 一覧のサムネイル::キャッシュを使わずに作る(本体.clone());
     クリップビューアー {
-        重ね合わせのライブラリ: None,
         状態: アプリの状態::起動時(ffmpegの状況, 音の出力, サムネイル),
         適用係: 操作の適用係::作成する(
             アプリの設定の保管場所::無い,
@@ -62,8 +65,15 @@ pub(in crate::app) fn 試験のビューアーを二本目の流れの手立て�
             重ね合わせの側の作り方 {
                 画面描画の共有状態: 本体,
                 流れを開く手立て,
+                重ね合わせのライブラリ: None,
+                サムネイルのキャッシュ: サムネイルのキャッシュ::作成する(
+                    キャッシュの置き場所::使わない,
+                    キャッシュの容量::既定,
+                    キャッシュの時計::実時間(),
+                ),
             },
         ),
+        閉じる手順: アプリを閉じる手順::default(),
     }
 }
 

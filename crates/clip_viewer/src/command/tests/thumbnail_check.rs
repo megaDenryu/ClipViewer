@@ -4,7 +4,7 @@
 use std::ops::RangeInclusive;
 use std::time::{Duration, Instant};
 
-use crate::state::library::見えている行の範囲;
+use crate::library_common::list::見えている行の範囲;
 use crate::state::{アプリの状態, 画面の構え};
 use clip_domain::スタックの識別子;
 

@@ -7,7 +7,6 @@ use eframe::egui;
 use super::screen_press_support::試験の全体の音量;
 use super::test_support::{押して集める, 描いた文字の範囲, 描いて集める};
 use crate::overlay::command::重ね合わせの作業場の応答;
-use crate::overlay::state::library_status::重ね合わせのライブラリの様子;
 use crate::overlay::state::placement::{
     置くクリップ, 置くクリップの一覧, 置くクリップの動画
 };
@@ -40,7 +39,6 @@ pub(super) fn サイドバーを描いて文字を押す(
             Some(一覧),
             試験の全体の音量,
             None,
-            重ね合わせのライブラリの様子::書ける,
         )
     };
     let (_, 出力) = 描いて集める(&画面描画の共有状態, Vec::new(), &木);

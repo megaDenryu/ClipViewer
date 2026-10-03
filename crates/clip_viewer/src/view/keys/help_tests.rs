@@ -8,7 +8,7 @@ use sengen_egui::日本語フォントの候補;
 use super::help::キーの一覧を出すダイアログ;
 use crate::command::{キーの設定の操作, 出力の操作};
 use crate::state::{アプリの状態, 画面の構え};
-use crate::view::styles;
+use crate::styles;
 use crate::view::test_support::{動画の無い状態, 大きさを決めて描く};
 use crate::viewer_settings::キーで行う操作;
 

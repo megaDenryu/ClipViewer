@@ -14,7 +14,7 @@ use sengen_egui::{
 use super::size::出力の描き方;
 use crate::command::{出力の操作, 応答};
 use crate::state::{左右の向き, 画面の構え};
-use crate::view::styles;
+use crate::styles;
 
 fn 出力(操作: 出力の操作) -> 応答 {
     応答::出力(操作)

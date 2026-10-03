@@ -14,6 +14,7 @@ mod audio_feed;
 mod command;
 mod crash_record;
 mod launch;
+mod library_common;
 mod output_measure;
 mod overlay;
 mod persistence;
@@ -23,6 +24,7 @@ mod screen_shell;
 mod startup_notice;
 mod state;
 mod stream_rules;
+mod styles;
 mod thumbnail_feed;
 mod video_feed;
 mod view;
@@ -95,7 +97,7 @@ fn main() -> ExitCode {
         "ClipViewer",
         選択肢,
         Box::new(|ウインドウを作るときの情報| {
-            view::styles::画面のテーマ.適用する(&ウインドウを作るときの情報.egui_ctx);
+            styles::画面のテーマ.適用する(&ウインドウを作るときの情報.egui_ctx);
             日本語フォントを設定する(&ウインドウを作るときの情報.egui_ctx);
             let ビューアー = app::クリップビューアー::組み立てる(
                 ウインドウを作るときの情報.egui_ctx.clone(),

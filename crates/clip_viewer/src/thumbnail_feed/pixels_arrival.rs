@@ -4,18 +4,19 @@
 
 use std::rc::Rc;
 
-use clip_domain::{サムネイルの撮り方, スタックの識別子};
+use clip_domain::サムネイルの撮り方;
 
 use super::pixels::{戻した画素, 画素へ戻せない理由};
+use super::rows::一覧の行の識別子;
 use super::shelf::一覧のサムネイル;
 use super::status::{
     サムネイルの様子, サムネイルを出せない理由, 画像の出どころ
 };
 
-impl 一覧のサムネイル {
+impl<識別子: 一覧の行の識別子> 一覧のサムネイル<識別子> {
     pub(super) fn 画素へ戻した結果を当てる(
         &mut self,
-        識別子: &スタックの識別子,
+        識別子: &識別子,
         撮り方: &サムネイルの撮り方,
         画素: Result<戻した画素, 画素へ戻せない理由>,
     ) {

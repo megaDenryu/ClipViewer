@@ -9,7 +9,7 @@ use eframe::egui;
 use sengen_egui::日本語フォントの候補;
 
 use super::{カードの様子, クリップカード};
-use crate::view::styles;
+use crate::styles;
 
 /// サイドバーの内余白の左右の合計。
 pub(super) const 内余白の左右: f32 = 24.0;

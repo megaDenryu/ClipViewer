@@ -11,7 +11,8 @@ use crate::command::{再生の操作, 応答, 送る向き};
 use crate::state::{
     アプリの状態, 消音の様子, 速度のつまみの刻み, 速度のつまみの範囲
 };
-use crate::view::{keys, styles};
+use crate::styles;
+use crate::view::keys;
 use crate::viewer_settings::キーで行う操作;
 use crate::volume_step::音量のつまみの刻み;
 

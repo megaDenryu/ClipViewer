@@ -3,8 +3,7 @@
 
 use std::rc::Rc;
 
-use chrono::{DateTime, Local};
-use clip_domain::{スタックの識別子, ライブラリの日時};
+use clip_domain::スタックの識別子;
 use clip_library::{
     ライブラリの一覧, 一覧の項目, 動画の有無, 読めたスタック
 };
@@ -12,7 +11,8 @@ use sengen_egui::ノード;
 
 use super::row::一覧の行;
 use crate::command::応答;
-use crate::state::library::見せる行;
+use crate::library_common::list::見せる行;
+use crate::library_common::view::{一覧の行の材料, 日時の表示};
 use crate::state::アプリの状態;
 use crate::thumbnail_feed::{サムネイルの見せ方, サムネイルの項目の表};
 use crate::view::text;
@@ -24,7 +24,7 @@ pub(super) struct 行の材料 {
     見せる行の順: Rc<Vec<見せる行>>,
     開いている: Option<スタックの識別子>,
     書けるか: bool,
-    サムネイル: サムネイルの項目の表,
+    サムネイル: サムネイルの項目の表<スタックの識別子>,
 }
 
 impl 行の材料 {
@@ -40,14 +40,16 @@ impl 行の材料 {
             サムネイル: 状態.ライブラリ.サムネイル.項目の表(),
         }
     }
+}
 
+impl 一覧の行の材料<応答> for 行の材料 {
     /// 見せる行の数。
-    pub(super) fn 行の数(&self) -> usize {
+    fn 行の数(&self) -> usize {
         self.見せる行の順.len()
     }
 
     /// 番号の行を組む。
-    pub(super) fn 行を組む(&self, 番号: usize) -> Option<ノード<応答>> {
+    fn 行を組む(&self, 番号: usize) -> Option<ノード<応答>> {
         let 行 = match (*self.見せる行の順.get(番号)?, &self.一覧.項目) {
             (見せる行::読めた(位置), 項目) => match 項目.get(位置)? {
                 一覧の項目::読めた(読めた) => スタックの行(
@@ -95,11 +97,4 @@ fn スタックの行(
         動画が見つからないか: 読めた.動画 == 動画の有無::見つからない,
         サムネイル,
     }
-}
-
-/// この計算機の時間帯での「2026-09-26 14:05」の形。
-fn 日時の表示(日時: ライブラリの日時) -> String {
-    DateTime::<Local>::from(日時.時刻にする())
-        .format("%Y-%m-%d %H:%M")
-        .to_string()
 }

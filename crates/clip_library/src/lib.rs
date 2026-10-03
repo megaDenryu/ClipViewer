@@ -37,6 +37,7 @@ mod overlay_lock;
 mod overlay_request;
 mod permission;
 mod pre_scan_cleanup;
+mod readable;
 mod replace_write;
 mod request;
 mod request_refusal;
@@ -75,6 +76,7 @@ pub use overlay_request::{
     重ね合わせのライブラリからの知らせ, 重ね合わせのライブラリへの頼み
 };
 pub use permission::{書き込みの許し, 錠による書き込みの許し};
+pub use readable::保存物を読めるライブラリ;
 pub use request::{
     ライブラリからの知らせ, ライブラリへの頼み, 保存の番号, 変更の種類
 };

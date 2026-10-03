@@ -6,7 +6,8 @@ use sengen_egui::{ノード, ボタン, 子, 文字表示, 条件付き表示, �
 
 use crate::command::{出力の操作, 応答};
 use crate::state::{アプリの状態, 画面の構え};
-use crate::view::{keys, styles};
+use crate::styles;
+use crate::view::keys;
 use crate::viewer_settings::キーで行う操作;
 
 /// 動画を開いていないときの案内。設定ファイルが期待する動画があれば、そのファイル名とパスを出す(移植元の警告の札)。

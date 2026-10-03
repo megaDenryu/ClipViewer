@@ -3,9 +3,12 @@
 
 use clip_library::錠を試したライブラリの組;
 
+use video_source::{FFmpegの置き場所の設定, FFmpegを置いたフォルダ};
+
 use super::environment::起動時の環境;
+use super::viewer_settings_save::設定の書き方;
 use crate::launch::{起動の受け口, 起動の頼み};
-use crate::persistence::アプリの設定の保管場所;
+use crate::persistence::{FFmpegの置き場所の候補, アプリの設定の保管場所};
 use crate::viewer_settings::{ウインドウの記憶, 見る側の設定};
 
 /// 起動の準備とは、ウインドウを作って組み立てるときに使う、起動時の環境・settings.json から読んだ見る側の設定・アプリの設定の保管場所・
@@ -33,5 +36,35 @@ impl 起動の準備 {
         self.ライブラリ
             .as_ref()
             .is_some_and(|組| 組.スタック.書けるか())
+    }
+
+    /// 見る側の設定を書くか。ライブラリの錠を持つアプリだけが書く(画面.md 判断17)。
+    pub(super) fn 設定の書き方(&self) -> 設定の書き方 {
+        if self.ライブラリの錠を持つか() {
+            設定の書き方::書く
+        } else {
+            設定の書き方::書かない
+        }
+    }
+
+    /// 保存した FFmpeg の置き場所と、環境変数が指す FFmpeg のフォルダから、FFmpeg の置き場所の候補を作る。
+    /// 設定を読めなければ未設定として扱い、読めない理由を返す(起動は止めず、通知で知らせる)。
+    pub(super) fn ffmpegの置き場所の候補を読む(
+        &self,
+    ) -> (FFmpegの置き場所の候補, Option<String>) {
+        let (保存した置き場所, 読めない理由) = match self.保管場所.ffmpegの置き場所を読む()
+        {
+            Ok(置き場所) => (置き場所, None),
+            Err(理由) => (FFmpegの置き場所の設定::未設定, Some(理由.to_string())),
+        };
+        let 候補 = FFmpegの置き場所の候補 {
+            環境変数のフォルダ: self
+                .環境
+                .ffmpegのフォルダ
+                .clone()
+                .map(FFmpegを置いたフォルダ::作成する),
+            保存した置き場所,
+        };
+        (候補, 読めない理由)
     }
 }
